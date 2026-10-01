@@ -1,6 +1,7 @@
 import { readFile, writeFile, mkdir, cp, rm, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { originHero, originDiagram } from './origin-design.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const siteDir = path.resolve(here, '..');
@@ -14,9 +15,7 @@ const content = JSON.parse(await readFile(path.join(contentDir, 'landing.json'),
 const tokens = JSON.parse(await readFile(path.join(designDir, 'tokens.json'), 'utf8'));
 const fullText = await readFile(path.join(contentDir, 'full-text.md'), 'utf8');
 const assetNames = new Set(await readdir(assetsDir));
-const releaseTag = String(content.meta.copyVersion || 'current')
-  .match(/s\d+(?:\.\d+)?/)?.[0]
-  ?.replace('.', '-') || 'current';
+const releaseTag = 'origin-v2';
 const buildDate = new Intl.DateTimeFormat('ru-RU', {
   day: '2-digit',
   month: 'long',
@@ -131,14 +130,12 @@ function header(current = 'home') {
     return `<a href="${e(safeHref(href))}">${navLabel(item.label)}</a>`;
   }).join('');
   const supportHref = current === 'home' ? '#materials' : './index.html#materials';
-  const mark = content.meta.copyVersion?.startsWith('strict/s1.')
-    ? '<span class="site-mark__monogram">ИМТ<span>.</span></span>'
-    : '<span class="site-mark__symbol" aria-hidden="true">⌖</span><span>Территория и решения</span>';
-  return `<header class="site-header"><div class="container header-inner"><a class="site-mark" href="./index.html" aria-label="На главную страницу">${mark}</a><nav class="desktop-nav" aria-label="Разделы сайта">${nav}</nav><a class="header-full text-link" href="${supportHref}">Поддержать концепцию</a><button class="menu-toggle" type="button" aria-controls="mobile-nav" aria-expanded="false" aria-label="Открыть меню"><span aria-hidden="true"></span></button></div><nav class="mobile-nav" id="mobile-nav" aria-label="Мобильная навигация">${nav}<a href="${supportHref}">Поддержать концепцию</a></nav></header>`;
+  const mark = `<img class="origin-logo" src="${asset('origin-imgFrame7.svg')}" alt="ИМТ.">`;
+  return `<header class="site-header"><div class="container header-inner"><a class="site-mark" href="./index.html" aria-label="На главную страницу">${mark}</a><nav class="desktop-nav" aria-label="Разделы сайта">${nav}</nav><a class="header-full text-link" href="${supportHref}">Поддержать концепцию <img src="${asset('origin-imgVector1.svg')}" alt=""></a><button class="menu-toggle" type="button" aria-controls="mobile-nav" aria-expanded="false" aria-label="Открыть меню"><span aria-hidden="true"></span></button></div><nav class="mobile-nav" id="mobile-nav" aria-label="Мобильная навигация">${nav}<a href="${supportHref}">Поддержать концепцию</a></nav></header>`;
 }
 
 function footer() {
-  const version = content.meta.copyVersion?.match(/s([\d.]+)/)?.[1] || content.meta.copyVersion || '—';
+  const version = '2.0 · Origin / контент 1.5';
   const telegramIcon = '<svg class="footer-channel-icon footer-channel-icon--telegram" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#229ED9"/><path fill="#fff" d="M34.6 14.5 31 33.3c-.3 1.3-1 1.6-2.1 1l-5.5-4.1-2.7 2.6c-.3.3-.5.5-1.1.5l.4-5.6 10.2-9.2c.4-.4-.1-.6-.7-.2l-12.6 7.9-5.4-1.7c-1.2-.4-1.2-1.2.2-1.8l21.1-8.1c1-.4 1.9.2 1.8-.1Z"/></svg>';
   const maxIcon = '<svg class="footer-channel-icon footer-channel-icon--max" viewBox="0 0 1000 1000" aria-hidden="true"><defs><linearGradient id="max-gradient" x1="117.8" x2="1000" y1="760.5" y2="500" gradientUnits="userSpaceOnUse"><stop stop-color="#44CCFF"/><stop offset=".662" stop-color="#5533EE"/><stop offset="1" stop-color="#9933DD"/></linearGradient><radialGradient id="max-glow" cx="0" cy="1" r="1" gradientTransform="matrix(1515 -1233 508 624 -490 1087)" gradientUnits="userSpaceOnUse"><stop stop-color="#0000FF"/><stop offset="1" stop-color="#0000FF" stop-opacity="0"/></radialGradient></defs><rect width="1000" height="1000" rx="250" fill="url(#max-gradient)"/><rect width="1000" height="1000" rx="250" fill="url(#max-glow)"/><path fill="#fff" fill-rule="evenodd" d="M508 878c-75 0-110-11-170-55-38 50-160 88-165 22 0-49-11-91-23-136-15-57-32-119-32-210 0-216 178-380 388-380 211 0 376 171 376 382 1 207-167 376-374 377Zm3-571c-102-5-182 66-200 177-15 92 11 204 33 210 11 3 38-19 54-36 27 19 58 31 93 33 106 5 197-76 204-182 4-106-78-196-184-202Z" clip-rule="evenodd"/></svg>';
   return `<footer class="site-footer"><div class="container footer-inner">
@@ -186,7 +183,7 @@ function landingPageS11() {
     const steps = frame.steps.map((step, index) => `<li><span class="s11-practice-step__num">0${index + 1}</span><div><strong>${e(step.label)}</strong><p>${e(step.text)}</p></div></li>`).join('');
     return `<article class="s11-practice-card" id="${e(frame.id)}"><div class="s11-practice-card__top"><span class="s11-practice-num">${e(frame.number)}</span><span class="s11-kicker">${e(frame.eyebrow)}</span></div><h3>${e(frame.title)}</h3><ol class="s11-practice-steps">${steps}</ol><a class="s11-practice-more" href="${e(safeHref(frame.more?.href))}">${e(frame.more?.label || 'Подробнее')} <span aria-hidden="true">↗</span></a></article>`;
   };
-  const slides = story.slides.map((slide, i) => `<article class="s11-story-slide${i === 0 ? ' is-active' : ''}" id="story-slide-${i + 1}" role="tabpanel" aria-labelledby="story-tab-${i + 1}" data-slide="${i}" ${i ? 'hidden' : ''}><div class="s11-story-copy"><span class="s11-step">${e(slide.number)} / 04 · ${e(slide.label)}</span><h3>${e(slide.title)}</h3><p>${e(slide.body)}</p></div><figure class="s11-story-art s11-story-art--${i + 1}"><picture><source media="(max-width: 760px)" srcset="${asset(slide.mobileAsset)}"><img src="${asset(slide.asset)}" alt="${e(slide.alt)}" loading="lazy" decoding="async"></picture></figure></article>`).join('');
+  const slides = story.slides.map((slide, i) => `<article class="s11-story-slide${i === 0 ? ' is-active' : ''}" id="story-slide-${i + 1}" role="tabpanel" aria-labelledby="story-tab-${i + 1}" data-slide="${i}" ${i ? 'hidden' : ''}><div class="s11-story-copy"><span class="s11-step">${e(slide.number)} / 04<br>${e(slide.label)}</span><h3>${e(slide.title)}</h3><p>${e(slide.body)}</p></div><figure class="s11-story-art s11-story-art--${i + 1}">${i === 0 ? originDiagram(asset) : `<picture><source media="(max-width: 760px)" srcset="${asset(slide.mobileAsset)}"><img src="${asset(slide.asset)}" alt="${e(slide.alt)}" loading="lazy" decoding="async"></picture>`}</figure></article>`).join('');
   const tabs = story.slides.map((slide, i) => `<button type="button" class="s11-story-tab${i === 0 ? ' is-active' : ''}" id="story-tab-${i + 1}" data-story-tab="${i}" role="tab" aria-controls="story-slide-${i + 1}" aria-selected="${i === 0}" tabindex="${i === 0 ? '0' : '-1'}"><span>${e(slide.number)}</span>${e(slide.tabTitle || slide.title)}</button>`).join('');
   const how = byId('how');
   const practice = byId('practice').frames;
@@ -202,8 +199,8 @@ function landingPageS11() {
   const materialLink = materials.materials?.[0];
   const heroTitle = (hero.titleLines || [hero.title]).map(line => `<span>${e(line)}</span>`).join('');
   const heroLead = (hero.leadLines || [hero.lead]).map(line => `<span>${e(line)}</span>`).join('');
-  const body = `<section class="s11-hero" id="hero"><div class="container s11-hero__grid"><div class="s11-hero__copy"><span class="s11-kicker">${e(hero.eyebrow)}</span><h1>${heroTitle}</h1><p>${heroLead}</p></div><figure class="s11-hero__visual"><img src="${asset('hero-imt-ecosystem-blue.png')}" alt="${e(hero.visualCaption)}"></figure></div></section>
-  <section class="s11-section s11-section--mist s11-story" id="story"><div class="container">${sectionTitle(story.eyebrow, story.title, story.introParagraphs || story.intro)}<div class="s11-story-shell"><div class="s11-story-stage">${slides}</div><div class="s11-story-controls"><div class="s11-story-tabs" role="tablist" aria-label="Четыре шага объяснения Концепции">${tabs}</div><div class="s11-story-arrows"><button type="button" data-story-prev aria-label="Предыдущий слайд">←</button><button type="button" data-story-next aria-label="Следующий слайд">→</button></div></div></div></div></section>
+  const body = `<section class="s11-hero" id="hero"><div class="container s11-hero__grid">${originHero(asset)}<div class="s11-hero__copy"><span class="s11-kicker">${e(hero.eyebrow)}</span><h1>${e(hero.title)}</h1><p>${heroLead}</p><a class="s11-button origin-hero-cta" href="#materials">Поддержать концепцию <img src="${asset('origin-imgVector2.svg')}" alt=""></a></div></div></section>
+  <section class="s11-section s11-section--mist s11-story" id="story"><div class="container"><div class="origin-intro"><a class="origin-explainer" href="#story-slide-1" aria-label="Перейти к объяснению Концепции в четырёх слайдах"><img src="${asset('origin-imgFrame1948754504.svg')}" alt=""><span>Смотреть объяснение · 4 слайда</span></a>${sectionTitle(story.eyebrow, story.title, story.introParagraphs || story.intro)}</div><div class="s11-story-shell"><div class="s11-story-stage">${slides}</div><div class="s11-story-controls"><div class="s11-story-tabs" role="tablist" aria-label="Четыре шага объяснения Концепции">${tabs}</div><div class="s11-story-arrows"><button type="button" data-story-prev aria-label="Предыдущий слайд"><img src="${asset('origin-imgVector3.svg')}" alt=""></button><div class="origin-progress" aria-hidden="true">${story.slides.map((_,i)=>`<span data-story-progress="${i}" class="${i===0?'is-active':''}"></span>`).join('')}</div><button type="button" data-story-next aria-label="Следующий слайд"><img src="${asset('origin-imgVector4.svg')}" alt=""></button></div></div></div></div></section>
   <section class="s11-section s11-lifecycle-section" id="how"><div class="container">${sectionTitle('Что предлагает концепция', how.title, how.intro)}<div class="s11-lifecycle">${how.frames.map(lifecycleCard).join('')}</div><div class="s11-lifecycle-summary"><strong>${e(how.summary)}</strong></div></div></section>
   <section class="s11-section s11-section--mist s11-practice-section" id="practice"><div class="container">${sectionTitle(byId('practice').navLabel, byId('practice').title, byId('practice').intro)}<div class="s11-practice-notice"><strong>Условные примеры</strong><span>${e(byId('practice').notice)}</span></div><div class="s11-practice-grid">${practice.map(practiceCard).join('')}</div></div></section>
   <section class="s11-section s11-transition-section" id="transition"><div class="container">${sectionTitle('Этапы / 04', byId('transition').title, byId('transition').intro)}<div class="s11-phases">${transition.diagram.stages.map((stage, i) => `<article class="s11-phase"><div class="s11-phase__head"><span class="s11-phase__num">0${i + 1}</span><span class="s11-phase__label">Этап</span></div><h3>${e(stage)}</h3><p>${e(transition.diagram.stageDetails[i].body)}</p><div class="s11-phase__result"><span>Результат</span><strong>${e(transition.diagram.stageDetails[i].result)}</strong></div></article>`).join('')}</div><div class="s11-transition-path"><span class="s11-kicker">${e(transition.diagram.pathLabel)}</span><div class="s11-transition-path__columns"><p>${e(transition.paragraphs[0])}</p><p>${e(transition.paragraphs[1])}</p><p>${e(transition.diagram.caption)}</p></div><a class="s11-button s11-transition-path__button" href="${e(safeHref(transition.more?.href))}">${e(transition.more?.label)} <span aria-hidden="true">↗</span></a></div></div></section>
@@ -332,7 +329,7 @@ await cp(assetsDir, path.join(distDir, 'assets'), { recursive: true });
 await writeFile(path.join(distDir, 'index.html'), landingPage());
 await writeFile(path.join(distDir, 'concept.html'), fullTextPage());
 await writeFile(path.join(distDir, 'tokens.css'), tokenCss());
-await cp(path.join(siteDir, 'src', 'style.css'), path.join(distDir, 'style.css'));
+await cp(path.join(siteDir, 'src', 'origin.css'), path.join(distDir, 'style.css'));
 await cp(path.join(siteDir, 'src', 'main.js'), path.join(distDir, 'main.js'));
 await cp(path.join(siteDir, 'src', 'favicon.svg'), path.join(distDir, 'favicon.svg'));
 console.log(`Сайт собран: ${distDir}`);

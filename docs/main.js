@@ -25,7 +25,7 @@ if (menuButton && mobileNav) {
     if (event.key === 'Escape') closeMenu();
   });
   window.addEventListener('resize', () => {
-    if (window.innerWidth > 760) closeMenu();
+    if (window.innerWidth > 1050) closeMenu();
   });
 }
 
@@ -79,6 +79,7 @@ if (story) {
   let active = 0;
   const show = next => {
     active = (next + slides.length) % slides.length;
+    story.querySelectorAll('[data-story-progress]').forEach((dot,index) => dot.classList.toggle('is-active', index === active));
     slides.forEach((slide, index) => {
       slide.hidden = index !== active;
       slide.classList.toggle('is-active', index === active);
@@ -99,4 +100,28 @@ if (story) {
   }));
   story.querySelector('[data-story-prev]')?.addEventListener('click', () => show(active - 1));
   story.querySelector('[data-story-next]')?.addEventListener('click', () => show(active + 1));
+}
+
+// Fixed illustration coordinates scale together; text layout remains responsive.
+const illustrationObserver = new ResizeObserver(entries => {
+  entries.forEach(({ target, contentRect }) => {
+    const scene = target.querySelector('[data-scale-width]');
+    if (scene && contentRect.width) scene.style.transform = `scale(${contentRect.width / Number(scene.dataset.scaleWidth)})`;
+  });
+});
+document.querySelectorAll('[data-scale-width]').forEach(scene => illustrationObserver.observe(scene.parentElement));
+const explainer = document.querySelector('.origin-explainer');
+if (explainer) {
+  const fit = new ResizeObserver(([entry]) => {
+    const scale = entry.contentRect.width / 568;
+    explainer.style.height = `${346.325 * scale}px`;
+    explainer.querySelector('img').style.transform = `scale(${scale})`;
+  });
+  fit.observe(explainer);
+  explainer.addEventListener('click', () => {
+    story?.querySelector('[data-story-tab="0"]')?.click();
+    const slide = document.querySelector('#story-slide-1');
+    slide?.setAttribute('tabindex','-1');
+    slide?.focus({ preventScroll:true });
+  });
 }
