@@ -1,0 +1,83 @@
+import { readFile, writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+const contentPath = path.join(root, 'content/landing.json');
+const outputPath = path.join(root, 'content/landing.md');
+const content = JSON.parse(await readFile(contentPath, 'utf8'));
+const lines = [
+  '# Текст главной страницы',
+  '',
+  'Источник для сайта — `landing.json`. Этот файл автоматически собирается из него для чтения и обсуждения.',
+  '',
+  `Версия текста: ${content.meta.copyVersion}`,
+  '',
+  content.meta.conceptStatus,
+  content.meta.edition,
+  '',
+  '## Навигация',
+  '',
+  content.nav.map(item => `[${item.label}](#${item.id})`).join(' · '),
+  '',
+  `## 00. ${content.hero.title} {#hero}`,
+  '',
+  content.hero.lead,
+  '',
+  ...(content.about ? [] : [content.hero.body, '']),
+  ...(content.hero.actions.length ? [content.hero.actions.map(item => `[${item.label}](${item.href})`).join(' · '), ''] : []),
+  ...(content.about ? [] : [`**${content.hero.routesLabel}** ${content.hero.routes.map(item => `[${item.label}](${item.href})`).join(' · ')}`, '']),
+  `*Подпись к визуалу:* ${content.hero.visualCaption}`,
+];
+
+if (content.about) {
+  lines.push('', `## ${content.about.title} {#why}`, '', content.about.eyebrow, '', `**Кто мы.** ${content.about.who}`, '', `**Зачем.** ${content.about.why}`, '', `**Как.** ${content.about.how}`);
+}
+if (content.story) {
+  lines.push('', `## ${content.story.title} {#story}`, '', content.story.eyebrow);
+  for (const slide of content.story.slides) lines.push('', `### ${slide.number}. ${slide.title}`, '', slide.body);
+  lines.push('', `*Примечание к визуалу:* ${content.story.videoNote}`);
+}
+
+  for (const section of content.sections) {
+  lines.push('', `## ${section.title} {#${section.id}}`, '', ...(section.notice ? [section.notice, ''] : []), section.intro);
+  for (const frame of section.frames) {
+    lines.push('', `### ${frame.number}. ${frame.title} {#${frame.id}}`, '', frame.eyebrow, '');
+    for (const paragraph of frame.paragraphs || []) lines.push(paragraph, '');
+    if (frame.route) lines.push(`**Маршрут:** ${frame.route.join(' → ')}`, '');
+    if (frame.steps) {
+      for (const step of frame.steps) lines.push(`**${step.label}.** ${step.text}`, '');
+    }
+    if (frame.diagram) {
+      const d = frame.diagram;
+      lines.push(`**Схема «${d.id}».**`);
+      for (const [label, value] of Object.entries(d)) {
+        if (['id', 'type', 'caption', 'note'].includes(label)) continue;
+        lines.push(`- ${label}: ${Array.isArray(value) ? value.map(item => typeof item === 'object' ? item.body && item.result ? `${item.body} Результат: ${item.result}` : `${item.label}: ${item.value}` : item).join(' → ') : value}`);
+      }
+      lines.push('', `*Подпись:* ${d.caption}`);
+      if (d.note) lines.push('', `*Уточнение:* ${d.note}`);
+    }
+    if (frame.more) lines.push('', `[${frame.more.label}](${frame.more.href})`);
+    if (frame.materials) {
+      for (const material of frame.materials) lines.push('', `[${material.label}](${material.href}) — ${material.description}.`);
+    }
+    if (frame.contributions) {
+      lines.push('', '**Что можно прислать**', '');
+      for (const item of frame.contributions) lines.push(`- **${item.title}** — ${item.text}`);
+    }
+    if (frame.challenges) {
+      lines.push('', '**Основные сложности**', '');
+      for (const item of frame.challenges) lines.push(`- **${item.title}** — ${item.text}`);
+    }
+    if (frame.summary) lines.push('', `**Главное.** ${frame.summary}`);
+    if (frame.supportAction) lines.push('', `[${frame.supportAction.label}](${frame.supportAction.href}) — ${frame.supportAction.help}`);
+    if (frame.contact) lines.push('', `**Контакт:** ${frame.contact.name}, ${frame.contact.role} — [${frame.contact.email}](mailto:${frame.contact.email}).`);
+    if (frame.future) lines.push('', `**Следующий этап.** ${frame.future}`);
+    if (frame.disclaimer) lines.push('', frame.disclaimer);
+    if (frame.contactLabel) lines.push('', `**${frame.contactLabel}.** ${frame.contactHelp || ''}`);
+  }
+}
+lines.push('', '---', '', content.meta.footerNote, '');
+await writeFile(outputPath, lines.join('\n'));
+console.log(`Текст для чтения обновлён: ${outputPath}`);
