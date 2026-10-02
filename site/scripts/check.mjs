@@ -34,8 +34,10 @@ const contentRoot = path.resolve(dist, '../../content');
 const source = JSON.parse(await readFile(path.join(contentRoot, 'full-text-source.json'), 'utf8'));
 const fullText = await readFile(path.join(contentRoot, 'full-text.md'));
 assert.equal(createHash('sha256').update(fullText).digest('hex'), source.sha256, 'Полный текст изменился относительно мастер-версии');
-for (const id of ['appendix-a', 'appendix-b', ...Array.from({length:10}, (_, i) => `source-${i+1}`), ...Object.keys(source.legacyAnchors)]) {
+for (const id of ['appendix-a', 'appendix-b', ...Array.from({length:4}, (_, i) => `source-${i+1}`), ...Object.keys(source.legacyAnchors)]) {
   assert.ok(concept.includes(`id="${id}"`), `Нет якоря ${id}`);
 }
+assert.ok(!concept.includes('Авторские и рабочие материалы'), 'В публичную редакцию попали внутренние рабочие материалы');
+assert.ok(!concept.includes('id="source-5"'), 'В публичную редакцию попали авторские источники');
 assert.ok(!concept.includes('href="#"'), 'Ссылка без назначения в полном тексте');
 console.log('Мастер-версия: контрольная сумма, приложения, источники и прежние якоря проверены.');

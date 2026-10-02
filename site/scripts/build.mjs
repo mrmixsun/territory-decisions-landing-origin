@@ -299,7 +299,12 @@ function parseMarkdown(md) {
 function fullTextPage() {
   const firstSection = fullText.indexOf('<a id="section-0"></a>');
   if (firstSection < 0) throw new Error('В полном тексте не найдено введение');
-  const mainMd = fullText.slice(firstSection);
+  // Public edition omits internal author and working materials; the master stays intact.
+  const mainMd = fullText.slice(firstSection)
+    .split('### Авторские и рабочие материалы')[0]
+    .replace(' ([источник 9](#source-9))', '')
+    .replace(' Материалы раскрывают происхождение предложений Концепции; сами по себе они не подтверждают утверждение Концепции.', '')
+    .trimEnd();
   const headings = [...mainMd.matchAll(/<a id="(section-\d+|appendix-[ab])"><\/a>\s*\n##\s+(.+)/g)].map(match => ({ id: match[1], title: match[2] }));
   if (headings.filter(h => /^section-\d+$/.test(h.id)).length !== 14) throw new Error('В мастер-версии нужны введение и 13 основных разделов');
   const tocLink = h => {
