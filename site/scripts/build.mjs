@@ -1,4 +1,5 @@
 import { readFile, writeFile, mkdir, cp, rm, readdir } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { originHero, originDiagram } from './origin-design.mjs';
@@ -17,6 +18,12 @@ const fullText = await readFile(path.join(contentDir, 'full-text.md'), 'utf8');
 const fullTextSource = JSON.parse(await readFile(path.join(contentDir, 'full-text-source.json'), 'utf8'));
 const assetNames = new Set(await readdir(assetsDir));
 const releaseTag = 'origin-v2-concept-20261002';
+const resourceVersions = new Map(await Promise.all([
+  ['./style.css', 'origin.css'],
+  ['./main.js', 'main.js']
+].map(async ([href, filename]) => [href, createHash('sha256')
+  .update(await readFile(path.join(siteDir, 'src', filename)))
+  .digest('hex').slice(0, 12)])));
 const buildDate = new Intl.DateTimeFormat('ru-RU', {
   day: '2-digit',
   month: 'long',
@@ -30,7 +37,7 @@ const safeContentHref = (href = '') => /^https:\/\//i.test(href) ? href : safeHr
 const e = (value = '') => esc(value);
 const para = (items = []) => items.map(item => `<p>${e(item)}</p>`).join('\n');
 const list = (items = []) => `<ul>${items.map(item => `<li>${e(item)}</li>`).join('')}</ul>`;
-const versioned = (href) => `${href}?v=${releaseTag}`;
+const versioned = (href) => `${href}?v=${resourceVersions.get(href) || releaseTag}`;
 const asset = (name) => versioned(`./assets/${name}`);
 
 function picture(name, mobileName, alt, className = '') {

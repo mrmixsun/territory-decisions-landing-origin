@@ -10,6 +10,10 @@ const files = new Set(await readdir(dist));
 for (const file of pageNames) if (!files.has(file)) throw new Error(`Нет ${file}; сначала выполните npm run build`);
 const pages = Object.fromEntries(await Promise.all(pageNames.map(async file => [file, await readFile(path.join(dist, file), 'utf8')])));
 for (const [file, html] of Object.entries(pages)) {
+  for (const resource of ['style.css', 'main.js']) {
+    const hash = createHash('sha256').update(await readFile(path.join(dist, resource))).digest('hex').slice(0, 12);
+    assert.ok(html.includes(`./${resource}?v=${hash}`), `${file}: версия ${resource} должна соответствовать содержимому`);
+  }
   if ((html.match(/<h1\b/g) || []).length !== 1) throw new Error(`${file}: должна быть одна h1`);
   for (const target of ['style.css', 'tokens.css', 'main.js', 'favicon.svg']) if (!files.has(target)) throw new Error(`Нет ${target}`);
   for (const [, href] of html.matchAll(/href="([^"]+)"/g)) {
