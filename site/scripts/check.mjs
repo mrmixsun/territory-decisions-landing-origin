@@ -1,3 +1,5 @@
+import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { readFile, readdir, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -25,5 +27,15 @@ for (const [file, html] of Object.entries(pages)) {
   }
 }
 const concept = pages['concept.html'];
-for (let n = 1; n <= 12; n++) if (!concept.includes(`id="m${n}"`)) throw new Error(`Нет раздела m${n}`);
-console.log('Проверка пройдена: 2 страницы, ссылки, ресурсы и 12 разделов полного текста.');
+for (let n = 0; n <= 13; n++) if (!concept.includes(`id="section-${n}"`)) throw new Error(`Нет раздела section-${n}`);
+console.log('Проверка пройдена: 2 страницы, ссылки, ресурсы, введение и 13 разделов полного текста.');
+
+const contentRoot = path.resolve(dist, '../../content');
+const source = JSON.parse(await readFile(path.join(contentRoot, 'full-text-source.json'), 'utf8'));
+const fullText = await readFile(path.join(contentRoot, 'full-text.md'));
+assert.equal(createHash('sha256').update(fullText).digest('hex'), source.sha256, 'Полный текст изменился относительно мастер-версии');
+for (const id of ['appendix-a', 'appendix-b', ...Array.from({length:10}, (_, i) => `source-${i+1}`), ...Object.keys(source.legacyAnchors)]) {
+  assert.ok(concept.includes(`id="${id}"`), `Нет якоря ${id}`);
+}
+assert.ok(!concept.includes('href="#"'), 'Ссылка без назначения в полном тексте');
+console.log('Мастер-версия: контрольная сумма, приложения, источники и прежние якоря проверены.');

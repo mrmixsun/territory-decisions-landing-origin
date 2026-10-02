@@ -14,8 +14,9 @@ const assetsDir = path.join(designDir, 'assets');
 const content = JSON.parse(await readFile(path.join(contentDir, 'landing.json'), 'utf8'));
 const tokens = JSON.parse(await readFile(path.join(designDir, 'tokens.json'), 'utf8'));
 const fullText = await readFile(path.join(contentDir, 'full-text.md'), 'utf8');
+const fullTextSource = JSON.parse(await readFile(path.join(contentDir, 'full-text-source.json'), 'utf8'));
 const assetNames = new Set(await readdir(assetsDir));
-const releaseTag = 'origin-v2';
+const releaseTag = 'origin-v2-concept-20261002';
 const buildDate = new Intl.DateTimeFormat('ru-RU', {
   day: '2-digit',
   month: 'long',
@@ -225,7 +226,10 @@ function landingPage() {
 function inlineMarkdown(raw) {
   let html = e(raw);
   html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, href) => {
-    const target = safeContentHref(href.replace(/&amp;/g, '&'));
+    const cleanHref = href.replace(/^&lt;|&gt;$/g, '').replace(/&amp;/g, '&');
+    // Vault references have no public destination; keep their labels as text.
+    if (!/^(?:https:\/\/|#)/i.test(cleanHref)) return `<span class="document-reference" title="Рабочий материал из базы знаний; публичная ссылка не предоставлена">${label}</span>`;
+    const target = safeContentHref(cleanHref);
     return `<a href="${e(target)}"${/^https:\/\//i.test(target) ? ' class="external-link" title="Внешний ресурс"' : ''}>${label}</a>`;
   });
   html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
@@ -247,7 +251,12 @@ function parseMarkdown(md) {
     const line = lines[i].trim();
     if (!line) { i++; continue; }
     const anchor = line.match(/^<a id="([a-z0-9-]+)"><\/a>$/i);
-    if (anchor) { pendingId = anchor[1]; i++; continue; }
+    if (anchor) {
+      const next = lines.slice(i + 1).find(line => line.trim());
+      if (/^#{1,6} /.test(next?.trim() || '')) pendingId = anchor[1];
+      else out.push(`<span id="${e(anchor[1])}" class="document-anchor" aria-hidden="true"></span>`);
+      i++; continue;
+    }
     const heading = line.match(/^(#{1,6})\s+(.+)$/);
     if (heading) {
       const level = heading[1].length;
@@ -271,7 +280,8 @@ function parseMarkdown(md) {
         items.push(lines[i].trim().replace(ordered ? /^\d+\. / : /^[-*] /, '')); i++;
       }
       const tag = ordered ? 'ol' : 'ul';
-      out.push(`<${tag}>${items.map(item => `<li>${inlineMarkdown(item)}</li>`).join('')}</${tag}>`);
+      const start = ordered ? ` start="${line.match(/^\d+/)[0]}"` : '';
+      out.push(`<${tag}${start}>${items.map(item => `<li>${inlineMarkdown(item)}</li>`).join('')}</${tag}>`);
       continue;
     }
     if (/^> /.test(line)) {
@@ -287,14 +297,24 @@ function parseMarkdown(md) {
 }
 
 function fullTextPage() {
-  const firstSection = fullText.indexOf('<a id="m1"></a>');
-  if (firstSection < 0) throw new Error('В полном тексте не найден якорь m1');
+  const firstSection = fullText.indexOf('<a id="section-0"></a>');
+  if (firstSection < 0) throw new Error('В полном тексте не найдено введение');
   const mainMd = fullText.slice(firstSection);
-  const headings = [...mainMd.matchAll(/<a id="(m\d+|[ab])"><\/a>\s*\n##\s+(.+)/g)].map((match) => ({ id: match[1], title: match[2] }));
-  if (headings.filter(h => /^m\d+$/.test(h.id)).length !== 12) throw new Error('В полном тексте нужны 12 основных разделов');
-  const toc = `<aside class="document-toc" aria-label="Оглавление"><h2>Содержание</h2><ol>${headings.filter(h => /^m\d+$/.test(h.id)).map(h => `<li><a href="#${e(h.id)}">${e(h.title.replace(/^\d+\.\s*/, ''))}</a></li>`).join('')}</ol><p><a href="#a">Приложение А</a> · <a href="#b">Приложение Б</a></p></aside>`;
-  const body = `<header class="document-hero"><div class="container"><span class="eyebrow">${e(content.meta.conceptStatus)}</span><h1>${e(content.meta.title)}</h1><p>${e(content.meta.edition)}. Полный текст Концепции; правовая детализация, программа внедрения и проверка эффектов требуют дальнейшей работы.</p><a class="document-back" href="./index.html">← Вернуться к краткому изложению</a></div></header><div class="container document-layout">${toc}<article class="document-body">${parseMarkdown(mainMd)}</article></div>`;
-  return pageShell({ title: `Полный текст — ${content.meta.title}`, description: content.meta.description, current: 'concept', body, bodyClass: 'document--imt' });
+  const headings = [...mainMd.matchAll(/<a id="(section-\d+|appendix-[ab])"><\/a>\s*\n##\s+(.+)/g)].map(match => ({ id: match[1], title: match[2] }));
+  if (headings.filter(h => /^section-\d+$/.test(h.id)).length !== 14) throw new Error('В мастер-версии нужны введение и 13 основных разделов');
+  const tocLink = h => {
+    const number = h.title.match(/^(\d+)\.\s*/)?.[1];
+    const numbered = number && number !== '0';
+    return `<a href="#${e(h.id)}"${numbered ? ` class="document-toc__section" aria-label="${e(h.title)}"` : ''}>${numbered ? `<span class="document-toc__number" aria-hidden="true">${number}.</span>` : ''}<span class="document-toc__title">${e(h.title.replace(/^\d+\.\s*/, ''))}</span></a>`;
+  };
+  const toc = `<aside class="document-toc" aria-label="Оглавление"><h2>Содержание</h2><p>${tocLink(headings[0])}</p><ol>${headings.filter(h => /^section-\d+$/.test(h.id) && h.id !== 'section-0').map(h => `<li>${tocLink(h)}</li>`).join('')}</ol><div class="document-toc__appendices">${headings.filter(h => h.id.startsWith('appendix-')).map(tocLink).join('')}</div></aside>`;
+  let article = parseMarkdown(mainMd);
+  for (const heading of headings) {
+    const aliases = Object.entries(fullTextSource.legacyAnchors).filter(([, target]) => target === heading.id).map(([id]) => `<span id="${e(id)}" class="document-anchor" aria-hidden="true"></span>`).join('');
+    article = article.replace(`<h2 id="${heading.id}">`, `<h2 id="${heading.id}">${aliases}`);
+  }
+  const body = `<header class="document-hero"><div class="container"><span class="eyebrow">${e(content.meta.conceptStatus)}</span><h1 tabindex="-1">${e(fullTextSource.title)}</h1><p>Редакция от ${e(fullTextSource.edition)}. Полный текст Концепции.</p><a class="document-back" href="./index.html">← Вернуться к краткому изложению</a></div></header><div class="container document-layout">${toc}<article class="document-body">${article}</article></div><button class="back-to-top" type="button" aria-label="Наверх" title="Наверх" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 12 6-6 6 6M12 6v12"/></svg></button>`;
+  return pageShell({ title: `Полный текст — ${fullTextSource.title}`, description: content.meta.description, current: 'concept', body, bodyClass: 'document--imt' });
 }
 
 function px(n) { return `${n}px`; }

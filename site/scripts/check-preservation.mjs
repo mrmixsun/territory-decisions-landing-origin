@@ -5,11 +5,11 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const baseline = 'ebf0639';
-for (const file of ['content/landing.json', 'content/full-text.md']) {
+for (const file of ['content/landing.json']) {
   assert.deepEqual(await readFile(path.join(root,file)),execFileSync('git',['show',baseline+':'+file],{cwd:root}),file+' must preserve s1.5 content');
 }
 const normalize = s => s.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&#39;/g,"'").replace(/&quot;/g,'"').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/\s+/g,' ').trim();
-for (const file of ['index.html','concept.html']) {
+for (const file of ['index.html']) {
   const old = execFileSync('git',['show',baseline+':docs/'+file],{cwd:root,encoding:'utf8'});
   const current = await readFile(path.join(root,'site/dist',file),'utf8');
   const plain = normalize(current);
@@ -26,4 +26,4 @@ for (const match of css.matchAll(/url\(['"]?([^'")]+)['"]?\)/g)) {
 }
 const manifest = JSON.parse(await readFile(path.join(root,'design/origin-asset-manifest.json')));
 for(const {file} of manifest.assets) assert.ok((await stat(path.join(root,'site/dist/assets',file))).size>0,'Missing Figma asset '+file);
-console.log('Origin: исходные тексты s1.5 совпадают байт-в-байт; все заголовки и абзацы обеих страниц сохранены; CSS, шрифты и Figma-ресурсы локальны.');
+console.log('Origin: текст лендинга s1.5 сохранён; CSS, шрифты и Figma-ресурсы локальны.');
