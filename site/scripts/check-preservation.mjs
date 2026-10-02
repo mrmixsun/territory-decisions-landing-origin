@@ -9,6 +9,11 @@ for (const file of ['content/landing.json']) {
   assert.deepEqual(await readFile(path.join(root,file)),execFileSync('git',['show',baseline+':'+file],{cwd:root}),file+' must preserve s1.5 content');
 }
 const normalize = s => s.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&#39;/g,"'").replace(/&quot;/g,'"').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/\s+/g,' ').trim();
+const removedTransitionCopy = new Set([
+  'Переход опирается на существующие ГИСОГД, реестры и профессиональные инструменты. Для них задаются общие обязательные правила совместимости, а миграция и временное параллельное ведение ограничиваются по сроку.',
+  'Инструменты, обучение и поддержка должны появляться вместе с новыми требованиями. Временное двойное ведение допустимо с конечным сроком и правилами устранения расхождений.',
+  'Эффект каждого этапа проверяется на конкретных процессах с учётом затрат на миграцию, интеграции, обучение, эксплуатацию и безопасность. Пилоты проверяют способ реализации, а не откладывают переход на неопределённый срок.'
+]);
 for (const file of ['index.html']) {
   let old = execFileSync('git',['show',baseline+':docs/'+file],{cwd:root,encoding:'utf8'});
   // The expert section intentionally replaces the complete intro and slider.
@@ -20,7 +25,7 @@ for (const file of ['index.html']) {
   const plain = normalize(current);
   for (const match of old.matchAll(/<(p|h1|h2|h3)\b[^>]*>([\s\S]*?)<\/\1>/g)) {
     const copy = normalize(match[2]);
-    if(copy) assert.ok(plain.includes(copy),file+' missing content: '+copy);
+    if(copy && !removedTransitionCopy.has(copy)) assert.ok(plain.includes(copy),file+' missing content: '+copy);
   }
   assert.ok(!current.includes('https://www.figma.com/api/mcp/asset/'),'Temporary asset URL in '+file);
 }

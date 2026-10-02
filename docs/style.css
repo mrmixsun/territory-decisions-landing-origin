@@ -123,9 +123,9 @@ h1,h2,h3,h4 { font-family:Inter,Arial,sans-serif;text-wrap:balance; }p { margin:
 /* Standalone section. All selectors are scoped to .experts-section. */
 .experts-section{--ex-paper:#f7f7f4;--ex-ink:#171610;--ex-muted:#68655f;--ex-line:#d9d5cf;--ex-orange:#bf3e00;--ex-plum:#6e405f;background:var(--ex-paper);color:var(--ex-ink);font:17px/1.5 Arial,Helvetica,sans-serif;padding:76px 0 68px;scroll-margin-top:100px}
 .experts-section *,.experts-section *::before,.experts-section *::after{box-sizing:border-box}
-.experts-section .experts-container{width:min(calc(100% - 86px),1193px);margin-inline:auto;padding-inline:36px}
+.experts-section .experts-container{width:min(calc(100% - 86px),1193px);margin-inline:auto}
 .experts-section p,.experts-section figure{margin:0}
-.experts-section .experts-heading{max-width:none;margin:0 -36px 40px}
+.experts-section .experts-heading{max-width:none;margin:0 0 40px}
 .experts-section .experts-kicker,.experts-section .expert-step{font:600 12px/1.4 Inter,Arial,sans-serif;letter-spacing:.8px;text-transform:uppercase;color:var(--ex-orange)}
 .experts-section h2{font:700 clamp(32px,3.6vw,48px)/1.08 Inter,Arial,sans-serif;letter-spacing:-1.7px;text-wrap:balance;margin:20px 0 22px}
 .experts-section .experts-intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px}
@@ -140,21 +140,19 @@ h1,h2,h3,h4 { font-family:Inter,Arial,sans-serif;text-wrap:balance; }p { margin:
 .experts-section .expert-example{border-left:2px solid #f54e00;padding-left:17px;margin-top:18px;font-size:15px;line-height:1.5;color:#54514b}
 .experts-section .expert-example>span{display:block;margin-bottom:6px;color:var(--ex-orange);font:600 11px/1.4 Inter,Arial,sans-serif;text-transform:uppercase;letter-spacing:.6px}
 .experts-section .expert-media{grid-area:media;min-width:0;display:flex}
-.experts-section .expert-placeholder{width:100%;position:relative;overflow:hidden;min-height:260px;border:1px solid #cbc6be;border-radius:5px;background:radial-gradient(ellipse at 52% 45%,#e8e2e6 0,transparent 64%),linear-gradient(125deg,#efede7,#e7e4df);display:flex;flex-direction:column;justify-content:space-between;padding:18px 22px}
-.experts-section .expert-placeholder::before{content:"";position:absolute;inset:0;background-image:linear-gradient(#6e405f09 1px,transparent 1px),linear-gradient(90deg,#6e405f09 1px,transparent 1px);background-size:38px 38px;pointer-events:none}
-.experts-section .expert-placeholder-top{position:relative;z-index:1;display:flex;justify-content:space-between;gap:12px;color:#59544e;font:10px/1.5 Inter,Arial,sans-serif}
-.experts-section .expert-placeholder-top span:first-child{border:1px solid #b9b2a9;border-radius:3px;padding:3px 7px;background:#f7f7f480}
-.experts-section .expert-avatar{position:absolute;top:21%;left:50%;transform:translateX(-50%);width:100px;height:100px;border-radius:50%;border:1px solid #b9a8b3;background:#e2d8df80;display:grid;place-items:center;color:var(--ex-plum);font:500 31px/1 Inter,Arial,sans-serif;letter-spacing:-1px}
-.experts-section .expert-credit{position:relative;z-index:1;max-width:calc(100% - 46px);margin-top:145px}
-.experts-section .expert-credit strong{display:block;font:600 17px/1.4 Inter,Arial,sans-serif;margin-bottom:5px}
-.experts-section .expert-credit>span{display:block;font-size:12px;line-height:1.5;color:#54514b}
-.experts-section .expert-play{position:absolute;right:18px;bottom:20px;width:36px;height:36px;border:1px solid #b9a8b3;border-radius:50%;display:grid;place-items:center;color:var(--ex-plum);background:#f7f7f480}
-.experts-section .expert-play svg{width:17px;height:17px}
+.experts-section .expert-placeholder{width:100%;position:relative;overflow:hidden;min-height:260px;aspect-ratio:16/11;border-radius:5px;background:#3b3b3b}
+.experts-section .expert-placeholder img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;object-position:center}
+.experts-section .expert-placeholder::before{content:"";position:absolute;z-index:1;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.29),transparent 32%,transparent 50%,rgba(0,0,0,.26));pointer-events:none}
+.experts-section .expert-placeholder-top{position:absolute;z-index:2;top:17px;left:17px;right:17px;display:flex;justify-content:space-between;gap:12px;color:#fff;font:500 11px/1.4 Inter,Arial,sans-serif;text-shadow:0 1px 3px #0009}
+.experts-section .expert-placeholder-top span{border:1px solid #ffffff55;border-radius:3px;padding:5px 8px;background:#1716108c}
+.experts-section .expert-credit{position:absolute;z-index:2;bottom:14px;left:14px;right:14px;padding:13px 16px;border:1px solid #ffffff30;border-radius:4px;background:rgba(20,19,18,.84);color:#fff;box-shadow:0 5px 20px #0003}
+.experts-section .expert-credit strong{display:block;font:600 17px/1.35 Inter,Arial,sans-serif;margin-bottom:4px}
+.experts-section .expert-credit>span{display:block;font:400 12px/1.4 Inter,Arial,sans-serif;color:#f1eeeb}
 .experts-section .experts-end{display:flex;align-items:center;justify-content:space-between;gap:35px;border-top:1px solid var(--ex-line);padding-top:34px;margin-top:6px}
 .experts-section .experts-end p{max-width:655px;font:500 17px/1.55 Inter,Arial,sans-serif}
 .experts-section .experts-end p>span{color:var(--ex-orange)}
 .experts-section .experts-link{flex:none;display:inline-flex;gap:14px;padding:13px 19px;border-radius:30px;color:white;background:var(--ex-ink);font:400 13px/1.4 Inter,Arial,sans-serif;text-decoration:none}
 .experts-section .experts-link:hover{background:#38352d}
 .experts-section a:focus-visible{outline:3px solid var(--ex-plum);outline-offset:5px}
-@media(max-width:1000px){.experts-section .experts-container{padding-inline:0}.experts-section .experts-heading{margin-inline:0}.experts-section .experts-intro{gap:36px}.experts-section .expert-row{gap:36px}.experts-section h3{font-size:28px}.experts-section .expert-avatar{width:80px;height:80px}.experts-section .experts-end{align-items:flex-start;flex-direction:column}}
-@media(max-width:700px){.experts-section{padding:46px 0}.experts-section .experts-container{width:calc(100% - 40px)}.experts-section h2{font-size:33px;letter-spacing:-1.1px}.experts-section h2 br{display:none}.experts-section .experts-intro{grid-template-columns:minmax(0,1fr);gap:18px}.experts-section .experts-lead{font-size:17px}.experts-section .experts-heading{margin-bottom:34px}.experts-section .expert-row,.experts-section .expert-row:nth-of-type(even){grid-template-columns:minmax(0,1fr);grid-template-areas:"copy" "media";gap:22px;padding:26px 0}.experts-section .expert-step{font-size:10px;gap:14px;margin-bottom:15px}.experts-section h3{font-size:28px;letter-spacing:-.7px;margin-bottom:17px}.experts-section .expert-body{font-size:16px}.experts-section .expert-example{font-size:14px;margin-top:20px}.experts-section .expert-placeholder{aspect-ratio:16/11;padding:15px 17px;min-height:235px}.experts-section .expert-avatar{top:21%;width:75px;height:75px;font-size:25px}.experts-section .expert-credit{margin-top:95px}.experts-section .expert-placeholder-top{font-size:9px}
+@media(max-width:1000px){.experts-section .experts-intro{gap:36px}.experts-section .expert-row{gap:36px}.experts-section h3{font-size:28px}.experts-section .experts-end{align-items:flex-start;flex-direction:column}}
+@media(max-width:700px){.experts-section{padding:46px 0}.experts-section .experts-container{width:calc(100% - 32px)}.experts-section h2{font-size:33px;letter-spacing:-1.1px}.experts-section h2 br{display:none}.experts-section .experts-intro{grid-template-columns:minmax(0,1fr);gap:18px}.experts-section .experts-lead{font-size:17px}.experts-section .experts-heading{margin-bottom:34px}.experts-section .expert-row,.experts-section .expert-row:nth-of-type(even){grid-template-columns:minmax(0,1fr);grid-template-areas:"copy" "media";gap:22px;padding:26px 0}.experts-section .expert-step{font-size:10px;gap:14px;margin-bottom:15px}.experts-section h3{font-size:28px;letter-spacing:-.7px;margin-bottom:17px}.experts-section .expert-body{font-size:16px}.experts-section .expert-example{font-size:14px;margin-top:20px}.experts-section .expert-placeholder{min-height:235px}.experts-section .expert-placeholder-top{font-size:10px;top:12px;left:12px;right:12px}.experts-section .expert-credit{bottom:10px;left:10px;right:10px;padding:11px 12px}.experts-section .expert-credit strong{font-size:15px}.experts-section .expert-credit>span{font-size:11px}
