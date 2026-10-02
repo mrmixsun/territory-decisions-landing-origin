@@ -132,7 +132,7 @@ function header(current = 'home') {
   }).join('');
   const supportHref = current === 'home' ? '#materials' : './index.html#materials';
   const mark = `<img class="origin-logo" src="${asset('origin-imgFrame7.svg')}" alt="ИМТ.">`;
-  const headerTitle = current === 'home' ? '<span class="header-concept-title">Концепция цифрового управления развитием территорий</span>' : '';
+  const headerTitle = '<span class="header-concept-title">Концепция цифрового управления развитием территорий</span>';
   return `<header class="site-header"><div class="container header-inner"><a class="site-mark" href="./index.html" aria-label="На главную страницу">${mark}</a>${headerTitle}<nav class="desktop-nav" aria-label="Разделы сайта">${nav}</nav><a class="header-full text-link" href="${supportHref}">Поделиться с коллегами <img src="${asset('origin-imgVector1.svg')}" alt=""></a><button class="menu-toggle" type="button" aria-controls="mobile-nav" aria-expanded="false" aria-label="Открыть меню"><span aria-hidden="true"></span></button></div><nav class="mobile-nav" id="mobile-nav" aria-label="Мобильная навигация">${nav}<a href="${supportHref}">Поделиться с коллегами</a></nav></header>`;
 }
 

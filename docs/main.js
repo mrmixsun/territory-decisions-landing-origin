@@ -1,15 +1,15 @@
 const menuButton = document.querySelector('.menu-toggle');
 const mobileNav = document.querySelector('.mobile-nav');
 
-// Keep the opening view quiet; reveal navigation after the first scroll.
-const landingHeader = document.querySelector('.landing--s11 .site-header');
-if (landingHeader) {
-  const desktopNav = landingHeader.querySelector('.desktop-nav');
+// Reveal the shared site navigation after the first scroll.
+const siteHeader = document.querySelector('.site-header');
+if (siteHeader) {
+  const desktopNav = siteHeader.querySelector('.desktop-nav');
   let scheduled = false;
   const updateHeader = () => {
     scheduled = false;
     const visible = window.scrollY > 48;
-    landingHeader.classList.toggle('is-scrolled', visible);
+    siteHeader.classList.toggle('is-scrolled', visible);
     desktopNav.inert = !visible;
     menuButton.inert = !visible;
     if (!visible) {
