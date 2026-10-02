@@ -10,7 +10,12 @@ for (const file of ['content/landing.json']) {
 }
 const normalize = s => s.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&#39;/g,"'").replace(/&quot;/g,'"').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/\s+/g,' ').trim();
 for (const file of ['index.html']) {
-  const old = execFileSync('git',['show',baseline+':docs/'+file],{cwd:root,encoding:'utf8'});
+  let old = execFileSync('git',['show',baseline+':docs/'+file],{cwd:root,encoding:'utf8'});
+  // The expert section intentionally replaces the complete intro and slider.
+  const storyStart = old.indexOf('<section class="s11-section s11-section--mist s11-story"');
+  assert.ok(storyStart >= 0, 'Baseline story section not found');
+  const storyEnd = old.indexOf('</section>', storyStart) + '</section>'.length;
+  old = old.slice(0, storyStart) + old.slice(storyEnd);
   const current = await readFile(path.join(root,'site/dist',file),'utf8');
   const plain = normalize(current);
   for (const match of old.matchAll(/<(p|h1|h2|h3)\b[^>]*>([\s\S]*?)<\/\1>/g)) {
@@ -26,4 +31,4 @@ for (const match of css.matchAll(/url\(['"]?([^'")]+)['"]?\)/g)) {
 }
 const manifest = JSON.parse(await readFile(path.join(root,'design/origin-asset-manifest.json')));
 for(const {file} of manifest.assets) assert.ok((await stat(path.join(root,'site/dist/assets',file))).size>0,'Missing Figma asset '+file);
-console.log('Origin: текст лендинга s1.5 сохранён; CSS, шрифты и Figma-ресурсы локальны.');
+console.log('Origin: текст лендинга s1.5 вне заменённого блока сохранён; CSS, шрифты и Figma-ресурсы локальны.');

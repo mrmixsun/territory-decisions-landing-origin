@@ -45,3 +45,9 @@ assert.ok(!concept.includes('Авторские и рабочие материа
 assert.ok(!concept.includes('id="source-5"'), 'В публичную редакцию попали авторские источники');
 assert.ok(!concept.includes('href="#"'), 'Ссылка без назначения в полном тексте');
 console.log('Мастер-версия: контрольная сумма, приложения, источники и прежние якоря проверены.');
+
+const landing = pages['index.html'];
+assert.equal((landing.match(/class="expert-row"/g) || []).length, 6, 'Нужны шесть экспертных строк');
+assert.ok(!landing.includes('s11-story-shell') && !landing.includes('Суть за одну минуту'), 'Старый блок и слайдер должны быть удалены');
+assert.match(landing, /<\/section>\s*<section class="experts-section"/, 'Блок экспертов должен следовать сразу за первым экраном');
+console.log('Эксперты: шесть строк сразу под hero; прежний блок и слайдер удалены.');

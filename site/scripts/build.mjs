@@ -2,7 +2,7 @@ import { readFile, writeFile, mkdir, cp, rm, readdir } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { originHero, originDiagram } from './origin-design.mjs';
+import { originHero } from './origin-design.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const siteDir = path.resolve(here, '..');
@@ -14,6 +14,7 @@ const assetsDir = path.join(designDir, 'assets');
 
 const content = JSON.parse(await readFile(path.join(contentDir, 'landing.json'), 'utf8'));
 const tokens = JSON.parse(await readFile(path.join(designDir, 'tokens.json'), 'utf8'));
+const expertsSection = await readFile(path.join(contentDir, 'experts-section.html'), 'utf8');
 const fullText = await readFile(path.join(contentDir, 'full-text.md'), 'utf8');
 const fullTextSource = JSON.parse(await readFile(path.join(contentDir, 'full-text-source.json'), 'utf8'));
 const assetNames = new Set(await readdir(assetsDir));
@@ -166,7 +167,7 @@ function pageShell({ title, description, body, current, bodyClass = '' }) {
 }
 
 function landingPageS11() {
-  const { hero, about, story, sections } = content;
+  const { hero, about, sections } = content;
   const byId = id => sections.find(section => section.id === id);
   const card = (frame, type) => `<article class="s11-card s11-card--${type}" id="${e(frame.id)}"><div class="s11-card__top"><span class="s11-num">${e(frame.number)}</span><span class="s11-kicker">${e(frame.eyebrow)}</span></div><h3>${e(frame.title)}</h3><p>${e(frame.paragraphs[0])}</p><a href="${e(safeHref(frame.more?.href))}">Подробнее <span aria-hidden="true">↗</span></a></article>`;
   const sectionTitle = (label, title, intro = '') => {
@@ -192,8 +193,6 @@ function landingPageS11() {
     const steps = frame.steps.map((step, index) => `<li><span class="s11-practice-step__num">0${index + 1}</span><div><strong>${e(step.label)}</strong><p>${e(step.text)}</p></div></li>`).join('');
     return `<article class="s11-practice-card" id="${e(frame.id)}"><div class="s11-practice-card__top"><span class="s11-practice-num">${e(frame.number)}</span><span class="s11-kicker">${e(frame.eyebrow)}</span></div><h3>${e(frame.title)}</h3><ol class="s11-practice-steps">${steps}</ol><a class="s11-practice-more" href="${e(safeHref(frame.more?.href))}">${e(frame.more?.label || 'Подробнее')} <span aria-hidden="true">↗</span></a></article>`;
   };
-  const slides = story.slides.map((slide, i) => `<article class="s11-story-slide${i === 0 ? ' is-active' : ''}" id="story-slide-${i + 1}" role="tabpanel" aria-labelledby="story-tab-${i + 1}" data-slide="${i}" ${i ? 'hidden' : ''}><div class="s11-story-copy"><span class="s11-step">${e(slide.number)} / 04<br>${e(slide.label)}</span><h3>${e(slide.title)}</h3><p>${e(slide.body)}</p></div><figure class="s11-story-art s11-story-art--${i + 1}">${i === 0 ? originDiagram(asset) : `<picture><source media="(max-width: 760px)" srcset="${asset(slide.mobileAsset)}"><img src="${asset(slide.asset)}" alt="${e(slide.alt)}" loading="lazy" decoding="async"></picture>`}</figure></article>`).join('');
-  const tabs = story.slides.map((slide, i) => `<button type="button" class="s11-story-tab${i === 0 ? ' is-active' : ''}" id="story-tab-${i + 1}" data-story-tab="${i}" role="tab" aria-controls="story-slide-${i + 1}" aria-selected="${i === 0}" tabindex="${i === 0 ? '0' : '-1'}"><span>${e(slide.number)}</span>${e(slide.tabTitle || slide.title)}</button>`).join('');
   const how = byId('how');
   const practice = byId('practice').frames;
   const transition = byId('transition').frames[0];
@@ -209,7 +208,7 @@ function landingPageS11() {
   const heroTitle = (hero.titleLines || [hero.title]).map(line => `<span>${e(line)}</span>`).join('');
   const heroLead = (hero.leadLines || [hero.lead]).map(line => `<span>${e(line)}</span>`).join('');
   const body = `<section class="s11-hero" id="hero"><div class="container s11-hero__grid">${originHero(asset)}<div class="s11-hero__copy"><span class="s11-kicker">${e(hero.eyebrow)}</span><h1>${e(hero.title)}</h1><p>${heroLead}</p><a class="s11-button origin-hero-cta" href="#materials">Поддержать концепцию <img src="${asset('origin-imgVector2.svg')}" alt=""></a></div></div></section>
-  <section class="s11-section s11-section--mist s11-story" id="story"><div class="container"><div class="origin-intro"><a class="origin-explainer" href="#story-slide-1" aria-label="Перейти к объяснению Концепции в четырёх слайдах"><img src="${asset('origin-imgFrame1948754504.svg')}" alt=""><span>Смотреть объяснение · 4 слайда</span></a>${sectionTitle(story.eyebrow, story.title, story.introParagraphs || story.intro)}</div><div class="s11-story-shell"><div class="s11-story-stage">${slides}</div><div class="s11-story-controls"><div class="s11-story-tabs" role="tablist" aria-label="Четыре шага объяснения Концепции">${tabs}</div><div class="s11-story-arrows"><button type="button" data-story-prev aria-label="Предыдущий слайд"><img src="${asset('origin-imgVector3.svg')}" alt=""></button><div class="origin-progress" aria-hidden="true">${story.slides.map((_,i)=>`<span data-story-progress="${i}" class="${i===0?'is-active':''}"></span>`).join('')}</div><button type="button" data-story-next aria-label="Следующий слайд"><img src="${asset('origin-imgVector4.svg')}" alt=""></button></div></div></div></div></section>
+  ${expertsSection}
   <section class="s11-section s11-lifecycle-section" id="how"><div class="container">${sectionTitle('Что предлагает концепция', how.title, how.intro)}<div class="s11-lifecycle">${how.frames.map(lifecycleCard).join('')}</div><div class="s11-lifecycle-summary"><strong>${e(how.summary)}</strong></div></div></section>
   <section class="s11-section s11-section--mist s11-practice-section" id="practice"><div class="container">${sectionTitle(byId('practice').navLabel, byId('practice').title, byId('practice').intro)}<div class="s11-practice-notice"><strong>Условные примеры</strong><span>${e(byId('practice').notice)}</span></div><div class="s11-practice-grid">${practice.map(practiceCard).join('')}</div></div></section>
   <section class="s11-section s11-transition-section" id="transition"><div class="container">${sectionTitle('Этапы / 04', byId('transition').title, byId('transition').intro)}<div class="s11-phases">${transition.diagram.stages.map((stage, i) => `<article class="s11-phase"><div class="s11-phase__head"><span class="s11-phase__num">0${i + 1}</span><span class="s11-phase__label">Этап</span></div><h3>${e(stage)}</h3><p>${e(transition.diagram.stageDetails[i].body)}</p><div class="s11-phase__result"><span>Результат</span><strong>${e(transition.diagram.stageDetails[i].result)}</strong></div></article>`).join('')}</div><div class="s11-transition-path"><span class="s11-kicker">${e(transition.diagram.pathLabel)}</span><div class="s11-transition-path__columns"><p>${e(transition.paragraphs[0])}</p><p>${e(transition.paragraphs[1])}</p><p>${e(transition.diagram.caption)}</p></div><a class="s11-button s11-transition-path__button" href="${e(safeHref(transition.more?.href))}">${e(transition.more?.label)} <span aria-hidden="true">↗</span></a></div></div></section>

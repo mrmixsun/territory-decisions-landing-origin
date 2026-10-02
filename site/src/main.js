@@ -100,36 +100,6 @@ if (sectionNavLinks.length) {
   updateActiveSection();
 }
 
-const story = document.querySelector('.s11-story');
-if (story) {
-  const slides = [...story.querySelectorAll('[data-slide]')];
-  const tabs = [...story.querySelectorAll('[data-story-tab]')];
-  let active = 0;
-  const show = next => {
-    active = (next + slides.length) % slides.length;
-    story.querySelectorAll('[data-story-progress]').forEach((dot,index) => dot.classList.toggle('is-active', index === active));
-    slides.forEach((slide, index) => {
-      slide.hidden = index !== active;
-      slide.classList.toggle('is-active', index === active);
-    });
-    tabs.forEach((tab, index) => {
-      tab.classList.toggle('is-active', index === active);
-      tab.setAttribute('aria-selected', String(index === active));
-      tab.setAttribute('tabindex', index === active ? '0' : '-1');
-    });
-  };
-  tabs.forEach((tab, index) => tab.addEventListener('click', () => show(index)));
-  tabs.forEach((tab, index) => tab.addEventListener('keydown', event => {
-    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
-    event.preventDefault();
-    const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : index + (event.key === 'ArrowRight' ? 1 : -1);
-    show(next);
-    tabs[(next + tabs.length) % tabs.length].focus();
-  }));
-  story.querySelector('[data-story-prev]')?.addEventListener('click', () => show(active - 1));
-  story.querySelector('[data-story-next]')?.addEventListener('click', () => show(active + 1));
-}
-
 // Fixed illustration coordinates scale together; text layout remains responsive.
 const illustrationObserver = new ResizeObserver(entries => {
   entries.forEach(({ target, contentRect }) => {
@@ -138,22 +108,6 @@ const illustrationObserver = new ResizeObserver(entries => {
   });
 });
 document.querySelectorAll('[data-scale-width]').forEach(scene => illustrationObserver.observe(scene.parentElement));
-const explainer = document.querySelector('.origin-explainer');
-if (explainer) {
-  const fit = new ResizeObserver(([entry]) => {
-    const scale = entry.contentRect.width / 568;
-    explainer.style.height = `${346.325 * scale}px`;
-    explainer.querySelector('img').style.transform = `scale(${scale})`;
-  });
-  fit.observe(explainer);
-  explainer.addEventListener('click', () => {
-    story?.querySelector('[data-story-tab="0"]')?.click();
-    const slide = document.querySelector('#story-slide-1');
-    slide?.setAttribute('tabindex','-1');
-    slide?.focus({ preventScroll:true });
-  });
-}
-
 const documentToc = document.querySelector('.document-toc');
 const backToTop = document.querySelector('.back-to-top');
 if (documentToc && backToTop) {
