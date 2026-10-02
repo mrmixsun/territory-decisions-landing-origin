@@ -1,6 +1,34 @@
 const menuButton = document.querySelector('.menu-toggle');
 const mobileNav = document.querySelector('.mobile-nav');
 
+// Keep the opening view quiet; reveal navigation after the first scroll.
+const landingHeader = document.querySelector('.landing--s11 .site-header');
+if (landingHeader) {
+  const desktopNav = landingHeader.querySelector('.desktop-nav');
+  let scheduled = false;
+  const updateHeader = () => {
+    scheduled = false;
+    const visible = window.scrollY > 48;
+    landingHeader.classList.toggle('is-scrolled', visible);
+    desktopNav.inert = !visible;
+    menuButton.inert = !visible;
+    if (!visible) {
+      mobileNav.classList.remove('is-open');
+      menuButton.setAttribute('aria-expanded', 'false');
+      menuButton.setAttribute('aria-label', 'Открыть меню');
+      document.body.classList.remove('menu-open');
+    }
+  };
+  const scheduleHeaderUpdate = () => {
+    if (scheduled) return;
+    scheduled = true;
+    window.requestAnimationFrame(updateHeader);
+  };
+  window.addEventListener('scroll', scheduleHeaderUpdate, { passive: true });
+  window.addEventListener('pageshow', scheduleHeaderUpdate);
+  updateHeader();
+}
+
 if (menuButton && mobileNav) {
   const closeMenu = () => {
     mobileNav.classList.remove('is-open');
