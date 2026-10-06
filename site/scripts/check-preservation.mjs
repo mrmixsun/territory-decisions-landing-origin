@@ -10,7 +10,7 @@ for (const file of ['content/landing.json']) {
   const expected = JSON.parse(execFileSync('git', ['show', `${baseline}:${file}`], { cwd: root, encoding: 'utf8' }));
   // The navigation link belonged exclusively to the removed «Суть Концепции за 3 минуты» section.
   expected.nav = expected.nav.filter(item => item.id !== 'story');
-  expected.nav.unshift({ href: 'why.html', label: 'Зачем менять подход' });
+  expected.nav.unshift({ id: 'why', label: 'Зачем менять подход' });
   expected.nav = expected.nav.map(item => ({
     ...item,
     label: ({
@@ -47,6 +47,8 @@ for (const file of ['index.html']) {
   assert.ok(storyStart >= 0, 'Baseline story section not found');
   const storyEnd = old.indexOf('</section>', storyStart) + '</section>'.length;
   old = old.slice(0, storyStart) + old.slice(storyEnd);
+  // The former hidden «Что мы предлагаем» block is replaced by «Зачем менять подход».
+  old = removeSection(old, 'why');
   old = removeSection(old, 'transition');
   old = removeSection(old, 'development');
   old = removeSection(old, 'materials');
