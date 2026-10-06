@@ -11,26 +11,37 @@ for (const file of ['content/landing.json']) {
   // The navigation link belonged exclusively to the removed «Суть Концепции за 3 минуты» section.
   expected.nav = expected.nav.filter(item => item.id !== 'story');
   expected.nav.unshift({ href: 'why.html', label: 'Почему менять подход' });
+  // «Этапы перехода» и «Развитие концепции» are intentionally replaced by the new plan block.
+  const implementation = current.sections.find(section => section.id === 'implementation');
+  assert.ok(implementation, 'Missing implementation plan section');
+  const transitionIndex = expected.sections.findIndex(section => section.id === 'transition');
+  expected.sections = expected.sections.filter(section => !['transition', 'development'].includes(section.id));
+  expected.sections.splice(transitionIndex, 0, implementation);
+  expected.nav = expected.nav.filter(item => !['transition', 'development'].includes(item.id));
+  expected.nav.splice(3, 0, current.nav.find(item => item.id === 'implementation'));
   assert.deepEqual(current, expected, `${file} must preserve s1.5 content outside the removed section`);
 }
 const normalize = s => s.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&#39;/g,"'").replace(/&quot;/g,'"').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/\s+/g,' ').trim();
-const removedTransitionCopy = new Set([
-  'Переход опирается на существующие ГИСОГД, реестры и профессиональные инструменты. Для них задаются общие обязательные правила совместимости, а миграция и временное параллельное ведение ограничиваются по сроку.',
-  'Инструменты, обучение и поддержка должны появляться вместе с новыми требованиями. Временное двойное ведение допустимо с конечным сроком и правилами устранения расхождений.',
-  'Эффект каждого этапа проверяется на конкретных процессах с учётом затрат на миграцию, интеграции, обучение, эксплуатацию и безопасность. Пилоты проверяют способ реализации, а не откладывают переход на неопределённый срок.'
-]);
 for (const file of ['index.html']) {
   let old = execFileSync('git',['show',baseline+':docs/'+file],{cwd:root,encoding:'utf8'});
+  const removeSection = (html, id) => {
+    const start = html.indexOf(`<section class="s11-section`, html.indexOf(`id="${id}"`) - 80);
+    assert.ok(start >= 0, `Baseline ${id} section not found`);
+    const end = html.indexOf('</section>', start) + '</section>'.length;
+    return html.slice(0, start) + html.slice(end);
+  };
   // The expert section had intentionally replaced the complete intro and slider.
   const storyStart = old.indexOf('<section class="s11-section s11-section--mist s11-story"');
   assert.ok(storyStart >= 0, 'Baseline story section not found');
   const storyEnd = old.indexOf('</section>', storyStart) + '</section>'.length;
   old = old.slice(0, storyStart) + old.slice(storyEnd);
+  old = removeSection(old, 'transition');
+  old = removeSection(old, 'development');
   const current = await readFile(path.join(root,'site/dist',file),'utf8');
   const plain = normalize(current);
   for (const match of old.matchAll(/<(p|h1|h2|h3)\b[^>]*>([\s\S]*?)<\/\1>/g)) {
     const copy = normalize(match[2]);
-    if(copy && !removedTransitionCopy.has(copy)) assert.ok(plain.includes(copy),file+' missing content: '+copy);
+    if(copy) assert.ok(plain.includes(copy),file+' missing content: '+copy);
   }
   assert.ok(!current.includes('https://www.figma.com/api/mcp/asset/'),'Temporary asset URL in '+file);
 }

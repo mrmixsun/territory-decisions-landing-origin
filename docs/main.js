@@ -88,6 +88,42 @@ discussionMoreButtons.forEach(discussionMore => {
   });
 });
 
+const cityAnimation = document.querySelector('[data-city-animation]');
+const cityAnimationToggle = document.querySelector('[data-city-animation-toggle]');
+if (cityAnimation && cityAnimationToggle) {
+  cityAnimationToggle.addEventListener('click', () => {
+    const paused = cityAnimation.classList.toggle('is-paused');
+    cityAnimationToggle.setAttribute('aria-pressed', String(paused));
+    cityAnimationToggle.querySelector('span').textContent = paused ? 'Продолжить' : 'Пауза';
+    cityAnimationToggle.querySelector('i').textContent = paused ? '▶' : 'Ⅱ';
+  });
+}
+
+const cityHotspots = [...document.querySelectorAll('.city-card')];
+cityHotspots.forEach(hotspot => {
+  hotspot.tabIndex = 0;
+  hotspot.setAttribute('role', 'button');
+  hotspot.setAttribute('aria-pressed', 'false');
+  const activate = () => {
+    const willActivate = !hotspot.classList.contains('is-active');
+    cityHotspots.forEach(item => {
+      item.classList.remove('is-active');
+      item.setAttribute('aria-pressed', 'false');
+    });
+    if (willActivate) {
+      hotspot.classList.add('is-active');
+      hotspot.setAttribute('aria-pressed', 'true');
+    }
+  };
+  hotspot.addEventListener('click', activate);
+  hotspot.addEventListener('keydown', event => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      activate();
+    }
+  });
+});
+
 const sectionNavLinks = [...document.querySelectorAll('.desktop-nav a[href^="#"], .mobile-nav a[href^="#"]')];
 if (sectionNavLinks.length) {
   const header = document.querySelector('.site-header');
