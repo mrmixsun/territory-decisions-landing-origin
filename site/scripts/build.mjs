@@ -13,8 +13,8 @@ const designDir = path.join(prototypeDir, 'design');
 const assetsDir = path.join(designDir, 'assets');
 
 const content = JSON.parse(await readFile(path.join(contentDir, 'landing.json'), 'utf8'));
+const whyChange = JSON.parse(await readFile(path.join(contentDir, 'why-change.json'), 'utf8'));
 const tokens = JSON.parse(await readFile(path.join(designDir, 'tokens.json'), 'utf8'));
-const expertsSection = await readFile(path.join(contentDir, 'experts-section.html'), 'utf8');
 const fullText = await readFile(path.join(contentDir, 'full-text.md'), 'utf8');
 const fullTextSource = JSON.parse(await readFile(path.join(contentDir, 'full-text-source.json'), 'utf8'));
 const assetNames = new Set(await readdir(assetsDir));
@@ -33,7 +33,7 @@ const buildDate = new Intl.DateTimeFormat('ru-RU', {
 }).format(new Date());
 
 const esc = (value = '') => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-const safeHref = (href = '') => /^(?:#|(?:\.\/)?(?:index|concept)\.html(?:#|$)|mailto:[^\s"<>]+$)/.test(href) ? href : '#';
+const safeHref = (href = '') => /^(?:#|(?:\.\/)?(?:index|concept|why|discussion)\.html(?:#|$)|mailto:[^\s"<>]+$)/.test(href) ? href : '#';
 const safeContentHref = (href = '') => /^https:\/\//i.test(href) ? href : safeHref(href);
 const e = (value = '') => esc(value);
 const para = (items = []) => items.map(item => `<p>${e(item)}</p>`).join('\n');
@@ -133,10 +133,12 @@ function renderSection(section, index) {
 
 function header(current = 'home') {
   const navLabel = label => e(label).replace(/\u00a0/g, '&nbsp;');
-  const nav = content.nav.map(item => {
+  const navItems = [...content.nav.slice(0, -1), { href: 'discussion.html', label: 'Дискуссия' }, content.nav.at(-1)];
+  const nav = navItems.map(item => {
     const target = item.href || `#${item.id}`;
     const href = current === 'home' || !target.startsWith('#') ? target : `./index.html${target}`;
-    return `<a href="${e(safeHref(href))}">${navLabel(item.label)}</a>`;
+    const isCurrent = (current === 'why' && target === 'why.html') || (current === 'concept' && target === 'concept.html') || (current === 'discussion' && target === 'discussion.html');
+    return `<a href="${e(safeHref(href))}"${isCurrent ? ' class="is-active" aria-current="page"' : ''}>${navLabel(item.label)}</a>`;
   }).join('');
   const supportHref = current === 'home' ? '#materials' : './index.html#materials';
   const mark = `<img class="origin-logo" src="${asset('origin-imgFrame7.svg')}" alt="ИМТ.">`;
@@ -164,6 +166,40 @@ function footer() {
 function pageShell({ title, description, body, current, bodyClass = '' }) {
   const figmaCapture = process.env.FIGMA_CAPTURE === '1' ? '<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>' : '';
   return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>${e(title)}</title><meta name="description" content="${e(description)}"><link rel="icon" type="image/svg+xml" href="${versioned('./favicon.svg')}"><link rel="stylesheet" href="${versioned('./style.css')}">${figmaCapture}</head><body class="${e(bodyClass)}"><a class="skip-link" href="#main">К содержанию</a>${header(current)}<main id="main">${body}</main>${footer()}<script src="${versioned('./main.js')}" defer></script></body></html>`;
+}
+
+const discussionMaterials = [
+  ['Аналитика','2025','Институт экономики города','data','Градостроительство в России: подходы к регулированию и управлению','Авторы описывают трудность межведомственного обмена и проблемы наполнения и актуальности ИСОГД. Это независимый взгляд на то, почему одной оцифровки документов недостаточно.','https://www.urbaneconomics.ru/sites/default/files/gradostroitelstvo_v_rossii._sushchestvuyushchie_i_perspektivnye_podhody_v_regulirovanii_i_upravlenii.pdf','Аналитический доклад · стр. 80–81'],
+  ['Профессиональная позиция','2025','МетаПрайм','document','Замечания к проекту Концепции информационного обеспечения','В материале предлагают строить ИМТ на цифровых документах, заранее задавать правила для производных данных и не отождествлять ГИСОГД со всей системой управления территорией.','https://metaprime.ru/news/2025/04/23/','Публикация разработчика · открытая критика'],
+  ['Исследование и дискуссия','2026','ЕИПП РФ','grid','Цифровые подходы к подготовке проектов планировки территории','ЕИПП РФ отмечает отсутствие единых стандартов данных в документации по планировке: это затрудняет согласование и использование решений в информационных системах.','https://t.me/s/eipp_official/4873','Сообщение государственного института · НИР по поручению Минстроя'],
+  ['Практика региона','2025','Сахалинстрой','network','Данные инженерных сетей должны обновляться вместе с территорией','Отраслевая СРО ставит вопрос о доступе застройщиков к данным ГИСОГД и о возврате в систему сведений о ремонтах, реконструкции и авариях на сетях.','https://ssros.ru/informatsiyu-po-inzhenernym-setyam-gisogd-sahalinskoj-oblasti-zastrojshhiki-dolzhny-poluchat-v-rezhime-onlajn/','Позиция отраслевой СРО · инженерная инфраструктура'],
+  ['Официальный документ','2020','Правительство России','law','Правила ведения ГИСОГД: Постановление Правительства № 279','Правила закрепляют электронное ведение ГИСОГД и предусматривают подготовку, согласование и утверждение документов в установленных законом случаях.','https://pravo.gov.ru/proxy/ips/?doc_itself=&intelsearch=13+%EF%BF%BD%EF%BF%BD%EF%BF%BD%EF%BF%BD%EF%BF%BD+2020+279&nd=102694133&page=1&rdk=3','Нормативный источник · официальный портал'],
+  ['Рекомендации региона','2026','ГИСОГД Курганской области','version','Связь текстовой части, пространственных данных и изменений','Практические рекомендации требуют связывать текст документа с его пространственным описанием и указывать базовый документ для каждой редакции изменения.','https://isogd.gov45.ru/help/admin/usages/GISOGD.portal/config.vedenie_gisogd.html','Инструкция региональной системы · жизненный цикл версии'],
+  ['Практика региона','2026','ГИСОГД Омской области','model','Передача информационной модели ОКС в ГИСОГД','Портал показывает маршрут передачи модели: идентификация документа и объекта, дата, номер, этап жизненного цикла и размещение в уполномоченном органе.','https://gisogd55.omskportal.ru/doc/usages/GISOGD.portal/help.transfer_imoks.html','Руководство пользователя · ИМ ОКС'],
+  ['Научная позиция','2026','ЦНИИП Минстроя России','ai','ИИ как поддержка принятия градостроительных решений','Исследование рассматривает ИИ как инструмент поддержки анализа, мониторинга, прогнозирования и обратной связи — не как самостоятельный носитель полномочия.','https://cniipminstroy.ru/press/news/razrabotanyi-osnovyi-primeneniya-ii-dlya-sistemnoj-podderzhki-proczessov-prinyatiya-gradostroitelnyi','Научно-методический материал · роль AI'],
+  ['Материалы конференции','2026','#ГИСОГД','forum','Резолюция конференции #ГИСОГД2026','Участники связывают переход к электронным градостроительным решениям с правовыми основаниями, качеством данных, совместимостью систем и рисками внедрения.','https://sro-ciz.ru/info/news/1778536725_1105_Rezolyuciya_GISOGD2026.pdf','Резолюция профессионального сообщества · PDF']
+].map(([type, year, source, cover, title, preview, href, note]) => ({ type, year, source, cover, title, preview, href, note }));
+
+function discussionCover(kind, type) {
+  const marks = { data:'01',document:'v2',grid:'×',network:'↗',law:'§',version:'v1 → v2',model:'3D',ai:'AI',forum:'∞' };
+  return `<div class="discussion-card__cover discussion-card__cover--${e(kind)}" aria-hidden="true"><small>${e(type)}</small><div class="discussion-cover-mark"><span>${e(marks[kind] || '01')}</span><i></i><b></b><em></em></div></div>`;
+}
+
+function discussionCard(material, index) {
+  return `<article class="discussion-card"${index >= 4 ? ' data-discussion-extra hidden' : ''}>${discussionCover(material.cover, material.type)}<div class="discussion-card__body"><div class="discussion-card__meta"><span>${e(material.type)}</span></div><p class="discussion-card__source">${e(material.source)}</p><h2>${e(material.title)}</h2><p class="discussion-card__preview">${e(material.preview)}</p><div class="discussion-card__footer"><a class="discussion-card__link" href="${e(safeContentHref(material.href))}" target="_blank" rel="noopener noreferrer">Открыть источник <b aria-hidden="true">↗</b></a></div></div></article>`;
+}
+
+function discussionBlock({ landing = false } = {}) {
+  const cards = discussionMaterials.map(discussionCard).join('');
+  const heading = landing
+    ? `<div class="s11-heading"><span class="s11-kicker">Материалы и позиции</span><h2>Дискуссия о Концепции</h2><p>Исследования, публикации, документы и практики регионов показывают интерес к цифровому управлению территориями и разные точки зрения на то, как должен меняться градостроительный контур.</p></div>`
+    : '';
+  return `<section class="${landing ? 's11-section s11-discussion' : 'discussion-materials'}"${landing ? ' id="discussion"' : ''}><div class="container">${heading}<div class="discussion-block" data-discussion-block><div class="discussion-grid">${cards}</div><div class="discussion-actions"><button class="discussion-more" type="button" data-discussion-more aria-expanded="false">Показать ещё <span aria-hidden="true">↓</span></button><p>Открытые источники будут дополняться по мере проверки.</p></div></div></div></section>`;
+}
+
+function discussionPage() {
+  const body = `<section class="discussion-hero"><div class="container"><span class="eyebrow">Материалы и позиции</span><h1 tabindex="-1">Дискуссия о Концепции</h1><p>Здесь собраны тематические материалы — исследования, публикации, документы и практики регионов. Они показывают интерес к цифровому управлению территориями и разные точки зрения на то, как должен меняться градостроительный контур.</p></div></section>${discussionBlock()}`;
+  return pageShell({ title: 'Дискуссия о Концепции — ИМТ', description: 'Внешние исследования, документы и профессиональные позиции о цифровом управлении развитием территорий.', current: 'discussion', body, bodyClass: 'discussion--imt' });
 }
 
 function landingPageS11() {
@@ -208,8 +244,8 @@ function landingPageS11() {
   const heroTitle = (hero.titleLines || [hero.title]).map(line => `<span>${e(line)}</span>`).join('');
   const heroLead = (hero.leadLines || [hero.lead]).map(line => `<span>${e(line)}</span>`).join('');
   const body = `<section class="s11-hero" id="hero"><div class="container s11-hero__grid">${originHero(asset)}<div class="s11-hero__copy"><span class="s11-kicker">${e(hero.eyebrow)}</span><h1>${e(hero.title)}</h1><p>${heroLead}</p><a class="s11-button origin-hero-cta" href="#materials">Поддержать концепцию <img src="${asset('origin-imgVector2.svg')}" alt=""></a></div></div></section>
-  ${expertsSection}
   <section class="s11-section s11-lifecycle-section" id="how"><div class="container">${sectionTitle('Что предлагает концепция', how.title, how.intro)}<div class="s11-lifecycle">${how.frames.map(lifecycleCard).join('')}</div><div class="s11-lifecycle-summary"><strong>${e(how.summary)}</strong></div></div></section>
+  ${discussionBlock({ landing: true })}
   <section class="s11-section s11-section--mist s11-practice-section" id="practice"><div class="container">${sectionTitle(byId('practice').navLabel, byId('practice').title, byId('practice').intro)}<div class="s11-practice-notice"><strong>Условные примеры</strong><span>${e(byId('practice').notice)}</span></div><div class="s11-practice-grid">${practice.map(practiceCard).join('')}</div></div></section>
   <section class="s11-section s11-transition-section" id="transition"><div class="container">${sectionTitle('Этапы / 04', byId('transition').title, byId('transition').intro)}<div class="s11-phases">${transition.diagram.stages.map((stage, i) => `<article class="s11-phase"><div class="s11-phase__head"><span class="s11-phase__num">0${i + 1}</span><span class="s11-phase__label">Этап</span></div><h3>${e(stage)}</h3><p>${e(transition.diagram.stageDetails[i].body)}</p><div class="s11-phase__result"><span>Результат</span><strong>${e(transition.diagram.stageDetails[i].result)}</strong></div></article>`).join('')}</div><div class="s11-transition-path"><a class="s11-button s11-transition-path__button" href="./${e(safeHref(transition.more?.href))}">${e(transition.more?.label)} <span aria-hidden="true">↗</span></a></div></div></section>
   <section class="s11-section s11-section--mist s11-development" id="development"><div class="container"><div class="s11-development__heading">${sectionTitle('Развитие концепции', byId('development').title, byId('development').intro)}</div><div class="s11-development__layout"><div class="s11-development__copy"><span class="s11-kicker">Что предстоит сделать</span><ol class="s11-development__tasks">${developmentTasks}</ol><div class="s11-development__summary"><strong>${e(compatibility.summary)}</strong><a href="${e(safeHref(compatibility.more?.href))}">${e(compatibility.more?.label)} <span aria-hidden="true">↗</span></a></div></div><figure class="s11-development__flow"><div class="s11-development__suppliers"><span class="s11-development__flow-label">Поставщики данных</span><ul>${developmentSuppliers}</ul></div><div class="s11-development__rules" aria-label="Условия совместного использования">${developmentRules}</div><div class="s11-development__hub"><span>Связанные данные о территории</span><small>общие идентификаторы · семантика · проверка · история</small></div><div class="s11-development__models"><span class="s11-development__flow-label">Отраслевые модели</span><ul>${developmentModels}</ul></div><div class="s11-development__result"><span>Результат</span><p>${e(compatibility.diagram.result)}</p></div><figcaption>${e(compatibility.diagram.caption)}</figcaption></figure></div><div class="s11-development__challenges"><span class="s11-kicker">Основные сложности</span><ol>${developmentChallenges}</ol></div></div></section>
@@ -228,6 +264,15 @@ function landingPage() {
   const heroClass = content.meta.copyVersion?.startsWith('strict/') ? 'hero hero--strict' : 'hero';
   const heroHtml = `<section class="${heroClass}" id="hero" aria-labelledby="hero-title" data-figma-section="hero"><div class="container"><div class="hero-layout"><div class="hero-copy"><span class="eyebrow">${e(hero.eyebrow)}</span><h1 id="hero-title">${e(hero.title)}</h1><p class="hero-lead">${e(hero.lead)}</p><div class="hero-actions">${actions}</div><p class="hero-note">${notePrefix}${e(hero.body)}</p></div>${heroFigure}</div><nav class="role-paths" aria-label="Быстрые входы по задачам"><span class="role-paths__label">${e(hero.routesLabel)}</span>${routes}</nav></div></section>`;
   return pageShell({ title: content.meta.title, description: content.meta.description, current: 'home', body: heroHtml + content.sections.map(renderSection).join('\n') });
+}
+
+function whyChangePage() {
+  const stageButtons = whyChange.stages.map((stage, index) => `<button class="why-stage-tab${index === 0 ? ' is-active' : ''}" type="button" data-why-stage="${e(stage.id)}" aria-pressed="${index === 0 ? 'true' : 'false'}"><span>${e(stage.number)}</span>${e(stage.title)}</button>`).join('');
+  const stagePanels = whyChange.stages.map((stage, index) => `<article class="why-stage-panel${index === 0 ? ' is-active' : ''}" data-why-panel="${e(stage.id)}"${index === 0 ? '' : ' hidden'}><span class="eyebrow">${e(stage.number)} / ${e(stage.short)}</span><h2>${e(stage.title)}</h2><p>${e(stage.body)}</p></article>`).join('');
+  const mapNotes = whyChange.stages.map((stage, index) => `<div class="why-map-note${index === 0 ? ' is-active' : ''}" data-why-note="${e(stage.id)}"${index === 0 ? '' : ' hidden'}><span>${e(stage.mapLabel)}</span><strong>${e(stage.mapText)}</strong></div>`).join('');
+  const points = whyChange.target.points.map((point, index) => `<li><span>0${index + 1}</span><p>${e(point)}</p></li>`).join('');
+  const body = `<section class="why-hero"><div class="container why-hero__grid"><div class="why-hero__copy"><span class="eyebrow">${e(whyChange.eyebrow)}</span><h1>${e(whyChange.title)}</h1><p>${e(whyChange.lead)}</p><a class="s11-button" href="#target">Как меняется процесс <span aria-hidden="true">↓</span></a></div><div class="why-map" data-why-map="project" aria-label="Схема ситуации с градостроительными данными"><div class="why-map__grid" aria-hidden="true"></div><div class="why-map__parcel why-map__parcel--one">Участок</div><div class="why-map__parcel why-map__parcel--two">Инфраструктура</div><div class="why-map__parcel why-map__parcel--three">Проект</div><div class="why-map__source why-map__source--one">Таблица</div><div class="why-map__source why-map__source--two">Карта</div><div class="why-map__source why-map__source--three">Документ</div><div class="why-map__link why-map__link--one" aria-hidden="true"></div><div class="why-map__link why-map__link--two" aria-hidden="true"></div><div class="why-map__link why-map__link--three" aria-hidden="true"></div>${mapNotes}</div></div></section><section class="why-stages" aria-label="Три ситуации"><div class="container"><div class="why-stages__header"><span class="eyebrow">Почему одной цифровизации недостаточно</span><p>Выберите ситуацию, чтобы увидеть, где разрывается путь решения.</p></div><div class="why-stages__layout"><div class="why-stage-tabs" role="group" aria-label="Ситуации">${stageButtons}</div><div class="why-stage-panels">${stagePanels}</div></div></div></section><section class="why-target" id="target"><div class="container why-target__grid"><div><span class="eyebrow">${e(whyChange.target.eyebrow)}</span><h2>${e(whyChange.target.title)}</h2><p>${e(whyChange.target.body)}</p><p class="why-target__note">${e(whyChange.target.note)}</p></div><ol>${points}</ol></div></section><section class="why-next"><div class="container"><p>Концепция задаёт общее ядро совместимости, а не одну платформу или поставщика.</p><a class="s11-button" href="./index.html#how">Что предлагает Концепция <span aria-hidden="true">↗</span></a></div></section>`;
+  return pageShell({ title: whyChange.title, description: whyChange.description, current: 'why', body, bodyClass: 'why--imt' });
 }
 
 function inlineMarkdown(raw) {
@@ -360,6 +405,8 @@ await mkdir(path.join(distDir, 'assets'), { recursive: true });
 await cp(assetsDir, path.join(distDir, 'assets'), { recursive: true });
 await writeFile(path.join(distDir, 'index.html'), landingPage());
 await writeFile(path.join(distDir, 'concept.html'), fullTextPage());
+await writeFile(path.join(distDir, 'why.html'), whyChangePage());
+await writeFile(path.join(distDir, 'discussion.html'), discussionPage());
 await writeFile(path.join(distDir, 'tokens.css'), tokenCss());
 await cp(path.join(siteDir, 'src', 'origin.css'), path.join(distDir, 'style.css'));
 await cp(path.join(siteDir, 'src', 'main.js'), path.join(distDir, 'main.js'));

@@ -6,7 +6,12 @@ import path from 'node:path';
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const baseline = 'ebf0639';
 for (const file of ['content/landing.json']) {
-  assert.deepEqual(await readFile(path.join(root,file)),execFileSync('git',['show',baseline+':'+file],{cwd:root}),file+' must preserve s1.5 content');
+  const current = JSON.parse(await readFile(path.join(root, file), 'utf8'));
+  const expected = JSON.parse(execFileSync('git', ['show', `${baseline}:${file}`], { cwd: root, encoding: 'utf8' }));
+  // The navigation link belonged exclusively to the removed «Суть Концепции за 3 минуты» section.
+  expected.nav = expected.nav.filter(item => item.id !== 'story');
+  expected.nav.unshift({ href: 'why.html', label: 'Почему менять подход' });
+  assert.deepEqual(current, expected, `${file} must preserve s1.5 content outside the removed section`);
 }
 const normalize = s => s.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&#39;/g,"'").replace(/&quot;/g,'"').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/\s+/g,' ').trim();
 const removedTransitionCopy = new Set([
@@ -16,7 +21,7 @@ const removedTransitionCopy = new Set([
 ]);
 for (const file of ['index.html']) {
   let old = execFileSync('git',['show',baseline+':docs/'+file],{cwd:root,encoding:'utf8'});
-  // The expert section intentionally replaces the complete intro and slider.
+  // The expert section had intentionally replaced the complete intro and slider.
   const storyStart = old.indexOf('<section class="s11-section s11-section--mist s11-story"');
   assert.ok(storyStart >= 0, 'Baseline story section not found');
   const storyEnd = old.indexOf('</section>', storyStart) + '</section>'.length;
@@ -36,4 +41,4 @@ for (const match of css.matchAll(/url\(['"]?([^'")]+)['"]?\)/g)) {
 }
 const manifest = JSON.parse(await readFile(path.join(root,'design/origin-asset-manifest.json')));
 for(const {file} of manifest.assets) assert.ok((await stat(path.join(root,'site/dist/assets',file))).size>0,'Missing Figma asset '+file);
-console.log('Origin: текст лендинга s1.5 вне заменённого блока сохранён; CSS, шрифты и Figma-ресурсы локальны.');
+console.log('Origin: текст лендинга s1.5 вне удалённого блока сохранён; CSS, шрифты и Figma-ресурсы локальны.');

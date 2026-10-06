@@ -57,6 +57,37 @@ if (menuButton && mobileNav) {
   });
 }
 
+const whyStageButtons = [...document.querySelectorAll('[data-why-stage]')];
+if (whyStageButtons.length) {
+  const whyMap = document.querySelector('[data-why-map]');
+  const setWhyStage = id => {
+    whyStageButtons.forEach(button => {
+      const active = button.dataset.whyStage === id;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+    document.querySelectorAll('[data-why-panel], [data-why-note]').forEach(item => {
+      const active = item.dataset.whyPanel === id || item.dataset.whyNote === id;
+      item.classList.toggle('is-active', active);
+      item.hidden = !active;
+    });
+    if (whyMap) whyMap.dataset.whyMap = id;
+  };
+  whyStageButtons.forEach(button => button.addEventListener('click', () => setWhyStage(button.dataset.whyStage)));
+}
+
+const discussionMoreButtons = [...document.querySelectorAll('[data-discussion-more]')];
+discussionMoreButtons.forEach(discussionMore => {
+  const block = discussionMore.closest('[data-discussion-block]');
+  const extraCards = block ? [...block.querySelectorAll('[data-discussion-extra]')] : [];
+  discussionMore.addEventListener('click', () => {
+    const isExpanded = discussionMore.getAttribute('aria-expanded') === 'true';
+    extraCards.forEach(card => { card.hidden = isExpanded; });
+    discussionMore.setAttribute('aria-expanded', String(!isExpanded));
+    discussionMore.innerHTML = isExpanded ? 'Показать ещё <span aria-hidden="true">↓</span>' : 'Скрыть материалы <span aria-hidden="true">↑</span>';
+  });
+});
+
 const sectionNavLinks = [...document.querySelectorAll('.desktop-nav a[href^="#"], .mobile-nav a[href^="#"]')];
 if (sectionNavLinks.length) {
   const header = document.querySelector('.site-header');

@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const dist = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'dist');
-const pageNames = ['index.html', 'concept.html'];
+const pageNames = ['index.html', 'concept.html', 'why.html', 'discussion.html'];
 const files = new Set(await readdir(dist));
 for (const file of pageNames) if (!files.has(file)) throw new Error(`Нет ${file}; сначала выполните npm run build`);
 const pages = Object.fromEntries(await Promise.all(pageNames.map(async file => [file, await readFile(path.join(dist, file), 'utf8')])));
@@ -32,7 +32,13 @@ for (const [file, html] of Object.entries(pages)) {
 }
 const concept = pages['concept.html'];
 for (let n = 0; n <= 13; n++) if (!concept.includes(`id="section-${n}"`)) throw new Error(`Нет раздела section-${n}`);
-console.log('Проверка пройдена: 2 страницы, ссылки, ресурсы, введение и 13 разделов полного текста.');
+const why = pages['why.html'];
+assert.ok(why.includes('Почему нужно менять подход'), 'Нет страницы «Почему нужно менять подход»');
+assert.ok(why.includes('Территория меняется как единая система'), 'На странице отсутствует целевой контур');
+const discussion = pages['discussion.html'];
+assert.ok(discussion.includes('Дискуссия о Концепции'), 'Нет страницы «Дискуссия о Концепции»');
+assert.ok(discussion.includes('data-discussion-more'), 'На странице дискуссии нет кнопки раскрытия материалов');
+console.log('Проверка пройдена: 4 страницы, ссылки, ресурсы, введение и 13 разделов полного текста.');
 
 const contentRoot = path.resolve(dist, '../../content');
 const source = JSON.parse(await readFile(path.join(contentRoot, 'full-text-source.json'), 'utf8'));
@@ -47,7 +53,6 @@ assert.ok(!concept.includes('href="#"'), 'Ссылка без назначени
 console.log('Мастер-версия: контрольная сумма, приложения, источники и прежние якоря проверены.');
 
 const landing = pages['index.html'];
-assert.equal((landing.match(/class="expert-row"/g) || []).length, 6, 'Нужны шесть экспертных строк');
-assert.ok(!landing.includes('s11-story-shell') && !landing.includes('Суть за одну минуту'), 'Старый блок и слайдер должны быть удалены');
-assert.match(landing, /<\/section>\s*<section class="experts-section"/, 'Блок экспертов должен следовать сразу за первым экраном');
-console.log('Эксперты: шесть строк сразу под hero; прежний блок и слайдер удалены.');
+assert.ok(!landing.includes('experts-section') && !landing.includes('Суть Концепции за'), 'Блок «Суть Концепции за 3 минуты» должен быть удалён');
+assert.ok(!landing.includes('href="#story"') && !landing.includes('id="story"'), 'После удаления блока не должно остаться якоря story');
+console.log('Блок «Суть Концепции за 3 минуты» и его навигационный якорь удалены.');
