@@ -27,6 +27,10 @@ for (const file of ['content/landing.json']) {
   expected.sections.splice(transitionIndex, 0, implementation);
   expected.nav = expected.nav.filter(item => !['transition', 'development'].includes(item.id));
   expected.nav.splice(3, 0, current.nav.find(item => item.id === 'implementation'));
+  // The participation block has a separate editorial brief: sharing and expert help replace the prior contact CTA.
+  const materialsIndex = expected.sections.findIndex(section => section.id === 'materials');
+  assert.ok(materialsIndex >= 0, 'Missing participation section');
+  expected.sections.splice(materialsIndex, 1, current.sections.find(section => section.id === 'materials'));
   assert.deepEqual(current, expected, `${file} must preserve s1.5 content outside the removed section`);
 }
 const normalize = s => s.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&#39;/g,"'").replace(/&quot;/g,'"').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/\s+/g,' ').trim();
@@ -45,6 +49,7 @@ for (const file of ['index.html']) {
   old = old.slice(0, storyStart) + old.slice(storyEnd);
   old = removeSection(old, 'transition');
   old = removeSection(old, 'development');
+  old = removeSection(old, 'materials');
   const current = await readFile(path.join(root,'site/dist',file),'utf8');
   const plain = normalize(current);
   for (const match of old.matchAll(/<(p|h1|h2|h3)\b[^>]*>([\s\S]*?)<\/\1>/g)) {

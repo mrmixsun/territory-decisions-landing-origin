@@ -66,6 +66,13 @@ if (content.story) {
       lines.push('', '**Что можно прислать**', '');
       for (const item of frame.contributions) lines.push(`- **${item.title}** — ${item.text}`);
     }
+    if (frame.supportScenarios) {
+      lines.push('', '**Как поддержать**', '');
+      for (const scenario of frame.supportScenarios) {
+        lines.push(`- **${scenario.title}** — ${scenario.text}`);
+        for (const action of scenario.actions || []) lines.push(`  - ${action.label}`);
+      }
+    }
     if (frame.challenges) {
       lines.push('', '**Основные сложности**', '');
       for (const item of frame.challenges) lines.push(`- **${item.title}** — ${item.text}`);
