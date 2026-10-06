@@ -10,7 +10,15 @@ for (const file of ['content/landing.json']) {
   const expected = JSON.parse(execFileSync('git', ['show', `${baseline}:${file}`], { cwd: root, encoding: 'utf8' }));
   // The navigation link belonged exclusively to the removed «Суть Концепции за 3 минуты» section.
   expected.nav = expected.nav.filter(item => item.id !== 'story');
-  expected.nav.unshift({ href: 'why.html', label: 'Почему менять подход' });
+  expected.nav.unshift({ href: 'why.html', label: 'Зачем менять подход' });
+  expected.nav = expected.nav.map(item => ({
+    ...item,
+    label: ({
+      'Что предлагает концепция': 'Что предлагает Концепция',
+      'Что изменится в работе': 'Что изменится',
+      'Полный текст концепции': 'Полный текст Концепции'
+    })[item.label] || item.label
+  }));
   // «Этапы перехода» и «Развитие концепции» are intentionally replaced by the new plan block.
   const implementation = current.sections.find(section => section.id === 'implementation');
   assert.ok(implementation, 'Missing implementation plan section');

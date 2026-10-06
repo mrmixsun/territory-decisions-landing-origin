@@ -133,7 +133,7 @@ function renderSection(section, index) {
 
 function header(current = 'home') {
   const navLabel = label => e(label).replace(/\u00a0/g, '&nbsp;');
-  const navItems = [...content.nav.slice(0, -1), { href: 'discussion.html', label: 'Дискуссия' }, content.nav.at(-1)];
+  const navItems = [...content.nav.slice(0, 3), { href: 'discussion.html', label: 'Дискуссия о Концепции' }, ...content.nav.slice(3)];
   const nav = navItems.map(item => {
     const target = item.href || `#${item.id}`;
     const href = current === 'home' || !target.startsWith('#') ? target : `./index.html${target}`;
@@ -143,7 +143,7 @@ function header(current = 'home') {
   const supportHref = current === 'home' ? '#materials' : './index.html#materials';
   const mark = `<img class="origin-logo" src="${asset('origin-imgFrame7.svg')}" alt="ИМТ.">`;
   const headerTitle = '<span class="header-concept-title">Концепция цифрового управления развитием территорий</span>';
-  return `<header class="site-header"><div class="container header-inner"><a class="site-mark" href="./index.html" aria-label="На главную страницу">${mark}</a>${headerTitle}<nav class="desktop-nav" aria-label="Разделы сайта">${nav}</nav><a class="header-full text-link" href="${supportHref}">Поделиться с коллегами <img src="${asset('origin-imgVector1.svg')}" alt=""></a><button class="menu-toggle" type="button" aria-controls="mobile-nav" aria-expanded="false" aria-label="Открыть меню"><span aria-hidden="true"></span></button></div><nav class="mobile-nav" id="mobile-nav" aria-label="Мобильная навигация">${nav}<a href="${supportHref}">Поделиться с коллегами</a></nav></header>`;
+  return `<header class="site-header"><div class="container header-inner"><a class="site-mark" href="./index.html" aria-label="На главную страницу">${mark}</a>${headerTitle}<nav class="desktop-nav" aria-label="Разделы сайта">${nav}</nav><a class="header-full text-link" href="${supportHref}">Поделиться <img src="${asset('origin-imgVector1.svg')}" alt=""></a><button class="menu-toggle" type="button" aria-controls="mobile-nav" aria-expanded="false" aria-label="Открыть меню"><span aria-hidden="true"></span></button></div><nav class="mobile-nav" id="mobile-nav" aria-label="Мобильная навигация">${nav}<a href="${supportHref}">Поделиться</a></nav></header>`;
 }
 
 function footer() {
