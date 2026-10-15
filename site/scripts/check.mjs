@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const dist = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'dist');
-const pageNames = ['index.html', 'concept.html', 'why.html', 'discussion.html'];
+const pageNames = ['index.html', 'concept.html', 'why.html', 'discussion.html', 'city-hero-preview.html', 'privacy-policy.html', 'personal-data-consent.html', 'cookie-policy.html'];
 const files = new Set(await readdir(dist));
 for (const file of pageNames) if (!files.has(file)) throw new Error(`Нет ${file}; сначала выполните npm run build`);
 const pages = Object.fromEntries(await Promise.all(pageNames.map(async file => [file, await readFile(path.join(dist, file), 'utf8')])));
@@ -38,7 +38,16 @@ assert.ok(why.includes('Территория меняется как едина�
 const discussion = pages['discussion.html'];
 assert.ok(discussion.includes('Дискуссия о Концепции'), 'Нет страницы «Дискуссия о Концепции»');
 assert.ok(discussion.includes('data-discussion-more'), 'На странице дискуссии нет кнопки раскрытия материалов');
-console.log('Проверка пройдена: 4 страницы, ссылки, ресурсы, введение и 13 разделов полного текста.');
+const cityPreview = pages['city-hero-preview.html'];
+assert.ok(cityPreview.includes('data-city-animation'), 'Нет анимированной городской сцены');
+assert.ok(cityPreview.includes('data-city-animation-toggle'), 'Нет управления анимацией городской сцены');
+const privacy = pages['privacy-policy.html'];
+assert.ok(privacy.includes('imt.gemsdev.com'), 'В политике не указан домен сайта');
+assert.ok(privacy.includes('Яндекс Метрика'), 'В политике не указана Яндекс Метрика');
+const cookie = pages['cookie-policy.html'];
+assert.ok(cookie.includes('Яндекс Метрика'), 'В cookie-уведомлении не указана Яндекс Метрика');
+assert.ok(cookie.includes('До согласия Яндекс Метрика не загружается'), 'В cookie-уведомлении не указан порядок получения согласия');
+console.log('Проверка пройдена: 8 страниц, ссылки, ресурсы, юридические документы, введение и 13 разделов полного текста.');
 
 const contentRoot = path.resolve(dist, '../../content');
 const source = JSON.parse(await readFile(path.join(contentRoot, 'full-text-source.json'), 'utf8'));

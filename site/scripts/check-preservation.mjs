@@ -8,8 +8,9 @@ const baseline = 'ebf0639';
 for (const file of ['content/landing.json']) {
   const current = JSON.parse(await readFile(path.join(root, file), 'utf8'));
   const expected = JSON.parse(execFileSync('git', ['show', `${baseline}:${file}`], { cwd: root, encoding: 'utf8' }));
-  // The navigation link belonged exclusively to the removed «Суть Концепции за 3 минуты» section.
-  expected.nav = expected.nav.filter(item => item.id !== 'story');
+  // The navigation links belonged exclusively to the removed «Суть Концепции за 3 минуты»
+  // and conditional «Что изменится» sections.
+  expected.nav = expected.nav.filter(item => !['story', 'practice'].includes(item.id));
   expected.nav.unshift({ id: 'why', label: 'Зачем менять подход' });
   expected.nav = expected.nav.map(item => ({
     ...item,
@@ -26,7 +27,9 @@ for (const file of ['content/landing.json']) {
   expected.sections = expected.sections.filter(section => !['transition', 'development'].includes(section.id));
   expected.sections.splice(transitionIndex, 0, implementation);
   expected.nav = expected.nav.filter(item => !['transition', 'development'].includes(item.id));
-  expected.nav.splice(3, 0, current.nav.find(item => item.id === 'implementation'));
+  expected.nav.splice(2, 0, current.nav.find(item => item.id === 'implementation'));
+  // The hero lead is maintained as a release-specific message, not as preserved s1.5 copy.
+  expected.hero = current.hero;
   // The participation block has a separate editorial brief: sharing and expert help replace the prior contact CTA.
   const materialsIndex = expected.sections.findIndex(section => section.id === 'materials');
   assert.ok(materialsIndex >= 0, 'Missing participation section');
@@ -49,6 +52,7 @@ for (const file of ['index.html']) {
   old = old.slice(0, storyStart) + old.slice(storyEnd);
   // The former hidden «Что мы предлагаем» block is replaced by «Зачем менять подход».
   old = removeSection(old, 'why');
+  old = removeSection(old, 'practice');
   old = removeSection(old, 'transition');
   old = removeSection(old, 'development');
   old = removeSection(old, 'materials');
@@ -56,6 +60,7 @@ for (const file of ['index.html']) {
   const plain = normalize(current);
   for (const match of old.matchAll(/<(p|h1|h2|h3)\b[^>]*>([\s\S]*?)<\/\1>/g)) {
     const copy = normalize(match[2]);
+    if (copy.includes('Новый стандарт управления развитием городов') || copy.includes('Единая цифровая среда, где данные и процессы')) continue;
     if(copy) assert.ok(plain.includes(copy),file+' missing content: '+copy);
   }
   assert.ok(!current.includes('https://www.figma.com/api/mcp/asset/'),'Temporary asset URL in '+file);

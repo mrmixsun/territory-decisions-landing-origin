@@ -33,7 +33,7 @@ const buildDate = new Intl.DateTimeFormat('ru-RU', {
 }).format(new Date());
 
 const esc = (value = '') => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-const safeHref = (href = '') => /^(?:#|(?:\.\/)?(?:index|concept|why|discussion)\.html(?:#|$)|mailto:[^\s"<>]+$)/.test(href) ? href : '#';
+const safeHref = (href = '') => /^(?:#|(?:\.\/)?(?:index|concept|why|discussion|privacy-policy|personal-data-consent|cookie-policy)\.html(?:#|$)|mailto:[^\s"<>]+$)/.test(href) ? href : '#';
 const safeContentHref = (href = '') => /^https:\/\//i.test(href) ? href : safeHref(href);
 const e = (value = '') => esc(value);
 const para = (items = []) => items.map(item => `<p>${e(item)}</p>`).join('\n');
@@ -143,7 +143,7 @@ function header(current = 'home') {
   const supportHref = current === 'home' ? '#materials' : './index.html#materials';
   const mark = `<img class="origin-logo" src="${asset('origin-imgFrame7.svg')}" alt="ИМТ.">`;
   const headerTitle = '<span class="header-concept-title">Концепция цифрового управления развитием территорий</span>';
-  return `<header class="site-header"><div class="container header-inner"><a class="site-mark" href="./index.html" aria-label="На главную страницу">${mark}</a>${headerTitle}<nav class="desktop-nav" aria-label="Разделы сайта">${nav}</nav><a class="header-full text-link" href="${supportHref}">Поделиться <img src="${asset('origin-imgVector1.svg')}" alt=""></a><button class="menu-toggle" type="button" aria-controls="mobile-nav" aria-expanded="false" aria-label="Открыть меню"><span aria-hidden="true"></span></button></div><nav class="mobile-nav" id="mobile-nav" aria-label="Мобильная навигация">${nav}<a href="${supportHref}">Поделиться</a></nav></header>`;
+  return `<header class="site-header"><div class="container header-inner"><a class="site-mark" href="./index.html" aria-label="На главную страницу">${mark}</a>${headerTitle}<nav class="desktop-nav" aria-label="Разделы сайта">${nav}</nav><a class="header-full text-link" href="${supportHref}">Принять участие <img src="${asset('origin-imgVector1.svg')}" alt=""></a><button class="menu-toggle" type="button" aria-controls="mobile-nav" aria-expanded="false" aria-label="Открыть меню"><span aria-hidden="true"></span></button></div><nav class="mobile-nav" id="mobile-nav" aria-label="Мобильная навигация">${nav}<a href="${supportHref}">Принять участие</a></nav></header>`;
 }
 
 function footer() {
@@ -158,14 +158,75 @@ function footer() {
       <section class="footer-column" aria-labelledby="footer-contact"><h2 id="footer-contact">Связаться</h2><a class="footer-primary-link" href="mailto:mstorozhilov@gemsdev.com">mstorozhilov@gemsdev.com</a><p>Вопросы, замечания и предложения по развитию концепции.</p></section>
       <section class="footer-column" aria-labelledby="footer-social"><h2 id="footer-social">Наши каналы</h2><div class="footer-socials"><a href="https://max.ru/join/EhGgOYRiKikL6YMSTDTMUirONsn2FJPSL9m8mW9nJoc" target="_blank" rel="noopener noreferrer" aria-label="Канал в мессенджере MAX">${maxIcon}<span>MAX</span></a><a href="https://t.me/+VwkQgNwHejM1ZWMy" target="_blank" rel="noopener noreferrer" aria-label="Канал в Telegram">${telegramIcon}<span>Telegram</span></a></div></section>
     </div>
-    <div class="footer-legal"><div><span class="footer-legal__label">Владелец сайта</span><strong>ООО «Джемс Девелопмент»</strong></div><dl><div><dt>ИНН</dt><dd>7203423815</dd></div><div><dt>ОГРН</dt><dd>1177232019909</dd></div></dl><address>625048, Тюменская область, г. Тюмень, ул. Мельничная, д. 8, помещ. 1</address><a href="mailto:post@gemsdev.ru">post@gemsdev.ru</a></div>
-    <div class="footer-bottom"><p>${e(content.meta.footerNote)}</p><p>GEMS развивает и популяризирует концепцию.</p></div>
+    <div class="footer-legal"><div><span class="footer-legal__label">Владелец сайта</span><strong>© ООО «Джемс Девелопмент»</strong></div><dl><div><dt>ИНН</dt><dd>7203423815</dd></div><div><dt>ОГРН</dt><dd>1177232019909</dd></div></dl><address>625048, Тюменская область, г. Тюмень, ул. Мельничная, д. 8, помещ. 1</address><a href="mailto:post@gemsdev.ru">post@gemsdev.ru</a></div>
+    <div class="footer-bottom"><p>${e(content.meta.footerNote)}</p><nav class="footer-documents" aria-label="Юридические документы"><a href="./privacy-policy.html">Политика обработки персональных данных</a><a href="./personal-data-consent.html">Согласие на обработку персональных данных</a><a href="./cookie-policy.html">Cookie</a></nav><p>GEMS развивает и популяризирует концепцию.</p></div>
   </div></footer>`;
+}
+
+function cookieNotice() {
+  return `<aside class="cookie-notice" data-cookie-notice aria-label="Настройки cookie" hidden><p class="cookie-notice__title">Используем cookie для аналитики</p><p class="cookie-notice__text">С вашего согласия подключим Яндекс Метрику, чтобы понимать посещаемость сайта. Отказ не ограничит доступ к материалам. <a href="./cookie-policy.html">Подробнее</a></p><div class="cookie-notice__actions"><button class="cookie-notice__button" type="button" data-cookie-accept>Принять</button><button class="cookie-notice__button cookie-notice__button--secondary" type="button" data-cookie-decline>Отклонить</button></div></aside>`;
 }
 
 function pageShell({ title, description, body, current, bodyClass = '' }) {
   const figmaCapture = process.env.FIGMA_CAPTURE === '1' ? '<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>' : '';
-  return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>${e(title)}</title><meta name="description" content="${e(description)}"><link rel="icon" type="image/svg+xml" href="${versioned('./favicon.svg')}"><link rel="stylesheet" href="${versioned('./style.css')}">${figmaCapture}</head><body class="${e(bodyClass)}"><a class="skip-link" href="#main">К содержанию</a>${header(current)}<main id="main">${body}</main>${footer()}<script src="${versioned('./main.js')}" defer></script></body></html>`;
+  return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>${e(title)}</title><meta name="description" content="${e(description)}"><link rel="icon" type="image/svg+xml" href="${versioned('./favicon.svg')}"><link rel="stylesheet" href="${versioned('./style.css')}">${figmaCapture}</head><body class="${e(bodyClass)}"><a class="skip-link" href="#main">К содержанию</a>${header(current)}<main id="main">${body}</main>${footer()}${cookieNotice()}<script src="${versioned('./main.js')}" defer></script></body></html>`;
+}
+
+function legalPage({ title, description, lead, updated, sections, current }) {
+  const article = sections.map(({ title: heading, body }) => `<section><h2>${e(heading)}</h2>${body}</section>`).join('');
+  const body = `<header class="legal-hero"><div class="container"><span class="eyebrow">Юридическая информация</span><h1 tabindex="-1">${e(title)}</h1><p>${e(lead)}</p><p class="legal-updated">Дата публикации: ${e(updated)}</p></div></header><article class="container legal-document">${article}</article>`;
+  return pageShell({ title: `${title} — ИМТ`, description, current, body, bodyClass: 'legal--imt' });
+}
+
+function privacyPolicyPage() {
+  return legalPage({
+    title: 'Политика обработки персональных данных',
+    description: 'Политика обработки персональных данных сайта imt.gemsdev.com.',
+    lead: 'Документ определяет, как ООО «Джемс Девелопмент» обрабатывает персональные данные посетителей сайта imt.gemsdev.com.',
+    updated: '15 октября 2026 года',
+    current: 'privacy-policy',
+    sections: [
+      { title: '1. Общие положения', body: `<p>Настоящая Политика разработана в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных» и применяется к данным посетителей сайта <a href="https://imt.gemsdev.com">imt.gemsdev.com</a> (далее — Сайт).</p><p>Оператор персональных данных — ООО «Джемс Девелопмент», ОГРН 1177232019909, ИНН 7203423815, адрес: 625048, Тюменская область, г. Тюмень, ул. Мельничная, д. 8, помещ. 1.</p>` },
+      { title: '2. Какие данные обрабатываются', body: `<p>При посещении Сайта могут обрабатываться технические данные: IP-адрес, сведения о браузере и устройстве, идентификаторы cookie, дата и время посещения, просмотренные страницы и действия на Сайте.</p><p>Если посетитель самостоятельно направляет обращение по указанному на Сайте адресу электронной почты, Оператор обрабатывает сведения из обращения и контактные данные, которые посетитель в нём указал.</p>` },
+      { title: '3. Цели и основания обработки', body: `<p>Данные используются для обеспечения работы и безопасности Сайта, ответа на обращения посетителей и анализа посещаемости с помощью Яндекс Метрики.</p><p>Основания обработки: согласие субъекта персональных данных, а также законные интересы Оператора по обеспечению работы, безопасности и развитию Сайта — в случаях, когда это допускает законодательство.</p>` },
+      { title: '4. Яндекс Метрика и cookie', body: `<p>После согласия посетителя Сайт может использовать Яндекс Метрику для получения обезличенной статистики посещаемости. Сервис может обрабатывать cookie и технические данные посетителя в соответствии с его документами.</p><p>Подробнее — в <a href="./cookie-policy.html">уведомлении об использовании cookie</a>. Согласие на необязательные cookie можно отозвать: очистить данные сайта в браузере и при следующем посещении выбрать другой вариант в уведомлении.</p>` },
+      { title: '5. Передача и хранение данных', body: `<p>Оператор не продаёт персональные данные и не передаёт их третьим лицам, кроме случаев, предусмотренных законом, или когда передача необходима для работы выбранного посетителем сервиса. Данные хранятся не дольше, чем это необходимо для заявленных целей или установлено законом.</p><p>Оператор принимает правовые, организационные и технические меры для защиты данных от неправомерного доступа, изменения, раскрытия, блокирования, копирования, предоставления и распространения.</p>` },
+      { title: '6. Права субъекта персональных данных', body: `<p>Посетитель вправе получить сведения об обработке своих данных, потребовать их уточнения, блокирования или уничтожения при наличии оснований, отозвать согласие и обратиться с жалобой в Роскомнадзор или суд.</p><p>Для обращения напишите на <a href="mailto:post@gemsdev.ru?subject=Запрос%20по%20обработке%20персональных%20данных">post@gemsdev.ru</a> с темой «Запрос по обработке персональных данных». Оператор рассмотрит обращение в срок, установленный законодательством Российской Федерации.</p>` },
+      { title: '7. Изменение политики', body: `<p>Оператор может обновлять Политику при изменении законодательства или порядка обработки данных. Актуальная версия всегда опубликована на этой странице.</p>` }
+    ]
+  });
+}
+
+function personalDataConsentPage() {
+  return legalPage({
+    title: 'Согласие на обработку персональных данных',
+    description: 'Согласие на обработку персональных данных для сайта imt.gemsdev.com.',
+    lead: 'Текст согласия применяется, когда посетитель добровольно передаёт свои данные через форму на Сайте.',
+    updated: '15 октября 2026 года',
+    current: 'personal-data-consent',
+    sections: [
+      { title: '1. Согласие', body: `<p>Я, действуя свободно, своей волей и в своём интересе, даю ООО «Джемс Девелопмент», ОГРН 1177232019909, ИНН 7203423815, согласие на обработку персональных данных, которые я указываю в форме на сайте imt.gemsdev.com.</p>` },
+      { title: '2. Состав и цели обработки', body: `<p>Согласие распространяется на данные, которые я укажу в форме: имя, адрес электронной почты, номер телефона, место работы, должность и содержание обращения.</p><p>Данные обрабатываются для ответа на моё обращение, обратной связи о Концепции цифрового управления развитием территорий и, если я отдельно об этом прошу, информирования о связанных материалах и мероприятиях.</p>` },
+      { title: '3. Действия с данными и срок согласия', body: `<p>Оператор вправе собирать, записывать, систематизировать, накапливать, хранить, уточнять, извлекать, использовать, обезличивать, блокировать, удалять и уничтожать данные. Обработка может быть автоматизированной или неавтоматизированной.</p><p>Согласие действует до достижения целей обработки или до его отзыва, если иной срок не предусмотрен законодательством.</p>` },
+      { title: '4. Отзыв согласия', body: `<p>Я могу отозвать согласие, написав на <a href="mailto:post@gemsdev.ru?subject=Отзыв%20согласия%20на%20обработку%20персональных%20данных">post@gemsdev.ru</a> с темой «Отзыв согласия на обработку персональных данных». Отзыв не влияет на законность обработки до его получения Оператором.</p><p>Подробные условия обработки данных приведены в <a href="./privacy-policy.html">Политике обработки персональных данных</a>.</p>` }
+    ]
+  });
+}
+
+function cookiePolicyPage() {
+  return legalPage({
+    title: 'Уведомление об использовании cookie',
+    description: 'Информация об использовании файлов cookie на сайте imt.gemsdev.com.',
+    lead: 'На Сайте используется только Яндекс Метрика — и только после согласия посетителя.',
+    updated: '15 октября 2026 года',
+    current: 'cookie-policy',
+    sections: [
+      { title: '1. Что такое cookie', body: `<p>Cookie — небольшие текстовые файлы, которые сайт или подключённый сервис сохраняет в браузере. Они помогают распознать настройки браузера и собрать статистику посещений.</p>` },
+      { title: '2. Какие cookie используются', body: `<p>На Сайте нет рекламных, социальных или сторонних маркетинговых сервисов. При согласии посетителя подключается только Яндекс Метрика для анализа посещаемости: посещённые страницы, продолжительность визита, тип устройства и браузера, примерное местоположение по IP-адресу и другие технические параметры.</p><p>Мы не используем cookie для прямого установления личности посетителя.</p>` },
+      { title: '3. Ваш выбор', body: `<p>При первом переходе на Сайт можно разрешить или отклонить аналитические cookie. До согласия Яндекс Метрика не загружается. Отказ не ограничивает доступ к материалам Сайта.</p><p>Изменить решение можно, очистив данные сайта в настройках браузера. Также в браузере можно запретить или удалить cookie. Это не влияет на доступ к Сайту, но может ограничить работу некоторых сайтов в целом.</p>` },
+      { title: '4. Дополнительная информация', body: `<p>Правила обработки персональных данных приведены в <a href="./privacy-policy.html">Политике обработки персональных данных</a>. При переходе на внешние сайты действуют их собственные правила обработки данных и cookie.</p>` }
+    ]
+  });
 }
 
 const discussionMaterials = [
@@ -234,12 +295,7 @@ function landingPageS11() {
     return `<div class="s11-lifecycle-art s11-lifecycle-art--${e(kind)}" aria-hidden="true">${visuals[kind] || ''}</div>`;
   };
   const lifecycleCard = frame => `<article class="s11-lifecycle-card" id="${e(frame.id)}"><div class="s11-lifecycle-card__head"><span class="s11-lifecycle-num">${e(frame.number)}</span>${lifecycleArt(frame.visual)}</div><h3>${e(frame.title)}</h3><p>${e(frame.paragraphs[0])}</p></article>`;
-  const practiceCard = frame => {
-    const steps = frame.steps.map((step, index) => `<li><span class="s11-practice-step__num">0${index + 1}</span><div><strong>${e(step.label)}</strong><p>${e(step.text)}</p></div></li>`).join('');
-    return `<article class="s11-practice-card" id="${e(frame.id)}"><div class="s11-practice-card__top"><span class="s11-practice-num">${e(frame.number)}</span><span class="s11-kicker">${e(frame.eyebrow)}</span></div><h3>${e(frame.title)}</h3><ol class="s11-practice-steps">${steps}</ol><a class="s11-practice-more" href="${e(safeHref(frame.more?.href))}">${e(frame.more?.label || 'Подробнее')} <span aria-hidden="true">↗</span></a></article>`;
-  };
   const how = byId('how');
-  const practice = byId('practice').frames;
   const implementation = byId('implementation').frames[0];
   const materials = byId('materials').frames[0];
   const whyCards = whyChange.stages.map(stage => `<article class="s11-why-card"><span class="s11-why-card__number">${e(stage.number)}</span><span class="s11-kicker">${e(stage.short)}</span><h3>${e(stage.title)}</h3><p>${e(stage.body)}</p></article>`).join('');
@@ -260,11 +316,10 @@ function landingPageS11() {
   const materialLink = materials.materials?.[0];
   const heroTitle = (hero.titleLines || [hero.title]).map(line => `<span>${e(line)}</span>`).join('');
   const heroLead = (hero.leadLines || [hero.lead]).map(line => `<span>${e(line)}</span>`).join('');
-  const body = `<section class="s11-hero" id="hero"><div class="container s11-hero__grid">${originHero(asset)}<div class="s11-hero__copy"><span class="s11-kicker">${e(hero.eyebrow)}</span><h1>${e(hero.title)}</h1><p>${heroLead}</p><a class="s11-button origin-hero-cta" href="#materials">Поддержать концепцию <img src="${asset('origin-imgVector2.svg')}" alt=""></a></div></div></section>
+  const body = `<section class="s11-hero" id="hero"><div class="container s11-hero__grid">${originHero(asset)}<div class="s11-hero__copy"><span class="s11-kicker">${e(hero.eyebrow)}</span><h1>${e(hero.title)}</h1><p>${heroLead}</p><div class="origin-hero-actions"><a class="s11-button s11-button--secondary" href="#why">Узнать больше <span aria-hidden="true">↓</span></a><a class="s11-button" href="./concept.html">Изучить Концепцию <span aria-hidden="true">↗</span></a></div></div></div></section>
   <section class="s11-section s11-why" id="why"><div class="container">${sectionTitle('Зачем менять подход', whyChange.title, whyChange.lead)}<div class="s11-why-grid">${whyCards}</div></div></section>
   <section class="s11-section s11-lifecycle-section" id="how"><div class="container">${sectionTitle('Что предлагает концепция', how.title, how.intro)}<div class="s11-lifecycle">${how.frames.map(lifecycleCard).join('')}</div><div class="s11-lifecycle-summary"><strong>${e(how.summary)}</strong></div></div></section>
   ${discussionBlock({ landing: true })}
-  <section class="s11-section s11-section--mist s11-practice-section" id="practice"><div class="container">${sectionTitle(byId('practice').navLabel, byId('practice').title, byId('practice').intro)}<div class="s11-practice-notice"><strong>Условные примеры</strong><span>${e(byId('practice').notice)}</span></div><div class="s11-practice-grid">${practice.map(practiceCard).join('')}</div></div></section>
   <section class="s11-section s11-transition-section s11-hover-plan" id="implementation"><div class="container">${sectionTitle(byId('implementation').navLabel, byId('implementation').title, byId('implementation').intro)}<div class="s11-phases">${implementation.diagram.stages.map((stage, i) => `<article class="s11-phase"><div class="s11-phase__head"><span class="s11-phase__num">0${i + 1}</span><span class="s11-phase__label">${i === 0 ? 'Старт' : 'Период'}</span></div><h3>${e(stage)}</h3><p>${e(implementation.diagram.stageDetails[i].body)}</p><div class="s11-phase__result"><span>Результат</span><strong>${e(implementation.diagram.stageDetails[i].result)}</strong></div></article>`).join('')}</div><div class="s11-implementation-directions"><span class="s11-kicker">Десять направлений реализации</span><h3>Что именно нужно изменить</h3><p>Это конкретные направления работы: от порядка утверждения цифровых решений и качества данных до услуг, совместимости систем, переноса истории и сопровождения перехода. Наведите на карточку, чтобы увидеть содержание каждого направления.</p></div><ol class="s11-hover-points" aria-label="Направления реализации с пояснениями">${hoverImplementationPoints}</ol><div class="s11-transition-path"><a class="s11-button s11-transition-path__button" href="./${e(safeHref(implementation.more?.href))}">${e(implementation.more?.label)} <span aria-hidden="true">↗</span></a></div></div></section>
   <section class="s11-section s11-materials" id="materials"><div class="container">${sectionTitle('Поделиться', materials.title, materials.paragraphs)}<div class="s11-materials__scenarios">${supportScenarios}</div><div class="s11-materials__contact"><div><span class="s11-materials__label">Связаться</span><strong>${e(materials.contact?.name)}</strong><p>${e(materials.contact?.role)}</p></div><div><a class="s11-materials__email" href="mailto:${e(materials.contact?.email)}">${e(materials.contact?.email)}</a>${materialLink ? `<a class="s11-materials__secondary" href="${e(safeHref(materialLink.href))}">${e(materialLink.label)} <span aria-hidden="true">↗</span></a>` : ''}</div></div></div></section>`;
   return pageShell({title:content.meta.title,description:content.meta.description,current:'home',body,bodyClass:'landing--s11 landing--imt'});
@@ -424,6 +479,9 @@ await writeFile(path.join(distDir, 'concept.html'), fullTextPage());
 await writeFile(path.join(distDir, 'why.html'), whyChangePage());
 await writeFile(path.join(distDir, 'discussion.html'), discussionPage());
 await writeFile(path.join(distDir, 'city-hero-preview.html'), cityHeroPreviewPage());
+await writeFile(path.join(distDir, 'privacy-policy.html'), privacyPolicyPage());
+await writeFile(path.join(distDir, 'personal-data-consent.html'), personalDataConsentPage());
+await writeFile(path.join(distDir, 'cookie-policy.html'), cookiePolicyPage());
 await writeFile(path.join(distDir, 'tokens.css'), tokenCss());
 await cp(path.join(siteDir, 'src', 'origin.css'), path.join(distDir, 'style.css'));
 await cp(path.join(siteDir, 'src', 'main.js'), path.join(distDir, 'main.js'));
