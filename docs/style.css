@@ -272,7 +272,8 @@ h1,h2,h3,h4 { font-family:Inter,Arial,sans-serif;text-wrap:balance; }p { margin:
 }
 
 .s11-why-conclusion p + p { margin-top:1em; }
-.s11-lifecycle-section > .container { padding-inline:0; }
+.s11-lifecycle-section > .container,
+.s11-transition-section > .container { padding-inline:0; }
 @media(min-width:761px) {
   .s11-why-card:first-child { padding-left:0; }
   .s11-why-card:last-child { padding-right:0; }
