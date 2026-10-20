@@ -168,7 +168,7 @@ function footer() {
 }
 
 function cookieNotice() {
-  return `<aside class="cookie-notice" data-cookie-notice aria-label="Настройки cookie" hidden><p class="cookie-notice__title">Используем cookie для аналитики</p><p class="cookie-notice__text">С вашего согласия подключим Яндекс Метрику, чтобы понимать посещаемость сайта. Отказ не ограничит доступ к материалам. <a href="./cookie-policy.html">Подробнее</a></p><div class="cookie-notice__actions"><button class="cookie-notice__button" type="button" data-cookie-accept>Принять</button><button class="cookie-notice__button cookie-notice__button--secondary" type="button" data-cookie-decline>Отклонить</button></div></aside>`;
+  return `<aside class="cookie-notice" data-cookie-notice aria-label="Настройки cookie" hidden><p class="cookie-notice__title">С заботой о приватности</p><p class="cookie-notice__text">Мы&nbsp;используем файлы cookie. Продолжая использовать сайт, вы&nbsp;соглашаетесь на&nbsp;предоставление cookie-файлов. Подробнее&nbsp;<a href="./cookie-policy.html">здесь</a></p><div class="cookie-notice__actions"><button class="cookie-notice__button" type="button" data-cookie-accept>Принять</button></div></aside>`;
 }
 
 function pageShell({ title, description, body, current, bodyClass = '' }) {
