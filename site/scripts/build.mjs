@@ -2,7 +2,6 @@ import { readFile, writeFile, mkdir, cp, rm, readdir } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { originHero } from './origin-design.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const siteDir = path.resolve(here, '..');
@@ -17,11 +16,14 @@ const whyChange = JSON.parse(await readFile(path.join(contentDir, 'why-change.js
 const tokens = JSON.parse(await readFile(path.join(designDir, 'tokens.json'), 'utf8'));
 const fullText = await readFile(path.join(contentDir, 'full-text.md'), 'utf8');
 const fullTextSource = JSON.parse(await readFile(path.join(contentDir, 'full-text-source.json'), 'utf8'));
+const isometricHero = await readFile(path.join(siteDir, 'src', 'isometric-hero.html'), 'utf8');
 const assetNames = new Set(await readdir(assetsDir));
 const releaseTag = 'origin-v2-concept-20261002';
 const resourceVersions = new Map(await Promise.all([
   ['./style.css', 'origin.css'],
-  ['./main.js', 'main.js']
+  ['./main.js', 'main.js'],
+  ['./isometric-hero.css', 'isometric-hero.css'],
+  ['./isometric-hero.js', 'isometric-hero.js']
 ].map(async ([href, filename]) => [href, createHash('sha256')
   .update(await readFile(path.join(siteDir, 'src', filename)))
   .digest('hex').slice(0, 12)])));
@@ -169,7 +171,7 @@ function cookieNotice() {
 
 function pageShell({ title, description, body, current, bodyClass = '' }) {
   const figmaCapture = process.env.FIGMA_CAPTURE === '1' ? '<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>' : '';
-  return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>${e(title)}</title><meta name="description" content="${e(description)}"><link rel="icon" type="image/svg+xml" href="${versioned('./favicon.svg')}"><link rel="stylesheet" href="${versioned('./style.css')}">${figmaCapture}</head><body class="${e(bodyClass)}"><a class="skip-link" href="#main">К содержанию</a>${header(current)}<main id="main">${body}</main>${footer()}${cookieNotice()}<script src="${versioned('./main.js')}" defer></script></body></html>`;
+  return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>${e(title)}</title><meta name="description" content="${e(description)}"><link rel="icon" type="image/svg+xml" href="${versioned('./favicon.svg')}"><link rel="stylesheet" href="${versioned('./style.css')}">${current === 'home' ? `<link rel="stylesheet" href="${versioned('./isometric-hero.css')}">` : ''}${figmaCapture}</head><body class="${e(bodyClass)}"><a class="skip-link" href="#main">К содержанию</a>${header(current)}<main id="main">${body}</main>${footer()}${cookieNotice()}<script src="${versioned('./main.js')}" defer></script>${current === 'home' ? `<script src="${versioned('./isometric-hero.js')}" defer></script>` : ''}</body></html>`;
 }
 
 function legalPage({ title, description, lead, updated, sections, current }) {
@@ -316,7 +318,7 @@ function landingPageS11() {
   const materialLink = materials.materials?.[0];
   const heroTitle = (hero.titleLines || [hero.title]).map(line => `<span>${e(line)}</span>`).join('');
   const heroLead = (hero.leadLines || [hero.lead]).map(line => `<span>${e(line)}</span>`).join('');
-  const body = `<section class="s11-hero" id="hero"><div class="container s11-hero__grid">${originHero(asset)}<div class="s11-hero__copy"><span class="s11-kicker">${e(hero.eyebrow)}</span><h1>${e(hero.title)}</h1><p>${heroLead}</p><div class="origin-hero-actions"><a class="s11-button s11-button--secondary" href="#why">Узнать больше <span aria-hidden="true">↓</span></a><a class="s11-button" href="./concept.html">Изучить Концепцию <span aria-hidden="true">↗</span></a></div></div></div></section>
+  const body = `<section class="s11-hero" id="hero"><div class="container s11-hero__grid">${isometricHero}<div class="s11-hero__copy"><span class="s11-kicker">${e(hero.eyebrow)}</span><h1>${e(hero.title)}</h1><p>${heroLead}</p><div class="origin-hero-actions"><a class="s11-button s11-button--secondary" href="#why">Узнать больше <span aria-hidden="true">↓</span></a><a class="s11-button" href="./concept.html">Изучить Концепцию <span aria-hidden="true">↗</span></a></div></div></div></section>
   <section class="s11-section s11-why" id="why"><div class="container">${sectionTitle('Зачем менять подход', whyChange.title, whyChange.lead)}<div class="s11-why-grid">${whyCards}</div></div></section>
   <section class="s11-section s11-lifecycle-section" id="how"><div class="container">${sectionTitle('Что предлагает концепция', how.title, how.intro)}<div class="s11-lifecycle">${how.frames.map(lifecycleCard).join('')}</div><div class="s11-lifecycle-summary"><strong>${e(how.summary)}</strong></div></div></section>
   ${discussionBlock({ landing: true })}
@@ -485,5 +487,7 @@ await writeFile(path.join(distDir, 'cookie-policy.html'), cookiePolicyPage());
 await writeFile(path.join(distDir, 'tokens.css'), tokenCss());
 await cp(path.join(siteDir, 'src', 'origin.css'), path.join(distDir, 'style.css'));
 await cp(path.join(siteDir, 'src', 'main.js'), path.join(distDir, 'main.js'));
+await cp(path.join(siteDir, 'src', 'isometric-hero.css'), path.join(distDir, 'isometric-hero.css'));
+await cp(path.join(siteDir, 'src', 'isometric-hero.js'), path.join(distDir, 'isometric-hero.js'));
 await cp(path.join(siteDir, 'src', 'favicon.svg'), path.join(distDir, 'favicon.svg'));
 console.log(`Сайт собран: ${distDir}`);

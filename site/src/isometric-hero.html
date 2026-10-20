@@ -1,0 +1,271 @@
+      <figure class="scene-card" aria-labelledby="scene-caption">
+        <div class="scene-top"><span>ИМТ · модульная сцена / 02</span><span class="scene-key"><b></b> наведите на объект</span></div>
+        <svg id="territory" viewBox="-200 0 1400 850" role="img" aria-label="Интерактивная изометрическая территория из отдельных модулей">
+          <defs>
+            <filter id="blur"><feGaussianBlur stdDeviation="5"/></filter>
+            <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#ec6b4a" flood-opacity=".23"/></filter>
+            <g id="building-low" class="iso-city-building"><polygon class="roof" points="0,28 38,6 78,28 40,50"/><polygon class="front" points="0,28 40,50 40,105 0,83"/><polygon class="side" points="40,50 78,28 78,83 40,105"/><path class="window" d="M11 47L29 57M11 64L29 74M50 51L68 41M50 68L68 58"/><polygon class="entry" points="29,78 40,84 40,105 29,99"/></g>
+            <g id="building-tower" class="iso-city-building"><polygon class="roof" points="0,36 46,10 92,36 46,63"/><polygon class="front" points="0,36 46,63 46,176 0,149"/><polygon class="side" points="46,63 92,36 92,149 46,176"/><path class="window" d="M10 55L35 69M10 76L35 90M10 98L35 112M10 120L35 134M10 142L35 156M56 64L82 49M56 86L82 71M56 108L82 93M56 130L82 115"/><polygon class="entry" points="31,151 46,159 46,176 31,168"/></g>
+            <g id="street-tree"><ellipse cx="0" cy="7" rx="13" ry="6" fill="#6b6c67" opacity=".17"/><rect x="-1" y="0" width="2" height="9" fill="#777872"/><circle class="tree" cy="-2" r="9"/><circle class="tree-light" cx="-3" cy="-5" r="4"/></g>
+            <g id="neighbour-house" stroke="#aaa9a2" stroke-width="1">
+              <path d="M0 18L27 2L55 18L27 34Z" fill="#eceae5"/><path d="M0 18L27 34V63L0 47Z" fill="#d5d2cb"/><path d="M27 34L55 18V47L27 63Z" fill="#bfc0b8"/>
+              <path d="M6 25L18 32M6 36L18 43M34 33L48 25M34 44L48 36" stroke="#f8f8f5" stroke-width="3"/><path d="M19 48L27 53V63L19 58Z" fill="#999b94"/>
+            </g>
+            <g id="neighbour-shop" stroke="#aaa9a2" stroke-width="1">
+              <path d="M0 18L38 -4L76 18L38 40Z" fill="#eeece7"/><path d="M0 18L38 40V57L0 35Z" fill="#d3d1ca"/><path d="M38 40L76 18V35L38 57Z" fill="#bfc2ba"/>
+              <path d="M5 23L33 39V45L5 29Z" fill="#aebfbd" stroke="none"/><path d="M43 40L70 24V32L43 48Z" fill="#b4c2c0" stroke="none"/><path d="M2 18L38 39L74 18" fill="none" stroke="#bcae9a" stroke-width="4"/>
+            </g>
+            <g id="neighbour-courtyard" stroke="#aaa9a2" stroke-width="1">
+              <path d="M0 22L36 1L83 28L47 49Z" fill="#eeede8"/><path d="M0 22L47 49V87L0 60Z" fill="#cdcbc5"/><path d="M47 49L83 28V66L47 87Z" fill="#b4b7af"/>
+              <path d="M8 32L19 38M28 44L39 50M8 45L19 51M28 57L39 63M8 58L19 64M28 70L39 76M55 49L75 38M55 62L75 51M55 75L75 64" fill="none" stroke="#f7f7f3" stroke-width="3"/>
+              <path d="M15 16L33 6L66 25L48 35Z" fill="#d7d9d1" stroke="#c7c8c0"/>
+            </g>
+            <g id="neighbour-gable" stroke="#aaa9a2" stroke-width="1">
+              <path d="M0 24L26 9L52 24V49L26 64L0 49Z" fill="#d0cdc5"/><path d="M26 39L52 24V49L26 64Z" fill="#b9bcb3"/>
+              <path d="M-3 24L12 5L38 -10L27 9L54 24L26 40Z" fill="#c2b7aa"/><path d="M12 5L38 -10L54 24L27 9Z" fill="#d4c9ba"/>
+              <path d="M6 31L18 38M6 41L18 48M33 38L46 31M33 48L46 41" stroke="#f7f7f3" stroke-width="3"/>
+            </g>
+            <g id="neighbour-glass" stroke="#a7aaa5" stroke-width="1">
+              <path d="M0 20L31 2L62 20L31 38Z" fill="#f1f2ed"/><path d="M0 20L31 38V78L0 60Z" fill="#becac7"/><path d="M31 38L62 20V60L31 78Z" fill="#aebcb8"/>
+              <path d="M7 29L24 39M7 41L24 51M7 53L24 63M38 39L55 29M38 51L55 41M38 63L55 53" stroke="#ecf2ef" stroke-width="3"/>
+            </g>
+            <g id="urban-midrise" stroke="#a9aaa3" stroke-width="1.2">
+              <path d="M0 25L48 -3L96 25L48 53Z" fill="#f0efeb"/><path d="M0 25L48 53V116L0 88Z" fill="#d1cfc8"/><path d="M48 53L96 25V88L48 116Z" fill="#b9bbb2"/>
+              <path d="M8 38L17 43M24 47L33 52M8 52L17 57M24 61L33 66M8 66L17 71M24 75L33 80M8 80L17 85M24 89L33 94M56 56L66 50M77 44L87 38M56 70L66 64M77 58L87 52M56 84L66 78M77 72L87 66M56 98L66 92M77 86L87 80" stroke="#f8f7f3" stroke-width="4"/>
+              <path d="M31 102L42 108V113L31 107Z" fill="#8d938b" stroke="none"/><path d="M19 21L48 4L77 21L48 38Z" fill="#dedfd9" stroke="#c6c8c0"/>
+            </g>
+            <g id="urban-office" stroke="#a5aaa5" stroke-width="1.2">
+              <path d="M0 29L41 5L82 29L41 53Z" fill="#eff0eb"/><path d="M0 29L41 53V141L0 117Z" fill="#bfc9c5"/><path d="M41 53L82 29V117L41 141Z" fill="#aabbb5"/>
+              <path d="M7 42L34 58M7 55L34 71M7 68L34 84M7 81L34 97M7 94L34 110M7 107L34 123M48 58L75 42M48 71L75 55M48 84L75 68M48 97L75 81M48 110L75 94M48 123L75 107" stroke="#edf3ee" stroke-width="3"/>
+              <path d="M9 27L41 8L73 27" fill="none" stroke="#d0d1ca" stroke-width="3"/>
+            </g>
+            <g id="urban-stepped" stroke="#a9aaa3" stroke-width="1.2">
+              <path d="M0 41L39 18L86 45L47 68Z" fill="#ecebe5"/><path d="M0 41L47 68V112L0 85Z" fill="#d0ccc4"/><path d="M47 68L86 45V89L47 112Z" fill="#b7b8b0"/>
+              <path d="M10 28L39 11L68 28L39 45Z" fill="#f3f2ed"/><path d="M10 28L39 45V60L10 43Z" fill="#d3d0c9"/><path d="M39 45L68 28V43L39 60Z" fill="#bfc0b9"/>
+              <path d="M7 53L18 59M27 65L38 71M7 67L18 73M27 79L38 85M7 81L18 87M27 93L38 99M55 68L76 56M55 82L76 70M55 96L76 84" stroke="#f9f8f4" stroke-width="4"/>
+            </g>
+            <g id="neighbour-garden">
+              <path d="M0 36L63 0L126 36L63 72Z" fill="#dfe4d9" stroke="#c4cbc0" stroke-width="1.3"/>
+              <path d="M13 37L63 8L113 37M27 48L63 27L99 48" fill="none" stroke="#f5f3ed" stroke-width="5"/>
+              <use href="#street-tree" transform="translate(32 34) scale(.75)"/><use href="#street-tree" transform="translate(50 23) scale(.7)"/><use href="#street-tree" transform="translate(84 32) scale(.8)"/><use href="#street-tree" transform="translate(65 53) scale(.72)"/>
+              <path d="M43 50L52 45M75 18L83 23" stroke="#9f9c90" stroke-width="2.5" stroke-linecap="round"/>
+            </g>
+            <g id="dense-block" aria-hidden="true">
+              <path d="M0 82L105 21L210 82L105 143Z" fill="#e8e9e2" stroke="#d6d7cf" stroke-width="1"/>
+              <path d="M15 82L105 30L195 82M36 100L105 60L174 100" fill="none" stroke="#f5f4ef" stroke-width="5"/>
+              <use href="#neighbour-house" transform="translate(56 25) scale(.9)"/>
+              <use href="#building-low" transform="translate(104 44) scale(.69)"/>
+              <use href="#neighbour-house" transform="translate(25 66) scale(.86)"/>
+              <use href="#neighbour-shop" transform="translate(79 88) scale(.72)"/>
+              <use href="#neighbour-house" transform="translate(142 75) scale(.78)"/>
+              <use href="#street-tree" transform="translate(23 83) scale(.68)"/><use href="#street-tree" transform="translate(49 98) scale(.7)"/>
+              <use href="#street-tree" transform="translate(169 97) scale(.72)"/><use href="#street-tree" transform="translate(151 115) scale(.68)"/>
+              <use href="#street-tree" transform="translate(105 125) scale(.65)"/>
+            </g>
+            <!-- Buildings are independent vector groups placed on the existing interactive plots. -->
+            <g id="iso-apartment">
+              <path d="M-38 -14L0 -36L38 -14L0 8Z" fill="#f6f5f1" stroke="#aaa8a2"/>
+              <path d="M-38 -14L0 8V72L-38 50Z" fill="#c9c7c1" stroke="#aaa8a2"/>
+              <path d="M0 8L38 -14V50L0 72Z" fill="#b8b8b1" stroke="#a7a69f"/>
+              <path d="M-29 0L-9 12M-29 14L-9 26M-29 28L-9 40M-29 42L-9 54M9 12L29 0M9 26L29 14M9 40L29 28M9 54L29 42" fill="none" stroke="#f7f6f3" stroke-width="3"/>
+              <path d="M-5 55L5 55V69L0 72L-5 69Z" fill="#999992"/>
+            </g>
+            <g id="iso-building-under-construction" stroke="#9b9a90" stroke-width="1.5">
+              <path d="M-38 36L0 58L38 36L0 14Z" fill="#c5c5ba" stroke="#a9aaa0"/>
+              <path d="M-38 15L0 37L38 15L0 -7Z" fill="#d1d0c6" stroke="#a5a69d"/>
+              <path d="M-38 -6L0 16L38 -6L0 -28Z" fill="#dddcd1" stroke="#a5a69d"/>
+              <path d="M-38 -6V36M-19 5V47M0 16V58M19 5V47M38 -6V36" stroke="#a6a59a" stroke-width="3"/>
+              <path d="M-38 15L0 37L38 15M-38 36L0 58L38 36" fill="none" stroke="#eeece2" stroke-width="3"/>
+              <path d="M-25 -15V-29M-12 -22V-36M4 -26V-39M20 -17V-31" stroke="#9d9080" stroke-width="1.5"/>
+              <path d="M-38 -6L0 16L38 -6" fill="none" stroke="#e5ad66" stroke-width="2" stroke-dasharray="4 3"/>
+              <path d="M-18 41L-2 50M6 50L22 41" stroke="#c49c5e" stroke-width="2"/>
+            </g>
+            <g id="iso-school">
+              <path d="M-60 -4L0 -38L60 -4L0 31Z" fill="#f5f3ef" stroke="#aaa8a2"/>
+              <path d="M-60 -4L0 31V57L-60 22Z" fill="#cac7c1" stroke="#aaa8a2"/>
+              <path d="M0 31L60 -4V22L0 57Z" fill="#b8b8b0" stroke="#a7a69f"/>
+              <path d="M-49 6L-38 12M-28 18L-17 24M-49 17L-38 23M-28 29L-17 35M12 30L24 23M35 17L48 10M12 41L24 34M35 28L48 21" stroke="#eef4f3" stroke-width="5"/>
+              <path d="M-7 42L3 48V55L0 57L-7 53Z" fill="#8e9692"/>
+              <path d="M-23 -14L0 -27L23 -14L0 -1Z" fill="#e2e1dc" stroke="#c4c1ba"/>
+            </g>
+            <g id="iso-kindergarten">
+              <path d="M-48 -4L0 -32L48 -4L0 24Z" fill="#f5f3ed" stroke="#aaa8a2"/>
+              <path d="M-48 -4L0 24V45L-48 17Z" fill="#d3cec4" stroke="#aaa8a2"/>
+              <path d="M0 24L48 -4V17L0 45Z" fill="#bdc0b4" stroke="#a7a69f"/>
+              <path d="M-37 7L-25 14M-14 20L-4 26M10 24L21 18M30 12L40 6" stroke="#edf4f2" stroke-width="5"/>
+              <path d="M-22 -12L0 -25L22 -12L0 1Z" fill="#d2b5a0"/>
+            </g>
+            <g id="iso-parking">
+              <path d="M-50 -13L0 -42L50 -13L0 16Z" fill="#efefeb" stroke="#a6a6a0"/>
+              <path d="M-50 -13L0 16V53L-50 24Z" fill="#c8c7c2" stroke="#a6a6a0"/>
+              <path d="M0 16L50 -13V24L0 53Z" fill="#b5b5af" stroke="#a6a6a0"/>
+              <path d="M-45 -2L-5 21M-45 10L-5 33M5 21L45 -2M5 33L45 10" stroke="#858c89" stroke-width="5"/>
+              <path d="M-38 -13L0 -35L38 -13M-23 -5L0 -19L23 -5" fill="none" stroke="#fff" stroke-width="2"/>
+              <path d="M-3 -23L4 -27L4 -17L-3 -13Z" fill="#b2c4c7"/>
+            </g>
+          </defs>
+          <g class="grid" aria-hidden="true">
+            <line x1="-80" y1="190" x2="610" y2="590"/><line x1="-80" y1="270" x2="610" y2="670"/><line x1="-80" y1="350" x2="610" y2="750"/><line x1="70" y1="50" x2="760" y2="450"/><line x1="150" y1="-10" x2="840" y2="390"/><line x1="300" y1="-20" x2="990" y2="380"/><line x1="450" y1="-20" x2="1140" y2="380"/><line x1="600" y1="-20" x2="1290" y2="380"/>
+            <line x1="590" y1="590" x2="1280" y2="190"/><line x1="590" y1="670" x2="1280" y2="270"/><line x1="590" y1="750" x2="1280" y2="350"/><line x1="440" y1="450" x2="1130" y2="50"/><line x1="360" y1="390" x2="1050" y2="-10"/><line x1="210" y1="380" x2="900" y2="-20"/><line x1="60" y1="380" x2="750" y2="-20"/>
+            <line class="major" x1="600" y1="18" x2="600" y2="720"/><line class="major" x1="75" y1="408" x2="1125" y2="408"/><line class="major" x1="75" y1="516" x2="1125" y2="516"/>
+          </g>
+          <g aria-hidden="true">
+            <path class="parcel" d="M72 214L300 82 528 214 300 346Z"/><path class="parcel" d="M356 214L584 82 812 214 584 346Z"/><path class="parcel" d="M640 214L868 82 1096 214 868 346Z"/>
+            <path class="parcel" d="M-70 462L158 330 386 462 158 594Z"/><path class="parcel" d="M214 462L442 330 670 462 442 594Z"/><path class="parcel" d="M498 462L726 330 954 462 726 594Z"/><path class="parcel" d="M782 462L1010 330 1238 462 1010 594Z"/>
+            <path class="parcel" d="M-212 710L16 578 244 710 16 842Z"/><path class="parcel" d="M72 710L300 578 528 710 300 842Z"/><path class="parcel" d="M356 710L584 578 812 710 584 842Z"/><path class="parcel" d="M640 710L868 578 1096 710 868 842Z"/><path class="parcel" d="M924 710L1152 578 1380 710 1152 842Z"/>
+            <path class="road" d="M-250 195L900 860M-250 423L490 850M104 -60L1500 746M390 -60L1500 582M-250 665L900 -4M0 856L1300 105M280 895L1400 247"/>
+            <path class="road-surface" d="M-250 195L900 860M-250 423L490 850M104 -60L1500 746M390 -60L1500 582M-250 665L900 -4M0 856L1300 105M280 895L1400 247"/>
+            <path class="road-mark" d="M-250 195L900 860M-250 423L490 850M104 -60L1500 746M390 -60L1500 582M-250 665L900 -4M0 856L1300 105M280 895L1400 247"/>
+          </g>
+          <g aria-hidden="true" opacity=".98" display="none">
+            <!-- Background blocks: mixed uses and gardens, all separate from the interactive plots. -->
+            <g class="neighbourhood" pointer-events="none">
+              <!-- Full blocks fill the city rather than isolated buildings scattered over empty plots. -->
+              <use href="#dense-block" transform="translate(-130 60) scale(.96)"/>
+              <use href="#dense-block" transform="translate(60 44) scale(1)"/>
+              <use href="#dense-block" transform="translate(248 4) scale(.95)"/>
+              <use href="#dense-block" transform="translate(635 -65) scale(.92)"/>
+              <use href="#dense-block" transform="translate(857 -35) scale(.92)"/>
+              <use href="#dense-block" transform="translate(1035 20) scale(.98)"/>
+              <use href="#dense-block" transform="translate(-155 282) scale(1)"/>
+              <use href="#dense-block" transform="translate(17 286) scale(.96)"/>
+              <use href="#dense-block" transform="translate(222 235) scale(.97)"/>
+              <use href="#dense-block" transform="translate(410 227) scale(.92)"/>
+              <use href="#dense-block" transform="translate(495 305) scale(.9)"/>
+              <use href="#dense-block" transform="translate(705 345) scale(.88)"/>
+              <use href="#dense-block" transform="translate(1010 260) scale(.94)"/>
+              <use href="#dense-block" transform="translate(1090 405) scale(.92)"/>
+              <use href="#dense-block" transform="translate(-150 495) scale(1)"/>
+              <use href="#dense-block" transform="translate(25 492) scale(.98)"/>
+              <use href="#dense-block" transform="translate(190 555) scale(.95)"/>
+              <use href="#dense-block" transform="translate(425 480) scale(.95)"/>
+              <use href="#dense-block" transform="translate(870 490) scale(.9)"/>
+              <use href="#dense-block" transform="translate(1000 580) scale(.96)"/>
+              <use href="#dense-block" transform="translate(-120 690) scale(.96)"/>
+              <use href="#dense-block" transform="translate(80 690) scale(.98)"/>
+              <use href="#dense-block" transform="translate(300 660) scale(.95)"/>
+              <use href="#dense-block" transform="translate(500 675) scale(.9)"/>
+              <use href="#dense-block" transform="translate(850 680) scale(.95)"/>
+              <use href="#dense-block" transform="translate(1050 690) scale(.98)"/>
+              <use href="#neighbour-garden" transform="translate(96 176) scale(.72)"/>
+              <use href="#neighbour-house" transform="translate(193 143) scale(.75)"/><use href="#neighbour-house" transform="translate(234 165) scale(.75)"/><use href="#neighbour-shop" transform="translate(132 252) scale(.68)"/>
+              <use href="#neighbour-house" transform="translate(219 260) scale(.72)"/><use href="#neighbour-house" transform="translate(260 282) scale(.72)"/><use href="#neighbour-shop" transform="translate(287 133) scale(.65)"/>
+              <use href="#neighbour-garden" transform="translate(455 249) scale(.68)"/>
+              <use href="#neighbour-house" transform="translate(390 269) scale(.70)"/><use href="#neighbour-house" transform="translate(423 288) scale(.65)"/><use href="#neighbour-shop" transform="translate(516 289) scale(.62)"/>
+              <use href="#neighbour-house" transform="translate(667 73) scale(.67)"/><use href="#neighbour-house" transform="translate(703 93) scale(.67)"/><use href="#neighbour-shop" transform="translate(766 90) scale(.62)"/>
+              <use href="#neighbour-garden" transform="translate(836 128) scale(.68)"/><use href="#neighbour-house" transform="translate(914 112) scale(.65)"/><use href="#neighbour-house" transform="translate(950 132) scale(.65)"/>
+              <use href="#neighbour-shop" transform="translate(1060 217) scale(.65)"/><use href="#neighbour-house" transform="translate(1108 251) scale(.70)"/><use href="#neighbour-house" transform="translate(1143 272) scale(.68)"/>
+              <use href="#neighbour-garden" transform="translate(1045 435) scale(.64)"/><use href="#neighbour-shop" transform="translate(1040 535) scale(.64)"/>
+              <use href="#neighbour-house" transform="translate(1095 555) scale(.68)"/><use href="#neighbour-house" transform="translate(1131 575) scale(.68)"/><use href="#neighbour-house" transform="translate(980 580) scale(.68)"/>
+              <use href="#neighbour-garden" transform="translate(231 558) scale(.72)"/><use href="#neighbour-house" transform="translate(166 524) scale(.72)"/><use href="#neighbour-house" transform="translate(202 545) scale(.72)"/>
+              <use href="#neighbour-shop" transform="translate(336 589) scale(.66)"/><use href="#neighbour-house" transform="translate(371 617) scale(.7)"/><use href="#neighbour-house" transform="translate(406 638) scale(.7)"/>
+              <use href="#neighbour-garden" transform="translate(560 560) scale(.65)"/><use href="#neighbour-shop" transform="translate(650 598) scale(.62)"/>
+              <use href="#neighbour-house" transform="translate(894 638) scale(.7)"/><use href="#neighbour-house" transform="translate(930 659) scale(.7)"/><use href="#neighbour-shop" transform="translate(1005 680) scale(.62)"/>
+              <use href="#neighbour-garden" transform="translate(413 724) scale(.68)"/><use href="#neighbour-house" transform="translate(195 712) scale(.7)"/><use href="#neighbour-shop" transform="translate(260 748) scale(.65)"/>
+            </g>
+            <use href="#building-tower" transform="translate(72 156) scale(.58)"/><use href="#building-low" transform="translate(170 104) scale(.68)"/><use href="#building-low" transform="translate(290 36) scale(.62)"/><use href="#building-tower" transform="translate(420 76) scale(.55)"/><use href="#building-low" transform="translate(563 14) scale(.62)"/><use href="#building-tower" transform="translate(720 70) scale(.56)"/><use href="#building-low" transform="translate(874 82) scale(.66)"/><use href="#building-tower" transform="translate(1016 148) scale(.58)"/>
+            <use href="#building-low" transform="translate(8 382) scale(.64)"/><use href="#building-tower" transform="translate(112 466) scale(.52)"/><use href="#building-low" transform="translate(250 540) scale(.68)"/><use href="#building-tower" transform="translate(400 590) scale(.52)"/><use href="#building-low" transform="translate(720 580) scale(.68)"/><use href="#building-tower" transform="translate(868 546) scale(.52)"/><use href="#building-low" transform="translate(1015 468) scale(.66)"/><use href="#building-tower" transform="translate(1124 380) scale(.54)"/>
+            <use href="#building-low" transform="translate(-156 262) scale(.66)"/><use href="#building-tower" transform="translate(-78 376) scale(.52)"/><use href="#building-low" transform="translate(-155 586) scale(.62)"/><use href="#building-low" transform="translate(-48 676) scale(.68)"/><use href="#building-tower" transform="translate(102 690) scale(.54)"/><use href="#building-low" transform="translate(267 720) scale(.65)"/><use href="#building-tower" transform="translate(536 712) scale(.52)"/><use href="#building-low" transform="translate(690 732) scale(.65)"/><use href="#building-tower" transform="translate(844 688) scale(.53)"/><use href="#building-low" transform="translate(1010 720) scale(.65)"/><use href="#building-tower" transform="translate(1140 650) scale(.52)"/>
+            <use href="#building-low" transform="translate(320 185) scale(.42)"/><use href="#building-low" transform="translate(365 208) scale(.38)"/>
+            <use href="#building-low" transform="translate(565 320) scale(.42)"/><use href="#building-low" transform="translate(602 343) scale(.37)"/>
+            <use href="#building-low" transform="translate(835 470) scale(.42)"/><use href="#building-low" transform="translate(877 492) scale(.37)"/>
+            <use href="#building-low" transform="translate(510 600) scale(.40)"/><use href="#building-low" transform="translate(548 622) scale(.36)"/>
+            <use href="#street-tree" transform="translate(96 320)"/><use href="#street-tree" transform="translate(124 336)"/><use href="#street-tree" transform="translate(232 270)"/><use href="#street-tree" transform="translate(260 286)"/><use href="#street-tree" transform="translate(904 282)"/><use href="#street-tree" transform="translate(932 298)"/><use href="#street-tree" transform="translate(1042 338)"/><use href="#street-tree" transform="translate(1070 354)"/><use href="#street-tree" transform="translate(183 506)"/><use href="#street-tree" transform="translate(210 521)"/><use href="#street-tree" transform="translate(990 510)"/><use href="#street-tree" transform="translate(1018 495)"/>
+            <use href="#street-tree" transform="translate(-108 522)"/><use href="#street-tree" transform="translate(-80 538)"/><use href="#street-tree" transform="translate(370 735)"/><use href="#street-tree" transform="translate(398 751)"/><use href="#street-tree" transform="translate(608 690)"/><use href="#street-tree" transform="translate(636 706)"/><use href="#street-tree" transform="translate(925 756)"/><use href="#street-tree" transform="translate(953 740)"/><use href="#street-tree" transform="translate(1108 720)"/>
+          </g>
+          <g id="background-city" aria-hidden="true" pointer-events="none"></g>
+
+          <!-- Two quiet, separate relationships originate at the existing residential complex. -->
+          <g aria-hidden="true" pointer-events="none">
+            <path class="data-link" d="M542 181L619 226L574 252L743 350L795 320L885 375"/>
+            <path class="data-link" d="M500 157L356 240L496 320L396 378L444 406L444 451" style="stroke:#738b91"/>
+            <circle class="data-node" cx="542" cy="181" r="4"/><circle class="data-node" cx="885" cy="375" r="4"/>
+            <circle cx="500" cy="157" r="4" fill="#738b91" stroke="#fff" stroke-width="2"/><circle cx="444" cy="451" r="4" fill="#738b91" stroke="#fff" stroke-width="2"/>
+          </g>
+
+          <g class="module home" transform="translate(224 -115)" data-name="Существующий ЖК" data-type="Жилая застройка" data-description="320 квартир · 2 дома&#10;Связан со школой, детским садом и паркингом.&#10;Рядом планируется ещё 180 квартир.">
+            <polygon class="module-base" points="200,228 318,160 434,228 316,296"/><polygon class="module-top" points="212,228 318,167 422,228 316,289"/><path d="M244 228L318 185L391 228M270 253L344 210M292 263L366 220" fill="none" stroke="#aaa8a2" stroke-width="3"/><path d="M259 219L333 262M300 195L374 238" fill="none" stroke="#f7f6f3" stroke-width="4"/>
+            <g aria-hidden="true">
+              <path d="M246 229L282 208L305 221L269 242Z" fill="#dce3d8" stroke="#c0cbbf"/>
+              <path d="M307 251L332 237L353 249L328 263Z" fill="#d6e2dd" stroke="#b5c6be"/>
+              <use href="#iso-apartment" transform="translate(292 182) scale(.72)"/><use href="#iso-apartment" transform="translate(341 211) scale(.72)"/>
+              <path d="M267 226L276 221M321 250L330 245" stroke="#9c8d77" stroke-width="3" stroke-linecap="round"/>
+              <path d="M283 247L294 241L301 245L290 251Z" fill="#e4c1a3" stroke="#c5a789"/>
+              <circle cx="292" cy="245" r="2.3" fill="#9aafa2"/>
+            </g>
+          </g>
+          <g class="module school" transform="translate(478 151)" data-name="Школа" data-type="Социальная инфраструктура" data-description="Вместимость: 500 мест&#10;Занято сейчас: 440&#10;Новый ЖК: прогноз +65 учеников&#10;Итого: 505 — на 5 больше вместимости.">
+            <polygon class="module-base" points="407,224 514,162 623,224 514,286"/><polygon class="module-top" points="420,224 514,170 610,224 514,278"/><path d="M450 224L514 187L578 224M450 242L514 205L578 242" fill="none" stroke="#a2634e" stroke-width="3"/><path d="M472 210L472 251M490 199L490 260M538 199L538 260M556 210L556 251" stroke="#fff4e7" stroke-width="4"/>
+            <g aria-hidden="true">
+              <path d="M440 231L476 210L506 227L470 248Z" fill="#c4d4c6" stroke="#abbdae"/>
+              <use href="#iso-school" transform="translate(514 195) scale(.82)"/>
+              <path d="M469 251L488 240L507 251L488 262Z" fill="#d6c9b8" stroke="#c3b8aa"/><path d="M477 251L488 245L499 251L488 257Z" fill="none" stroke="#faf7f1" stroke-width="1.5"/>
+              <path d="M541 194V176" stroke="#a39787" stroke-width="1.5"/><path d="M541 176L553 182L541 185Z" fill="#d7795b"/>
+              <path d="M519 222L526 218L526 229L519 233Z" fill="#8f9f9a"/>
+              <!-- Sports ground in the foreground: running track, pitch and markings. -->
+              <path d="M449 251L488 228L532 253L493 276Z" fill="#bd856e" stroke="#a9725f" stroke-width="1.5"/>
+              <path d="M456 251L488 232L525 253L493 272Z" fill="#c8aa91" stroke="#e7d7c2" stroke-width="1.5"/>
+              <path d="M463 251L488 236L518 253L493 268Z" fill="#97b39d" stroke="#ecf0e7" stroke-width="1.5"/>
+              <path d="M475 244L505 261M476 258L501 243M485 246L491 242L499 247L493 251Z" fill="none" stroke="#f3f5ee" stroke-width="1.4"/>
+              <path d="M453 250L488 230L529 253M454 254L492 275" fill="none" stroke="#f3dfca" stroke-width="1"/>
+            </g>
+          </g>
+          <g class="module park" transform="translate(128 -43)" data-name="Парк и общественное пространство" data-type="Озеленение · публичный слой" data-description="Площадь: 1,8 га&#10;Рядом: существующий и проектируемый ЖК — всего 500 квартир.&#10;Для проверки: пешеходная доступность после строительства.">
+            <polygon class="module-base" points="535,283 644,220 752,283 644,346"/><polygon class="module-top" points="547,283 644,227 740,283 644,339"/>
+            <path d="M555 283L644 231L732 283L644 334Z" fill="#cbd9c6" stroke="#b7c8b2"/>
+            <path d="M590 283L644 252 697 283 644 314Z" class="water"/><path d="M552 304L644 251 734 303M565 319L644 274 722 319" fill="none" stroke="#f9f7ed" stroke-width="5" opacity=".9"/>
+            <path d="M576 280L605 263L621 272L592 289ZM666 294L694 278L715 290L687 306Z" fill="#a9c1a5" stroke="#98af94"/>
+            <g><circle class="tree" cx="578" cy="271" r="10"/><circle class="tree-light" cx="574" cy="267" r="5"/><circle class="tree" cx="695" cy="283" r="10"/><circle class="tree-light" cx="691" cy="279" r="5"/><circle class="tree" cx="610" cy="300" r="9"/><circle class="tree-light" cx="606" cy="296" r="4"/><circle class="tree" cx="689" cy="315" r="9"/><circle class="tree-light" cx="685" cy="311" r="4"/></g>
+            <g aria-hidden="true"><use href="#street-tree" transform="translate(612 255) scale(.85)"/><use href="#street-tree" transform="translate(670 260) scale(.85)"/><path d="M614 302L626 295M663 307L675 300" stroke="#9d907c" stroke-width="3" stroke-linecap="round"/>
+              <path d="M625 284L644 273L663 284L644 295Z" fill="#e8efed" stroke="#abbcb5"/>
+              <path d="M632 284L644 277L656 284L644 291Z" fill="#b9ced0" stroke="#9db5b8"/>
+              <path d="M644 282V272M640 278L644 272L648 278" fill="none" stroke="#9db5b8" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="644" cy="272" r="2" fill="#d7e4e3"/>
+              <g fill="#849e80" stroke="#728c6e" stroke-width="1"><circle cx="592" cy="279" r="7"/><circle cx="601" cy="275" r="8"/><circle cx="608" cy="281" r="6"/><circle cx="683" cy="290" r="8"/><circle cx="693" cy="286" r="7"/><circle cx="700" cy="292" r="6"/></g>
+              <g fill="#b5c9ad"><circle cx="589" cy="276" r="3"/><circle cx="598" cy="271" r="3"/><circle cx="680" cy="286" r="3"/><circle cx="690" cy="283" r="3"/></g>
+              <!-- Entrance arch over the lower path. -->
+              <path d="M626 325V308Q635 297 644 307V316M628 324V309Q635 301 642 308V317" fill="none" stroke="#9eaa96" stroke-width="3"/>
+              <path d="M626 310Q635 299 644 309" fill="none" stroke="#e9e6da" stroke-width="2"/>
+            </g>
+          </g>
+          <g class="module civic" transform="translate(158 170)" data-name="Детский сад" data-type="Социальная инфраструктура" data-description="Вместимость: 180 мест&#10;Занято сейчас: 165&#10;Новый ЖК: прогноз +20 детей&#10;Итого: 185 — на 5 больше вместимости.">
+            <polygon class="module-base" points="184,340 286,281 390,340 286,399"/><polygon class="module-top" points="197,340 286,289 377,340 286,391"/><path d="M226 340L286 306L346 340L286 374Z" fill="#e9f3f6"/><path d="M214 350L286 309L358 350M242 365L286 340L330 365" fill="none" stroke="#a5b4bc" stroke-width="3"/>
+            <g aria-hidden="true"><use href="#iso-kindergarten" transform="translate(286 312) scale(.85)"/>
+              <path d="M223 349L249 334L282 353L256 368Z" fill="#e6cdb6" stroke="#c9b7a4"/>
+              <path d="M234 348L240 338L246 342L240 352Z" fill="#d5896b" stroke="#b77960"/><path d="M240 338L249 333V343L240 348Z" fill="#e3b576" stroke="#c9a375"/>
+              <path d="M258 350V339M270 357V346M258 339L270 346M260 344L267 348" fill="none" stroke="#8d9d91" stroke-width="2"/>
+              <circle cx="249" cy="356" r="4" fill="#a9bcb0"/><path d="M239 363L250 357" stroke="#fbf6ed" stroke-width="2"/>
+            </g>
+          </g>
+          <g class="module hub" transform="translate(279 341)" data-name="Многоуровневый паркинг" data-type="Транспортная инфраструктура" data-description="Вместимость: 260 мест&#10;Занято сейчас: 180&#10;Новый ЖК: прогноз потребности +100 мест&#10;Итого: 280 — на 20 больше вместимости.">
+            <polygon class="module-base" points="388,356 491,297 594,356 491,415"/><polygon class="module-top" points="401,356 491,305 581,356 491,407"/><path d="M423 356L491 317L559 356M491 317V395M446 382L491 356L536 382" fill="none" stroke="#5b66a7" stroke-width="4" stroke-linecap="round"/><circle cx="491" cy="356" r="8" fill="#6b76bf"/>
+            <g aria-hidden="true"><use href="#iso-parking" transform="translate(491 334) scale(.9)"/>
+              <path d="M521 345L530 340V351L521 356Z" fill="#6d8590" stroke="#5f7882"/>
+              <path d="M523 352V347L527 345V350M523 349L527 347" fill="none" stroke="#f4f6f3" stroke-width="1.4"/>
+              <path d="M432 358L449 348L460 354L443 364Z" fill="#b4c0be" stroke="#9aa9a7"/>
+              <path d="M436 357L444 352L453 357L445 362Z" fill="#e9efed"/><path d="M436 358L445 363M449 350L457 355" stroke="#7e8e8d" stroke-width="1.5"/>
+              <path d="M515 380L532 370M521 384L538 374" stroke="#f5f3ed" stroke-width="2"/>
+            </g>
+          </g>
+          <g class="module construction" transform="translate(117 105)" data-name="Проектируемый ЖК" data-type="Проектное решение" data-description="Проект: 180 квартир&#10;Прогноз потребности:&#10;Школа — +65 мест&#10;Детский сад — +20 мест&#10;Паркинг — +100 мест&#10;Статус: проектное решение.">
+            <polygon class="module-base" points="529,412 638,349 747,412 638,475"/><polygon class="module-top" points="542,412 638,357 734,412 638,467"/><path d="M570 412L638 373L706 412M582 420L650 381M594 428L662 389M606 436L674 397" fill="none" stroke="#d6ad5d" stroke-width="7"/><path d="M585 433L638 402L691 433" fill="none" stroke="#987b45" stroke-width="3"/>
+            <g aria-hidden="true">
+              <!-- Tower crane: mast, boom, bracing and suspended hook are separate vector shapes. -->
+              <path d="M687 402L696 407L705 402L696 397Z" fill="#b9b5a9" stroke="#a49d8f" stroke-width="1"/>
+              <path d="M693 402V331L699 334V405Z" fill="#c69e56" stroke="#a68247" stroke-width="1"/>
+              <path d="M694 340L698 349L694 354L698 364L694 369L698 379L694 384L698 394" fill="none" stroke="#f5dfaa" stroke-width="1.2"/>
+              <path d="M622 295L703 342L719 333L638 286Z" fill="#dab56c" stroke="#ad894b" stroke-width="1.4"/>
+              <path d="M625 295L703 340M638 287L719 333M635 301L640 289M649 309L654 297M663 317L668 305M677 325L682 313M691 333L696 321" fill="none" stroke="#f2deb0" stroke-width="1.2"/>
+              <path d="M693 332L702 320L710 336M702 320L650 301" fill="none" stroke="#aa874d" stroke-width="1.5"/>
+              <path d="M640 306V354M637 354H643L642 358H638Z" fill="none" stroke="#a98649" stroke-width="1.5"/>
+              <use href="#iso-apartment" transform="translate(613 380) scale(.72)"/><use href="#iso-building-under-construction" transform="translate(664 410) scale(.72)"/>
+              <path d="M568 420L584 411L597 418L581 427Z" fill="#d2c5ae" stroke="#b5a58b" stroke-width="1"/>
+              <path d="M570 416L586 407L599 414L583 423Z" fill="#e5ded1" stroke="#b5a58b" stroke-width="1"/>
+              <path d="M684 433L700 424M688 437L704 428M692 441L708 432" stroke="#ba9761" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M598 449L677 403" stroke="#d3ad62" stroke-width="3" stroke-dasharray="5 4"/>
+            </g>
+          </g>
+        </svg>
+        <div class="callout" aria-live="polite"><i></i><div><strong id="module-name"></strong><span id="module-text"></span></div></div>
+        <figcaption class="scene-caption" id="scene-caption"><span><b>06 модулей</b> + независимая дорожная и сеточная основа</span><span id="module-type">Готово к состояниям и событиям</span></figcaption>
+      </figure>
