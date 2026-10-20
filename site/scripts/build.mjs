@@ -232,24 +232,36 @@ function cookiePolicyPage() {
 }
 
 const discussionMaterials = [
-  ['Аналитика','2025','Институт экономики города','data','Градостроительство в России: подходы к регулированию и управлению','Авторы описывают трудность межведомственного обмена и проблемы наполнения и актуальности ИСОГД. Это независимый взгляд на то, почему одной оцифровки документов недостаточно.','https://www.urbaneconomics.ru/sites/default/files/gradostroitelstvo_v_rossii._sushchestvuyushchie_i_perspektivnye_podhody_v_regulirovanii_i_upravlenii.pdf','Аналитический доклад · стр. 80–81'],
+  ['Аналитика','2026','Институт экономики города','data','Градостроительство в России: подходы к регулированию и управлению','Авторы описывают трудность межведомственного обмена и проблемы наполнения и актуальности ИСОГД. Это независимый взгляд на то, почему одной оцифровки документов недостаточно.','https://www.urbaneconomics.ru/sites/default/files/gradostroitelstvo_v_rossii._sushchestvuyushchie_i_perspektivnye_podhody_v_regulirovanii_i_upravlenii.pdf','Аналитический доклад · стр. 80–81'],
   ['Профессиональная позиция','2025','МетаПрайм','document','Замечания к проекту Концепции информационного обеспечения','В материале предлагают строить ИМТ на цифровых документах, заранее задавать правила для производных данных и не отождествлять ГИСОГД со всей системой управления территорией.','https://metaprime.ru/news/2025/04/23/','Публикация разработчика · открытая критика'],
-  ['Исследование и дискуссия','2026','ЕИПП РФ','grid','Цифровые подходы к подготовке проектов планировки территории','ЕИПП РФ отмечает отсутствие единых стандартов данных в документации по планировке: это затрудняет согласование и использование решений в информационных системах.','https://t.me/s/eipp_official/4873','Сообщение государственного института · НИР по поручению Минстроя'],
+  ['Исследование и дискуссия','2026','ЕИПП РФ','grid','Цифровые подходы к подготовке проектов планировки территории','ЕИПП РФ отмечает отсутствие единых стандартов данных в документации по планировке: это затрудняет согласование и использование решений в информационных системах.','https://eipp.ru/news/2026/градостроители-обсудили-цифровые-подходы-к-разработке-проектов-планировки-территории.html','Сообщение государственного института · НИР по поручению Минстроя'],
   ['Практика региона','2025','Сахалинстрой','network','Данные инженерных сетей должны обновляться вместе с территорией','Отраслевая СРО ставит вопрос о доступе застройщиков к данным ГИСОГД и о возврате в систему сведений о ремонтах, реконструкции и авариях на сетях.','https://ssros.ru/informatsiyu-po-inzhenernym-setyam-gisogd-sahalinskoj-oblasti-zastrojshhiki-dolzhny-poluchat-v-rezhime-onlajn/','Позиция отраслевой СРО · инженерная инфраструктура'],
-  ['Официальный документ','2020','Правительство России','law','Правила ведения ГИСОГД: Постановление Правительства № 279','Правила закрепляют электронное ведение ГИСОГД и предусматривают подготовку, согласование и утверждение документов в установленных законом случаях.','https://pravo.gov.ru/proxy/ips/?doc_itself=&intelsearch=13+%EF%BF%BD%EF%BF%BD%EF%BF%BD%EF%BF%BD%EF%BF%BD+2020+279&nd=102694133&page=1&rdk=3','Нормативный источник · официальный портал'],
-  ['Рекомендации региона','2026','ГИСОГД Курганской области','version','Связь текстовой части, пространственных данных и изменений','Практические рекомендации требуют связывать текст документа с его пространственным описанием и указывать базовый документ для каждой редакции изменения.','https://isogd.gov45.ru/help/admin/usages/GISOGD.portal/config.vedenie_gisogd.html','Инструкция региональной системы · жизненный цикл версии'],
+  ['Официальный документ','2020','ГАРАНТ','law','Правила ведения ГИСОГД: Постановление Правительства № 279','Текст постановления о ведении ГИСОГД и предоставлении содержащихся в ней сведений, документов и материалов.','https://base.garant.ru/73751804/','Текст нормативного акта'],
   ['Практика региона','2026','ГИСОГД Омской области','model','Передача информационной модели ОКС в ГИСОГД','Портал показывает маршрут передачи модели: идентификация документа и объекта, дата, номер, этап жизненного цикла и размещение в уполномоченном органе.','https://gisogd55.omskportal.ru/doc/usages/GISOGD.portal/help.transfer_imoks.html','Руководство пользователя · ИМ ОКС'],
-  ['Научная позиция','2026','ЦНИИП Минстроя России','ai','ИИ как поддержка принятия градостроительных решений','Исследование рассматривает ИИ как инструмент поддержки анализа, мониторинга, прогнозирования и обратной связи — не как самостоятельный носитель полномочия.','https://cniipminstroy.ru/press/news/razrabotanyi-osnovyi-primeneniya-ii-dlya-sistemnoj-podderzhki-proczessov-prinyatiya-gradostroitelnyi','Научно-методический материал · роль AI'],
   ['Материалы конференции','2026','#ГИСОГД','forum','Резолюция конференции #ГИСОГД2026','Участники связывают переход к электронным градостроительным решениям с правовыми основаниями, качеством данных, совместимостью систем и рисками внедрения.','https://sro-ciz.ru/info/news/1778536725_1105_Rezolyuciya_GISOGD2026.pdf','Резолюция профессионального сообщества · PDF']
-].map(([type, year, source, cover, title, preview, href, note]) => ({ type, year, source, cover, title, preview, href, note }));
+].map(([type, year, source, cover, title, preview, href, note]) => ({ type, year, source, cover, title, preview, href, note }))
+ .sort((a, b) => {
+   const priority = ['forum', 'document', 'grid', 'data'];
+   const rank = material => { const index = priority.indexOf(material.cover); return index === -1 ? priority.length : index; };
+   return rank(a) - rank(b);
+ });
 
 function discussionCover(kind, type) {
-  const marks = { data:'01',document:'v2',grid:'×',network:'↗',law:'§',version:'v1 → v2',model:'3D',ai:'AI',forum:'∞' };
-  return `<div class="discussion-card__cover discussion-card__cover--${e(kind)}" aria-hidden="true"><small>${e(type)}</small><div class="discussion-cover-mark"><span>${e(marks[kind] || '01')}</span><i></i><b></b><em></em></div></div>`;
+  const covers = {
+    data: `<div class="discussion-art discussion-art--urban"><img class="discussion-art__urban-book" src="${asset('discussion-urban-book-hd.jpg')}" alt=""></div>`,
+    document: `<div class="discussion-art discussion-art--metaprime"><img class="discussion-art__metaprime-background" src="${asset('discussion-metaprime-generated-v2.png')}" alt=""><div class="discussion-art__metaprime-logo"><img src="${asset('discussion-metaprime-logo.png')}" alt=""></div></div>`,
+    grid: `<div class="discussion-art discussion-art--eipp"><img class="discussion-art__eipp-photo" src="${asset('discussion-eipp-photo.png')}" alt=""><div class="discussion-art__eipp-logo"><img src="${asset('discussion-eipp-logo.jpg')}" alt=""></div></div>`,
+    forum: `<div class="discussion-art discussion-art--forum"><img class="discussion-art__forum-background" src="${asset('discussion-gisogd-background-v2.png')}" alt=""><div class="discussion-art__forum-top"><img src="${asset('discussion-gisogd-resolution.jpg')}" alt=""></div><img class="discussion-art__forum-image" src="${asset('discussion-gisogd-resolution.jpg')}" alt=""></div>`,
+    network: `<div class="discussion-art discussion-art--network"><img class="discussion-art__sakhalinstroy-logo" src="${asset('discussion-sakhalinstroy-logo.png')}" alt=""></div>`,
+    law: `<div class="discussion-art discussion-art--law"><div class="discussion-art__law-document"><b>ПОСТАНОВЛЕНИЕ</b><strong>№ 279</strong><i></i><i></i><i></i><span class="discussion-art__law-stamp">№ 279</span></div><div class="discussion-art__law-source"><img src="${asset('discussion-garant-logo-original.png')}" alt=""></div></div>`,
+    model: `<div class="discussion-art discussion-art--model"><img class="discussion-art__omsk-emblem" src="${asset('discussion-omsk-emblem.svg')}" alt=""></div>`
+  };
+  return `<div class="discussion-card__cover discussion-card__cover--${e(kind)}" aria-hidden="true">${covers[kind] || ''}</div>`;
 }
 
 function discussionCard(material, index) {
-  return `<article class="discussion-card"${index >= 4 ? ' data-discussion-extra hidden' : ''}>${discussionCover(material.cover, material.type)}<div class="discussion-card__body"><div class="discussion-card__meta"><span>${e(material.type)}</span></div><p class="discussion-card__source">${e(material.source)}</p><h2>${e(material.title)}</h2><p class="discussion-card__preview">${e(material.preview)}</p><div class="discussion-card__footer"><a class="discussion-card__link" href="${e(safeContentHref(material.href))}" target="_blank" rel="noopener noreferrer">Открыть источник <b aria-hidden="true">↗</b></a></div></div></article>`;
+  const label = ['document', 'network', 'grid'].includes(material.cover) ? 'Читать статью' : 'Читать подробнее';
+  return `<article class="discussion-card"${index >= 4 ? ' data-discussion-extra hidden' : ''}>${discussionCover(material.cover, material.type)}<div class="discussion-card__body"><div class="discussion-card__meta"><span>${e(material.type)}</span></div><p class="discussion-card__source">${e(material.source)}</p><h2>${e(material.title)}</h2><p class="discussion-card__preview">${e(material.preview)}</p><div class="discussion-card__footer"><a class="discussion-card__link" href="${e(safeContentHref(material.href))}" target="_blank" rel="noopener noreferrer">${e(label)} <b aria-hidden="true">↗</b></a></div></div></article>`;
 }
 
 function discussionBlock({ landing = false } = {}) {
@@ -257,7 +269,7 @@ function discussionBlock({ landing = false } = {}) {
   const heading = landing
     ? `<div class="s11-heading"><span class="s11-kicker">Материалы и позиции</span><h2>Дискуссия о Концепции</h2><p>Исследования, публикации, документы и практики регионов показывают интерес к цифровому управлению территориями и разные точки зрения на то, как должен меняться градостроительный контур.</p></div>`
     : '';
-  return `<section class="${landing ? 's11-section s11-discussion' : 'discussion-materials'}"${landing ? ' id="discussion"' : ''}><div class="container">${heading}<div class="discussion-block" data-discussion-block><div class="discussion-grid">${cards}</div><div class="discussion-actions"><button class="discussion-more" type="button" data-discussion-more aria-expanded="false">Показать ещё <span aria-hidden="true">↓</span></button><p>Открытые источники будут дополняться по мере проверки.</p></div></div></div></section>`;
+  return `<section class="${landing ? 's11-section s11-discussion' : 'discussion-materials'}"${landing ? ' id="discussion"' : ''}><div class="container">${heading}<div class="discussion-block" data-discussion-block><div class="discussion-grid">${cards}</div><div class="discussion-actions"><button class="discussion-more" type="button" data-discussion-more aria-expanded="false">Показать ещё <span aria-hidden="true">↓</span></button></div></div></div></section>`;
 }
 
 function discussionPage() {

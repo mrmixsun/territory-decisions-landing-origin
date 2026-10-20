@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1586 992" aria-label="Модульный слой участков для дорожной основы версии 2">
+  <!-- Each path is a separate interaction module. Coordinates match territory-road-grid-v2-orthographic.png. -->
+  <g id="parcel-modules" fill="none" stroke="none">
+    <path id="parcel-a" data-title="Квартал A" d="M646 99 L940 269 L650 436 L356 266 Z"/>
+    <path id="parcel-b" data-title="Квартал B" d="M319 279 L619 451 L319 623 L22 451 Z"/>
+    <path id="parcel-c" data-title="Квартал C" d="M967 286 L1255 453 L968 616 L679 448 Z"/>
+    <path id="parcel-d" data-title="Квартал D" d="M622 461 L901 622 L612 789 L322 618 Z"/>
+    <path id="parcel-e" data-title="Квартал E" d="M1240 465 L1532 632 L1250 795 L960 624 Z"/>
+    <path id="parcel-f" data-title="Квартал F" d="M904 633 L1185 795 L899 958 L610 790 Z"/>
+    <path id="parcel-g" data-title="Квартал G" d="M1510 579 L1585 623 L1585 720 L1420 814 L1258 721 Z"/>
+  </g>
+</svg>

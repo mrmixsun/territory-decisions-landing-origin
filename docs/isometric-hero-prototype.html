@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ИМТ — модульная изометрическая сетка</title>
+<style>
+@font-face{font-family:Inter;src:url('./assets/inter-400.ttf')}@font-face{font-family:Inter;src:url('./assets/inter-600.ttf');font-weight:600}@font-face{font-family:Inter;src:url('./assets/inter-700.ttf');font-weight:700}:root{--ink:#202723;--paper:#fbfcfa;--line:#dce2dd;--orange:#ef6947}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,Arial,sans-serif}.shell{max-width:1440px;margin:auto;padding:0 42px}.topbar{height:82px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}.brand{font-size:26px;font-weight:700;letter-spacing:-1.5px}.brand i{color:var(--orange);font-style:normal}.nav{display:flex;gap:27px;align-items:center}.nav a{color:#303a34;font-size:13px;text-decoration:none}.nav button{padding:11px 15px;border:1px solid #bdc8c0;border-radius:999px;background:#fff;font:600 13px Inter}.hero{display:grid;grid-template-columns:minmax(340px,.74fr) minmax(650px,1.26fr);gap:34px;align-items:center;min-height:685px;padding:48px 0 70px}.eyebrow{display:flex;gap:10px;align-items:center;margin-bottom:23px;color:#c94e34;font-size:11px;font-weight:700;letter-spacing:.9px;text-transform:uppercase}.eyebrow:before{content:"";width:24px;height:2px;background:var(--orange)}h1{max-width:535px;margin:0;font-size:clamp(45px,4.2vw,66px);line-height:1.02;letter-spacing:-3.5px}h1 em{color:var(--orange);font-style:normal}.lead{max-width:470px;margin:26px 0 31px;color:#536058;font-size:17px;line-height:1.55}.primary{display:inline-flex;gap:15px;align-items:center;padding:15px 19px;border-radius:5px;background:var(--ink);color:#fff;text-decoration:none;font-size:14px;font-weight:600}.primary b{font-size:20px;font-weight:400}.microcopy{display:block;margin-top:16px;color:#858e87;font-size:11px}
+.map-wrap{position:relative;padding-bottom:29px}.map{position:relative;overflow:hidden;border:1px solid #d7ded8;border-radius:10px;background:#fafbf9;aspect-ratio:1.55}.map-title{position:absolute;z-index:4;top:19px;left:21px;color:#737d76;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase}.map-key{position:absolute;z-index:4;top:19px;right:20px;display:flex;gap:8px;align-items:center;color:#737d76;font-size:10px}.map-key i{width:8px;height:8px;border-radius:50%;background:var(--orange)}.iso-grid{display:block;width:100%;height:100%}.base{fill:#d6dcda;stroke:#bdc7c0;stroke-width:2}.road-mark{fill:none;stroke:#fff;stroke-width:3;stroke-dasharray:12 12;opacity:.95}.road-edge{fill:none;stroke:#bdc7c0;stroke-width:2}.parcel{fill:#dce9d4;stroke:#aabfa8;stroke-width:2;cursor:pointer;transition:fill .16s ease,stroke .16s ease}.parcel:focus,.parcel:hover,.parcel.active{fill:#edb165a6;stroke:#ef6947;stroke-width:4;outline:none}.tree{fill:#789673;stroke:#5f7f5b;stroke-width:1.2}.tree-shadow{fill:#68826222}.curb{fill:#e7ddd0}.tooltip{position:absolute;z-index:7;width:225px;padding:13px 14px;border:1px solid #d9d5ce;border-radius:6px;background:#fffefa;box-shadow:0 13px 27px #20302720;opacity:0;pointer-events:none;transform:translate(8px,9px);transition:opacity .15s ease,transform .15s ease}.tooltip.visible{opacity:1;transform:translate(8px,0)}.tooltip small{display:block;color:#ca573a;font-size:9px;font-weight:700;letter-spacing:.7px;text-transform:uppercase}.tooltip strong{display:block;margin-top:5px;font-size:12px;line-height:1.35}.note{position:absolute;bottom:13px;left:1px;color:#77837b;font-size:11px}.note i{color:#356dd2;font-style:normal}.transition{padding:70px 0 85px;background:#202722;color:#fff}.transition-grid{display:grid;grid-template-columns:.84fr 1.16fr;gap:48px}.transition h2{margin:0;font-size:34px;line-height:1.13;letter-spacing:-1.4px}.transition p{max-width:580px;margin:0;color:#c9d2cb;font-size:16px;line-height:1.55}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:44px}.step{min-height:145px;padding:18px;border:1px solid #58665e;border-radius:5px;background:#27312c}.step span{color:#a8c7b4;font-size:11px}.step h3{margin:35px 0 0;font-size:15px;line-height:1.3}
+@media(max-width:1050px){.shell{padding:0 24px}.hero{grid-template-columns:1fr;gap:27px;padding-top:40px}.copy{max-width:640px}.map-wrap{width:min(800px,100%);margin:auto}.transition-grid{grid-template-columns:1fr;gap:22px}}@media(max-width:760px){.shell{padding:0 18px}.topbar{height:67px}.nav{display:none}.hero{min-height:0;padding:39px 0 70px}h1{font-size:43px;letter-spacing:-2.3px}.lead{font-size:15px}.map-wrap{padding-bottom:0}.map-title{top:12px;left:12px;font-size:8px}.map-key{top:12px;right:12px;font-size:8px}.tooltip{width:178px;padding:9px 10px}.tooltip strong{font-size:10px}.note{display:none}.transition{padding:55px 0 65px}.steps{grid-template-columns:1fr}.step{min-height:105px}.step h3{margin-top:20px}}
+</style>
+<style>
+  .map{background:radial-gradient(circle at 50% 42%,#fff 0 20%,#f4f6f1 78%)}#road-fill stop:first-child{stop-color:#899590}#road-fill stop:last-child{stop-color:#5e6b66}.base{fill:url(#road-fill);stroke:#89948e;stroke-width:2}.curb{fill:url(#curb-fill);stroke:#d1c3b4;stroke-width:1}.parcel{fill:url(#parcel-fill);stroke:#9eb69d;stroke-width:2.4}.road-mark{stroke:#fdfcf8;stroke-width:3;stroke-dasharray:12 14;filter:url(#road-glow)}.road-edge{stroke:#87938d;stroke-width:2}.tree{fill:url(#tree-fill);stroke:#557753;stroke-width:1.2}.tree-shadow{fill:#596c4a33}
+</style>
+<style>
+  .map{aspect-ratio:1.598;background:#fbfaf6 url('./assets/isometric-library/territory-road-grid-v2-orthographic.png') center/contain no-repeat}
+  .iso-grid{display:none}
+  .parcel-overlay{position:absolute;inset:0;z-index:3;width:100%;height:100%;overflow:visible}
+  .parcel-overlay .parcel-module{fill:#ef694700;stroke:#ef694700;stroke-width:3;vector-effect:non-scaling-stroke;cursor:pointer;transition:fill .16s ease,stroke .16s ease;outline:none}
+  .parcel-overlay .parcel-module:hover,.parcel-overlay .parcel-module:focus,.parcel-overlay .parcel-module.active{fill:#ef694749;stroke:#ef6947;stroke-width:3}
+  .parcel-overlay .parcel-module:focus-visible{stroke-width:4;filter:drop-shadow(0 0 3px #ef694780)}
+</style>
+</head>
+<body>
+<header class="shell topbar"><span class="brand">ИМТ<i>.</i></span><nav class="nav"><a href="#why">Зачем менять подход</a><a href="#how">Что предлагает Концепция</a><a href="#practice">Что изменится</a><a href="#plan">План реализации</a><button>Полный текст Концепции ↗</button></nav></header>
+<main><section class="shell hero" id="why"><div class="copy"><div class="eyebrow">Концепция цифрового управления развитием территорий</div><h1>Территория как <em>связанная</em> система решений</h1><p class="lead">Дорожная основа показывает целую территорию, а каждый квартал вынесен в собственный контурный модуль. Контур участка живёт отдельно от дороги, тротуара и озеленения — поэтому подсветка не захватывает соседние элементы.</p><a class="primary" href="#how">Как это работает <b>→</b></a><span class="microcopy">Наведите на участок — выделится только его собственный полигон.</span></div>
+<div class="map-wrap"><div class="map" id="map"><div class="map-title">модульная сетка · версия 02</div><div class="map-key"><i></i> наведите на участок</div>
+<svg class="iso-grid" viewBox="0 0 960 600" role="img" aria-label="Связная изометрическая сеть улиц и пустых кварталов">
+<defs><linearGradient id="road-fill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#c9cfcd"/><stop offset="1" stop-color="#aeb8b4"/></linearGradient><linearGradient id="curb-fill" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f4eee4"/><stop offset="1" stop-color="#d9cdbd"/></linearGradient><linearGradient id="parcel-fill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e8f1df"/><stop offset="1" stop-color="#c6dbbd"/></linearGradient><radialGradient id="tree-fill"><stop stop-color="#a6c58b"/><stop offset="1" stop-color="#62865f"/></radialGradient><filter id="road-glow"><feGaussianBlur stdDeviation=".22"/></filter><filter id="soft-shadow" x="-20%" y="-20%" width="150%" height="150%"><feDropShadow dx="5" dy="8" stdDeviation="4" flood-color="#5f6554" flood-opacity=".18"/></filter></defs>
+<polygon class="base" points="480,42 906,288 480,534 54,288" filter="url(#soft-shadow)"/>
+<path class="road-edge" d="M480 42L906 288M480 42L54 288M54 288L480 534M906 288L480 534M160 228L586 474M374 104L800 350M266 350L692 104M374 472L800 226"/>
+<path class="road-mark" d="M119 269L446 458M227 208L555 397M405 103L732 292M514 164L841 353M119 307L446 496M227 368L555 557M405 473L732 284M514 412L841 223"/>
+<g class="curb"><polygon points="480,76 617,155 480,234 343,155"/><polygon points="343,166 480,245 343,324 206,245"/><polygon points="617,166 754,245 617,324 480,245"/><polygon points="480,256 617,335 480,414 343,335"/><polygon points="754,256 891,335 754,414 617,335"/><polygon points="343,346 480,425 343,504 206,425"/><polygon points="617,346 754,425 617,504 480,425"/></g>
+<polygon class="parcel" tabindex="0" data-title="Квартал A" data-text="Участок ограничен четырьмя локальными улицами. В следующем шаге в нём появится квартальная застройка." points="480,85 603,156 480,227 357,156"/>
+<polygon class="parcel" tabindex="0" data-title="Квартал B" data-text="Участок со стороны западной улицы. Его граница — самостоятельный модуль, не включающий дорогу и тротуар." points="343,175 466,246 343,317 220,246"/>
+<polygon class="parcel" tabindex="0" data-title="Квартал C" data-text="Участок в восточной части схемы. Здесь можно разместить общественные функции и озеленение." points="617,175 740,246 617,317 494,246"/>
+<polygon class="parcel" tabindex="0" data-title="Квартал D" data-text="Центральный участок, связанный с перекрёстком и будущими пешеходными маршрутами." points="480,265 603,336 480,407 357,336"/>
+<polygon class="parcel" tabindex="0" data-title="Квартал E" data-text="Восточный участок в сетке кварталов. Его контур совпадает с полигоном подсветки." points="754,265 877,336 754,407 631,336"/>
+<polygon class="parcel" tabindex="0" data-title="Квартал F" data-text="Юго-западный участок: самостоятельный геометрический модуль будущего развития." points="343,355 466,426 343,497 220,426"/>
+<polygon class="parcel" tabindex="0" data-title="Квартал G" data-text="Юго-восточный участок: на следующем шаге здесь появится сценарий изменения территории." points="617,355 740,426 617,497 494,426"/>
+<g aria-hidden="true"><g class="tree-shadow"><ellipse cx="334" cy="146" rx="10" ry="5"/><ellipse cx="493" cy="78" rx="10" ry="5"/><ellipse cx="625" cy="161" rx="10" ry="5"/><ellipse cx="754" cy="245" rx="10" ry="5"/><ellipse cx="494" cy="417" rx="10" ry="5"/><ellipse cx="223" cy="425" rx="10" ry="5"/></g><g class="tree"><circle cx="334" cy="137" r="10"/><circle cx="493" cy="69" r="10"/><circle cx="625" cy="152" r="10"/><circle cx="754" cy="236" r="10"/><circle cx="494" cy="408" r="10"/><circle cx="223" cy="416" r="10"/><circle cx="607" cy="499" r="10"/><circle cx="741" cy="345" r="10"/><circle cx="212" cy="244" r="10"/></g></g>
+</svg><div class="tooltip" role="status"><small id="tip-title"></small><strong id="tip-text"></strong></div></div><div class="note"><i>●</i> 7 участков — отдельные контурные модули поверх дорожной основы</div></div>
+</section><section class="transition" id="how"><div class="shell"><div class="transition-grid"><h2>Цифровой жизненный цикл — от данных к контролю изменений</h2><p>Концепция не предлагает единую платформу. Она задаёт общее ядро совместимости: официальные версии данных и решений, правила их подготовки, согласования, утверждения и истории изменений.</p></div><div class="steps"><article class="step"><span>01</span><h3>Структурированные данные и реестры</h3></article><article class="step"><span>02</span><h3>Юридически значимые цифровые решения</h3></article><article class="step"><span>03</span><h3>Аналитика и моделирование</h3></article></div></div></section></main>
+<script>
+const map=document.querySelector('#map'),tip=document.querySelector('.tooltip'),title=document.querySelector('#tip-title'),text=document.querySelector('#tip-text'),parcels=document.querySelectorAll('.parcel');
+function showParcel(parcel){parcels.forEach(x=>x.classList.remove('active'));parcel.classList.add('active');title.textContent=parcel.dataset.title;text.textContent=parcel.dataset.text;const r=parcel.getBoundingClientRect(),m=map.getBoundingClientRect();let x=r.left-m.left+r.width*.67,y=r.top-m.top-3;if(x>m.width-230)x=r.left-m.left-210;if(y<54)y=r.bottom-m.top+7;tip.style.left=x+'px';tip.style.top=y+'px';tip.classList.add('visible')}
+parcels.forEach(parcel=>{parcel.setAttribute('role','button');parcel.setAttribute('aria-label',parcel.dataset.title);parcel.addEventListener('mouseenter',()=>showParcel(parcel));parcel.addEventListener('focus',()=>showParcel(parcel));parcel.addEventListener('click',()=>showParcel(parcel))});map.addEventListener('mouseleave',()=>{tip.classList.remove('visible');parcels.forEach(x=>x.classList.remove('active'))});
+</script>
+<script>
+(()=>{
+  const host=document.querySelector('#map');
+  const tooltip=document.querySelector('.tooltip');
+  const tooltipTitle=document.querySelector('#tip-title');
+  const tooltipText=document.querySelector('#tip-text');
+  const modules=[
+    ['parcel-a','Квартал A','Пустой участок для будущей жилой застройки и связанной социальной инфраструктуры.','M646 99 L940 269 L650 436 L356 266 Z'],
+    ['parcel-b','Квартал B','Участок у западного въезда: контур заканчивается по внутренней границе квартала и не включает улицы.','M319 279 L619 451 L319 623 L22 451 Z'],
+    ['parcel-c','Квартал C','Квартал для смешанной застройки: его границы выделяются независимо от озеленённого бульвара.','M967 286 L1255 453 L968 616 L679 448 Z'],
+    ['parcel-d','Квартал D','Центральный участок, связанный с будущим пешеходным маршрутом и локальной улицей.','M622 461 L901 622 L612 789 L322 618 Z'],
+    ['parcel-e','Квартал E','Восточный участок сетки. Подсветка следует внутренней кромке участка, а не широкой зоне вокруг него.','M1240 465 L1532 632 L1250 795 L960 624 Z'],
+    ['parcel-f','Квартал F','Южный участок для следующего сценария развития территории.','M904 633 L1185 795 L899 958 L610 790 Z'],
+    ['parcel-g','Квартал G','Крайний участок у границы территории. Его модуль сохранён отдельно, даже в обрезанном крае схемы.','M1510 579 L1585 623 L1585 720 L1420 814 L1258 721 Z']
+  ];
+  const ns='http://www.w3.org/2000/svg';
+  const overlay=document.createElementNS(ns,'svg');
+  overlay.setAttribute('class','parcel-overlay');
+  overlay.setAttribute('viewBox','0 0 1586 992');
+  overlay.setAttribute('preserveAspectRatio','none');
+  overlay.setAttribute('aria-label','Интерактивные участки территории');
+  overlay.setAttribute('role','group');
+  modules.forEach(([id,name,description,d])=>{
+    const path=document.createElementNS(ns,'path');
+    path.setAttribute('id',id);path.setAttribute('class','parcel-module');path.setAttribute('d',d);
+    path.setAttribute('tabindex','0');path.setAttribute('role','button');path.setAttribute('aria-label',name);
+    const activate=()=>{
+      overlay.querySelectorAll('.active').forEach(item=>item.classList.remove('active'));
+      path.classList.add('active');tooltipTitle.textContent=name;tooltipText.textContent=description;
+      const bounds=path.getBoundingClientRect(),mapBounds=host.getBoundingClientRect();
+      let left=bounds.left-mapBounds.left+bounds.width*.62,top=bounds.top-mapBounds.top+bounds.height*.47;
+      if(left>mapBounds.width-238) left=bounds.left-mapBounds.left-218;
+      if(top>mapBounds.height-132) top=bounds.top-mapBounds.top-113;
+      if(top<52) top=bounds.bottom-mapBounds.top+8;
+      tooltip.style.left=`${left}px`;tooltip.style.top=`${top}px`;tooltip.classList.add('visible');
+    };
+    path.addEventListener('mouseenter',activate);path.addEventListener('focus',activate);path.addEventListener('click',activate);
+    overlay.append(path);
+  });
+  host.append(overlay);
+  host.addEventListener('mouseleave',()=>{tooltip.classList.remove('visible');overlay.querySelectorAll('.active').forEach(item=>item.classList.remove('active'))});
+})();
+</script>
+</body></html>

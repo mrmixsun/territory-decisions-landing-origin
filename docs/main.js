@@ -176,6 +176,40 @@ const illustrationObserver = new ResizeObserver(entries => {
   });
 });
 document.querySelectorAll('[data-scale-width]').forEach(scene => illustrationObserver.observe(scene.parentElement));
+
+// Set the production Yandex Metrika counter ID here before release.
+// Until a non-zero ID is supplied, the site stores the visitor's choice but sends no analytics data.
+const YANDEX_METRIKA_ID = 0;
+const cookieNotice = document.querySelector('[data-cookie-notice]');
+const cookieStorageKey = 'imt-cookie-analytics-choice';
+
+const loadYandexMetrika = () => {
+  if (!Number.isInteger(YANDEX_METRIKA_ID) || YANDEX_METRIKA_ID <= 0 || document.querySelector('[data-yandex-metrika]')) return;
+  window.ym = window.ym || function (...args) { (window.ym.a = window.ym.a || []).push(args); };
+  window.ym.l = Date.now();
+  window.ym(YANDEX_METRIKA_ID, 'init', { clickmap: true, trackLinks: true, accurateTrackBounce: true });
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = 'https://mc.yandex.ru/metrika/tag.js';
+  script.dataset.yandexMetrika = 'true';
+  document.head.append(script);
+};
+
+if (cookieNotice) {
+  const choice = window.localStorage.getItem(cookieStorageKey);
+  if (choice === 'accepted') loadYandexMetrika();
+  else if (!choice) cookieNotice.hidden = false;
+
+  cookieNotice.querySelector('[data-cookie-accept]')?.addEventListener('click', () => {
+    window.localStorage.setItem(cookieStorageKey, 'accepted');
+    cookieNotice.hidden = true;
+    loadYandexMetrika();
+  });
+  cookieNotice.querySelector('[data-cookie-decline]')?.addEventListener('click', () => {
+    window.localStorage.setItem(cookieStorageKey, 'declined');
+    cookieNotice.hidden = true;
+  });
+}
 const documentToc = document.querySelector('.document-toc');
 const backToTop = document.querySelector('.back-to-top');
 if (documentToc && backToTop) {
