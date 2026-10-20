@@ -60,6 +60,8 @@ for (const file of ['index.html']) {
   old = removeSection(old, 'transition');
   old = removeSection(old, 'development');
   old = removeSection(old, 'materials');
+  // The footer was intentionally simplified independently of the landing copy.
+  old = old.replace(/<footer\b[\s\S]*?<\/footer>/, '');
   const current = await readFile(path.join(root,'site/dist',file),'utf8');
   const plain = normalize(current);
   for (const match of old.matchAll(/<(p|h1|h2|h3)\b[^>]*>([\s\S]*?)<\/\1>/g)) {

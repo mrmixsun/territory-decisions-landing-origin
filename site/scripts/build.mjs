@@ -10,6 +10,7 @@ const distDir = path.join(siteDir, 'dist');
 const contentDir = path.join(prototypeDir, 'content');
 const designDir = path.join(prototypeDir, 'design');
 const assetsDir = path.join(designDir, 'assets');
+const siteUrl = 'https://imt.gemsdev.ru/';
 
 const content = JSON.parse(await readFile(path.join(contentDir, 'landing.json'), 'utf8'));
 const whyChange = JSON.parse(await readFile(path.join(contentDir, 'why-change.json'), 'utf8'));
@@ -150,20 +151,17 @@ function header(current = 'home') {
   return `<header class="site-header"><div class="container header-inner"><a class="site-mark" href="./index.html" aria-label="На главную страницу">${mark}</a>${headerTitle}<nav class="desktop-nav" aria-label="Разделы сайта">${nav}</nav><a class="header-full text-link" href="${supportHref}">Принять участие <img src="${asset('origin-imgVector1.svg')}" alt=""></a><button class="menu-toggle" type="button" aria-controls="mobile-nav" aria-expanded="false" aria-label="Открыть меню"><span aria-hidden="true"></span></button></div><nav class="mobile-nav" id="mobile-nav" aria-label="Мобильная навигация">${nav}<a href="${supportHref}">Принять участие</a></nav></header>`;
 }
 
-function footer() {
-  const version = '2.0 · Origin / контент 1.5';
   const telegramIcon = '<svg class="footer-channel-icon footer-channel-icon--telegram" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#229ED9"/><path fill="#fff" d="M34.6 14.5 31 33.3c-.3 1.3-1 1.6-2.1 1l-5.5-4.1-2.7 2.6c-.3.3-.5.5-1.1.5l.4-5.6 10.2-9.2c.4-.4-.1-.6-.7-.2l-12.6 7.9-5.4-1.7c-1.2-.4-1.2-1.2.2-1.8l21.1-8.1c1-.4 1.9.2 1.8-.1Z"/></svg>';
   const maxIcon = '<svg class="footer-channel-icon footer-channel-icon--max" viewBox="0 0 1000 1000" aria-hidden="true"><defs><linearGradient id="max-gradient" x1="117.8" x2="1000" y1="760.5" y2="500" gradientUnits="userSpaceOnUse"><stop stop-color="#44CCFF"/><stop offset=".662" stop-color="#5533EE"/><stop offset="1" stop-color="#9933DD"/></linearGradient><radialGradient id="max-glow" cx="0" cy="1" r="1" gradientTransform="matrix(1515 -1233 508 624 -490 1087)" gradientUnits="userSpaceOnUse"><stop stop-color="#0000FF"/><stop offset="1" stop-color="#0000FF" stop-opacity="0"/></radialGradient></defs><rect width="1000" height="1000" rx="250" fill="url(#max-gradient)"/><rect width="1000" height="1000" rx="250" fill="url(#max-glow)"/><path fill="#fff" fill-rule="evenodd" d="M508 878c-75 0-110-11-170-55-38 50-160 88-165 22 0-49-11-91-23-136-15-57-32-119-32-210 0-216 178-380 388-380 211 0 376 171 376 382 1 207-167 376-374 377Zm3-571c-102-5-182 66-200 177-15 92 11 204 33 210 11 3 38-19 54-36 27 19 58 31 93 33 106 5 197-76 204-182 4-106-78-196-184-202Z" clip-rule="evenodd"/></svg>';
+function footer() {
+  const version = '2.0 · Origin / контент 1.5';
   return `<footer class="site-footer"><div class="container footer-inner">
-    <div class="footer-intro"><a class="footer-mark" href="./index.html" aria-label="На главную страницу">ИМТ<span>.</span></a><p>Концепция цифрового управления развитием территорий</p></div>
     <div class="footer-grid">
-      <section class="footer-column" aria-labelledby="footer-materials"><h2 id="footer-materials">Материалы</h2><a class="footer-primary-link" href="./concept.html">Полная версия концепции <span aria-hidden="true">↗</span></a><p>Развёрнутое описание принципов, целевого контура и этапов перехода.</p></section>
-      <section class="footer-column" aria-labelledby="footer-version"><h2 id="footer-version">Текущая редакция</h2><p class="footer-value">${e(content.meta.edition)}</p><dl class="footer-meta"><div><dt>Версия сайта</dt><dd>${e(version)}</dd></div><div><dt>Обновлено</dt><dd>${e(buildDate)}</dd></div></dl></section>
-      <section class="footer-column" aria-labelledby="footer-contact"><h2 id="footer-contact">Связаться</h2><a class="footer-primary-link" href="mailto:mstorozhilov@gemsdev.com">mstorozhilov@gemsdev.com</a><p>Вопросы, замечания и предложения по развитию концепции.</p></section>
+      <div class="footer-intro"><a class="footer-mark" href="./index.html" aria-label="На главную страницу">ИМТ<span>.</span></a><p>Концепция цифрового управления развитием территорий</p></div>
+      <section class="footer-column" aria-label="Версия сайта"><dl class="footer-meta"><div><dt>Версия сайта</dt><dd>${e(version)}</dd></div><div><dt>Обновлено</dt><dd>${e(buildDate)}</dd></div></dl></section>
       <section class="footer-column" aria-labelledby="footer-social"><h2 id="footer-social">Наши каналы</h2><div class="footer-socials"><a href="https://max.ru/join/EhGgOYRiKikL6YMSTDTMUirONsn2FJPSL9m8mW9nJoc" target="_blank" rel="noopener noreferrer" aria-label="Канал в мессенджере MAX">${maxIcon}<span>MAX</span></a><a href="https://t.me/+VwkQgNwHejM1ZWMy" target="_blank" rel="noopener noreferrer" aria-label="Канал в Telegram">${telegramIcon}<span>Telegram</span></a></div></section>
     </div>
-    <div class="footer-legal"><div><span class="footer-legal__label">Владелец сайта</span><strong>© ООО «Джемс Девелопмент»</strong></div><dl><div><dt>ИНН</dt><dd>7203423815</dd></div><div><dt>ОГРН</dt><dd>1177232019909</dd></div></dl><address>625048, Тюменская область, г. Тюмень, ул. Мельничная, д. 8, помещ. 1</address><a href="mailto:post@gemsdev.ru">post@gemsdev.ru</a></div>
-    <div class="footer-bottom"><p>${e(content.meta.footerNote)}</p><nav class="footer-documents" aria-label="Юридические документы"><a href="./privacy-policy.html">Политика обработки персональных данных</a><a href="./personal-data-consent.html">Согласие на обработку персональных данных</a><a href="./cookie-policy.html">Cookie</a></nav><p>GEMS развивает и популяризирует концепцию.</p></div>
+    <div class="footer-legal"><div><span class="footer-legal__label">Владелец сайта</span><strong>© ООО «Джемс Девелопмент»</strong></div><dl><div><dt>ИНН</dt><dd>7203423815</dd></div><div><dt>ОГРН</dt><dd>1177232019909</dd></div></dl><address>625048, Тюменская область, г. Тюмень, ул. Мельничная, д. 8, помещ. 1</address><nav class="footer-documents" aria-label="Юридические документы"><a href="./privacy-policy.html">Политика обработки персональных данных</a><a href="./personal-data-consent.html">Согласие на обработку персональных данных</a><a href="./cookie-policy.html">Cookie</a></nav></div>
   </div></footer>`;
 }
 
@@ -173,7 +171,14 @@ function cookieNotice() {
 
 function pageShell({ title, description, body, current, bodyClass = '' }) {
   const figmaCapture = process.env.FIGMA_CAPTURE === '1' ? '<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>' : '';
-  return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>${e(title)}</title><meta name="description" content="${e(description)}"><link rel="icon" type="image/svg+xml" href="${versioned('./favicon.svg')}"><link rel="stylesheet" href="${versioned('./style.css')}">${current === 'home' ? `<link rel="stylesheet" href="${versioned('./isometric-hero.css')}">` : ''}${figmaCapture}</head><body class="${e(bodyClass)}"><a class="skip-link" href="#main">К содержанию</a>${header(current)}<main id="main">${body}</main>${footer()}${cookieNotice()}<script src="${versioned('./main.js')}" defer></script>${current === 'home' ? `<script src="${versioned('./isometric-hero.js')}" defer></script>` : ''}</body></html>`;
+  const baseUrl = siteUrl;
+  const pageNames = { home: '', concept: 'concept.html', why: 'why.html', discussion: 'discussion.html', 'privacy-policy': 'privacy-policy.html', 'personal-data-consent': 'personal-data-consent.html', 'cookie-policy': 'cookie-policy.html', preview: 'city-hero-preview.html' };
+  const pageUrl = baseUrl + (pageNames[current] ?? '');
+  const socialImage = `${baseUrl}assets/social-preview-v1.jpg`;
+  const socialTitle = current === 'home' ? 'Концепция цифрового управления развитием территорий' : title;
+  const socialDescription = current === 'home' ? 'Мы предлагаем качественное изменение подхода: сделать данные юридически значимыми, актуальными и полными, работать в одном цифровом контуре, чтобы улучшить качество решений, сократить ошибки и снизить время на реализацию.' : description;
+  const socialMeta = `${current === 'preview' ? '<meta name="robots" content="noindex, nofollow">' : ''}<link rel="canonical" href="${e(pageUrl)}"><meta property="og:type" content="website"><meta property="og:locale" content="ru_RU"><meta property="og:site_name" content="ИМТ — Концепция"><meta property="og:url" content="${e(pageUrl)}"><meta property="og:title" content="${e(socialTitle)}"><meta property="og:description" content="${e(socialDescription)}"><meta property="og:image" content="${e(socialImage)}"><meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Условная городская территория и связанные слои данных"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${e(socialTitle)}"><meta name="twitter:description" content="${e(socialDescription)}"><meta name="twitter:image" content="${e(socialImage)}"><meta name="twitter:image:alt" content="Условная городская территория и связанные слои данных">`;
+  return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>${e(title)}</title><meta name="description" content="${e(description)}">${socialMeta}<link rel="icon" type="image/svg+xml" href="${versioned('./favicon.svg')}"><link rel="stylesheet" href="${versioned('./style.css')}">${current === 'home' ? `<link rel="stylesheet" href="${versioned('./isometric-hero.css')}">` : ''}${figmaCapture}</head><body class="${e(bodyClass)}"><a class="skip-link" href="#main">К содержанию</a>${header(current)}<main id="main">${body}</main>${footer()}${cookieNotice()}<script src="${versioned('./main.js')}" defer></script>${current === 'home' ? `<script src="${versioned('./isometric-hero.js')}" defer></script>` : ''}</body></html>`;
 }
 
 function legalPage({ title, description, lead, updated, sections, current }) {
@@ -185,7 +190,7 @@ function legalPage({ title, description, lead, updated, sections, current }) {
 function privacyPolicyPage() {
   return legalPage({
     title: 'Политика обработки персональных данных',
-    description: 'Политика обработки персональных данных сайта imt.gemsdev.com.',
+    description: 'Политика обработки персональных данных сайта imt.gemsdev.ru.',
     lead: 'Документ определяет, как ООО «Джемс Девелопмент» обрабатывает персональные данные посетителей сайта imt.gemsdev.com.',
     updated: '15 октября 2026 года',
     current: 'privacy-policy',
@@ -204,7 +209,7 @@ function privacyPolicyPage() {
 function personalDataConsentPage() {
   return legalPage({
     title: 'Согласие на обработку персональных данных',
-    description: 'Согласие на обработку персональных данных для сайта imt.gemsdev.com.',
+    description: 'Согласие на обработку персональных данных для сайта imt.gemsdev.ru.',
     lead: 'Текст согласия применяется, когда посетитель добровольно передаёт свои данные через форму на Сайте.',
     updated: '15 октября 2026 года',
     current: 'personal-data-consent',
@@ -220,7 +225,7 @@ function personalDataConsentPage() {
 function cookiePolicyPage() {
   return legalPage({
     title: 'Уведомление об использовании cookie',
-    description: 'Информация об использовании файлов cookie на сайте imt.gemsdev.com.',
+    description: 'Информация об использовании файлов cookie на сайте imt.gemsdev.ru.',
     lead: 'На Сайте используется только Яндекс Метрика — и только после согласия посетителя.',
     updated: '15 октября 2026 года',
     current: 'cookie-policy',
@@ -320,16 +325,17 @@ function landingPageS11() {
     const details = (point.details || []).map(paragraph => `<p>${e(paragraph)}</p>`).join('');
     return `<li tabindex="0" aria-describedby="${detailsId}"><span>${String(index + 1).padStart(2, '0')}</span><strong>${e(point.title)}</strong><div class="s11-hover-points__bubble" id="${detailsId}" role="tooltip">${details}</div></li>`;
   }).join('');
-  const shareUrl = 'https://mrmixsun.github.io/territory-decisions-landing-origin/';
+  const shareUrl = siteUrl;
   const shareText = 'Концепция цифрового управления развитием территорий — открытое предложение о том, как связать данные, решения и процессы в градостроительстве.';
   const shareHref = (network) => {
     if (network === 'telegram') return `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
     if (network === 'max') return `https://max.ru/:share?text=${encodeURIComponent(`${shareText}\n${shareUrl}`)}`;
-    if (network === 'email') return `mailto:${materials.contact?.email}?subject=${encodeURIComponent('Предложение по развитию Концепции')}&body=${encodeURIComponent('Здравствуйте, Михаил!\n\nХочу помочь в развитии Концепции.\n\nМой опыт, замечание или предложение:\n\n')}`;
+    if (network === 'email') return `mailto:${materials.contact?.email}?subject=${encodeURIComponent('Предложение по развитию Концепции')}&body=${encodeURIComponent('Здравствуйте!\n\nХочу поделиться замечанием, предложением или примером из практики для развития Концепции цифрового управления развитием территорий.\n\nМой опыт или предложение:\n\n')}`;
     return '#';
   };
-  const supportScenarios = (materials.supportScenarios || []).map((scenario, index) => `<article class="s11-materials__scenario"><span>0${index + 1}</span><h3>${e(scenario.title)}</h3><p>${e(scenario.text)}</p><div class="s11-materials__scenario-actions">${(scenario.actions || []).map(action => `<a class="s11-materials__share s11-materials__share--${e(action.network)}" href="${e(shareHref(action.network))}"${action.network === 'telegram' || action.network === 'max' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${e(action.label)} <i aria-hidden="true">↗</i></a>`).join('')}</div></article>`).join('');
+  const shareIcon = network => network === 'telegram' ? telegramIcon : network === 'max' ? maxIcon.replaceAll('max-gradient', 'share-max-gradient').replaceAll('max-glow', 'share-max-glow') : '<svg class="s11-materials__mail-icon" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="12" fill="#315b78"/><rect x="10" y="14" width="28" height="20" rx="3" fill="none" stroke="#fff" stroke-width="2.5"/><path d="m11 16 13 10 13-10" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const materialLink = materials.materials?.[0];
+  const supportScenarios = (materials.supportScenarios || []).map((scenario, index) => `<article class="s11-materials__scenario"><span>0${index + 1}</span><h3>${e(scenario.title)}</h3><p>${e(scenario.text)}</p><div class="s11-materials__scenario-actions">${(scenario.actions || []).map(action => `<a class="s11-materials__share s11-materials__share--${e(action.network)}" href="${e(shareHref(action.network))}"${action.network === 'telegram' || action.network === 'max' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${shareIcon(action.network)} ${e(action.label)}</a>`).join('')}${scenario.actions?.some(action => action.network === 'email') && materialLink ? `<a class="s11-materials__secondary" href="${e(safeHref(materialLink.href))}">${e(materialLink.label)}</a>` : ''}</div></article>`).join('');
   const heroTitle = (hero.titleLines || [hero.title]).map(line => `<span>${e(line)}</span>`).join('');
   const heroLead = (hero.leadLines || [hero.lead]).map(line => `<span>${e(line)}</span>`).join('');
   const body = `<section class="s11-hero" id="hero"><div class="container s11-hero__grid">${isometricHero}<div class="s11-hero__copy"><span class="s11-kicker">${e(hero.eyebrow)}</span><h1>${e(hero.title)}</h1><p>${heroLead}</p><div class="origin-hero-actions"><a class="s11-button s11-button--secondary" href="#why">Узнать больше <span aria-hidden="true">↓</span></a><a class="s11-button" href="./concept.html">Изучить Концепцию <span aria-hidden="true">↗</span></a></div></div></div></section>
@@ -337,8 +343,8 @@ function landingPageS11() {
   <section class="s11-section s11-lifecycle-section" id="how"><div class="container">${sectionTitle('Что предлагает концепция', how.title, how.intro)}<div class="s11-lifecycle">${how.frames.map(lifecycleCard).join('')}</div><div class="s11-lifecycle-summary"><strong>${e(how.summary)}</strong></div></div></section>
   ${discussionBlock({ landing: true })}
   <section class="s11-section s11-transition-section s11-hover-plan" id="implementation"><div class="container">${sectionTitle(byId('implementation').navLabel, byId('implementation').title, byId('implementation').intro)}<div class="s11-phases">${implementation.diagram.stages.map((stage, i) => `<article class="s11-phase"><div class="s11-phase__head"><span class="s11-phase__num">0${i + 1}</span><span class="s11-phase__label">${i === 0 ? 'Старт' : 'Период'}</span></div><h3>${e(stage)}</h3><p>${e(implementation.diagram.stageDetails[i].body)}</p><div class="s11-phase__result"><span>Результат</span><strong>${e(implementation.diagram.stageDetails[i].result)}</strong></div></article>`).join('')}</div><div class="s11-implementation-directions"><span class="s11-kicker">Десять направлений реализации</span><h3>Что именно нужно изменить</h3><p>Это конкретные направления работы: от порядка утверждения цифровых решений и качества данных до услуг, совместимости систем, переноса истории и сопровождения перехода. Наведите на карточку, чтобы увидеть содержание каждого направления.</p></div><ol class="s11-hover-points" aria-label="Направления реализации с пояснениями">${hoverImplementationPoints}</ol><div class="s11-transition-path"><a class="s11-button s11-transition-path__button" href="./${e(safeHref(implementation.more?.href))}">${e(implementation.more?.label)} <span aria-hidden="true">↗</span></a></div></div></section>
-  <section class="s11-section s11-materials" id="materials"><div class="container">${sectionTitle('Поделиться', materials.title, materials.paragraphs)}<div class="s11-materials__scenarios">${supportScenarios}</div><div class="s11-materials__contact"><div><span class="s11-materials__label">Связаться</span><strong>${e(materials.contact?.name)}</strong><p>${e(materials.contact?.role)}</p></div><div><a class="s11-materials__email" href="mailto:${e(materials.contact?.email)}">${e(materials.contact?.email)}</a>${materialLink ? `<a class="s11-materials__secondary" href="${e(safeHref(materialLink.href))}">${e(materialLink.label)} <span aria-hidden="true">↗</span></a>` : ''}</div></div></div></section>`;
-  return pageShell({title:content.meta.title,description:content.meta.description,current:'home',body,bodyClass:'landing--s11 landing--imt'});
+  <section class="s11-section s11-materials" id="materials"><div class="container">${sectionTitle('Поделитесь информацией', materials.title, materials.paragraphs)}<div class="s11-materials__scenarios">${supportScenarios}</div></div></section>`;
+  return pageShell({title:'Концепция цифрового управления развитием территорий — ИМТ',description:content.meta.description,current:'home',body,bodyClass:'landing--s11 landing--imt'});
 }
 
 function landingPage() {
@@ -359,7 +365,7 @@ function whyChangePage() {
   const mapNotes = whyChange.stages.map((stage, index) => `<div class="why-map-note${index === 0 ? ' is-active' : ''}" data-why-note="${e(stage.id)}"${index === 0 ? '' : ' hidden'}><span>${e(stage.mapLabel)}</span><strong>${e(stage.mapText)}</strong></div>`).join('');
   const points = whyChange.target.points.map((point, index) => `<li><span>0${index + 1}</span><p>${e(point)}</p></li>`).join('');
   const body = `<section class="why-hero"><div class="container why-hero__grid"><div class="why-hero__copy"><span class="eyebrow">${e(whyChange.eyebrow)}</span><h1>${e(whyChange.title)}</h1><p>${e(whyChange.lead)}</p><a class="s11-button" href="#target">Как меняется процесс <span aria-hidden="true">↓</span></a></div><div class="why-map" data-why-map="project" aria-label="Схема ситуации с градостроительными данными"><div class="why-map__grid" aria-hidden="true"></div><div class="why-map__parcel why-map__parcel--one">Участок</div><div class="why-map__parcel why-map__parcel--two">Инфраструктура</div><div class="why-map__parcel why-map__parcel--three">Проект</div><div class="why-map__source why-map__source--one">Таблица</div><div class="why-map__source why-map__source--two">Карта</div><div class="why-map__source why-map__source--three">Документ</div><div class="why-map__link why-map__link--one" aria-hidden="true"></div><div class="why-map__link why-map__link--two" aria-hidden="true"></div><div class="why-map__link why-map__link--three" aria-hidden="true"></div>${mapNotes}</div></div></section><section class="why-stages" aria-label="Три ситуации"><div class="container"><div class="why-stages__header"><span class="eyebrow">Почему одной цифровизации недостаточно</span><p>Выберите ситуацию, чтобы увидеть, где разрывается путь решения.</p></div><div class="why-stages__layout"><div class="why-stage-tabs" role="group" aria-label="Ситуации">${stageButtons}</div><div class="why-stage-panels">${stagePanels}</div></div></div></section><section class="why-target" id="target"><div class="container why-target__grid"><div><span class="eyebrow">${e(whyChange.target.eyebrow)}</span><h2>${e(whyChange.target.title)}</h2><p>${e(whyChange.target.body)}</p><p class="why-target__note">${e(whyChange.target.note)}</p></div><ol>${points}</ol></div></section><section class="why-next"><div class="container"><p>Концепция задаёт общее ядро совместимости, а не одну платформу или поставщика.</p><a class="s11-button" href="./index.html#how">Что предлагает Концепция <span aria-hidden="true">↗</span></a></div></section>`;
-  return pageShell({ title: whyChange.title, description: whyChange.description, current: 'why', body, bodyClass: 'why--imt' });
+  return pageShell({ title: 'Почему нужно менять подход к управлению территориями — ИМТ', description: whyChange.description, current: 'why', body, bodyClass: 'why--imt' });
 }
 
 function inlineMarkdown(raw) {
@@ -458,7 +464,7 @@ function fullTextPage() {
     article = article.replace(`<h2 id="${heading.id}">`, `<h2 id="${heading.id}">${aliases}`);
   }
   const body = `<header class="document-hero"><div class="container"><span class="eyebrow">${e(content.meta.conceptStatus)}</span><h1 tabindex="-1">${e(fullTextSource.title)}</h1><p>Редакция от ${e(fullTextSource.edition)}. Полный текст Концепции.</p><a class="document-back" href="./index.html">← Вернуться к краткому изложению</a></div></header><div class="container document-layout">${toc}<article class="document-body">${article}</article></div><button class="back-to-top" type="button" aria-label="Наверх" title="Наверх" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 12 6-6 6 6M12 6v12"/></svg></button>`;
-  return pageShell({ title: `Полный текст — ${fullTextSource.title}`, description: content.meta.description, current: 'concept', body, bodyClass: 'document--imt' });
+  return pageShell({ title: `Полный текст — ${fullTextSource.title}`, description: 'Полный текст Концепции цифрового управления развитием территорий: принципы, направления реализации и этапы перехода.', current: 'concept', body, bodyClass: 'document--imt' });
 }
 
 function px(n) { return `${n}px`; }
@@ -498,6 +504,8 @@ await writeFile(path.join(distDir, 'city-hero-preview.html'), cityHeroPreviewPag
 await writeFile(path.join(distDir, 'privacy-policy.html'), privacyPolicyPage());
 await writeFile(path.join(distDir, 'personal-data-consent.html'), personalDataConsentPage());
 await writeFile(path.join(distDir, 'cookie-policy.html'), cookiePolicyPage());
+await writeFile(path.join(distDir, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${siteUrl}sitemap.xml\n`);
+await writeFile(path.join(distDir, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${['', 'concept.html', 'why.html', 'discussion.html', 'privacy-policy.html', 'personal-data-consent.html', 'cookie-policy.html'].map(page => `  <url><loc>${siteUrl}${page}</loc></url>`).join('\n')}\n</urlset>\n`);
 await writeFile(path.join(distDir, 'tokens.css'), tokenCss());
 await cp(path.join(siteDir, 'src', 'origin.css'), path.join(distDir, 'style.css'));
 await cp(path.join(siteDir, 'src', 'main.js'), path.join(distDir, 'main.js'));
