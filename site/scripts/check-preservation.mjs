@@ -30,6 +30,10 @@ for (const file of ['content/landing.json']) {
   expected.nav.splice(2, 0, current.nav.find(item => item.id === 'implementation'));
   // The hero lead is maintained as a release-specific message, not as preserved s1.5 copy.
   expected.hero = current.hero;
+  // The «Что предлагает концепция» heading and lead were explicitly revised.
+  const how = expected.sections.find(section => section.id === 'how');
+  how.title = 'Планирование и управление на основе цифровой информационной модели';
+  how.intro = 'Главный принцип — всё должно быть основано на актуальных данных, которые одновременно и удобно доступны всем участникам градостроительного процесса. Для этого не нужна новая единая платформа: достаточно, чтобы разные системы и рабочие инструменты могли взаимодействовать в общем официальном контуре по единым правилам.';
   // The participation block has a separate editorial brief: sharing and expert help replace the prior contact CTA.
   const materialsIndex = expected.sections.findIndex(section => section.id === 'materials');
   assert.ok(materialsIndex >= 0, 'Missing participation section');
@@ -60,7 +64,7 @@ for (const file of ['index.html']) {
   const plain = normalize(current);
   for (const match of old.matchAll(/<(p|h1|h2|h3)\b[^>]*>([\s\S]*?)<\/\1>/g)) {
     const copy = normalize(match[2]);
-    if (copy.includes('Новый стандарт управления развитием городов') || copy.includes('Единая цифровая среда, где данные и процессы')) continue;
+    if (copy.includes('Новый стандарт управления развитием городов') || copy.includes('Единая цифровая среда, где данные и процессы') || copy.includes('Один жизненный цикл — от проекта до следующего изменения') || copy.includes('Концепция связывает воедино содержание решения, процедуры, правовое основание')) continue;
     if(copy) assert.ok(plain.includes(copy),file+' missing content: '+copy);
   }
   assert.ok(!current.includes('https://www.figma.com/api/mcp/asset/'),'Temporary asset URL in '+file);
