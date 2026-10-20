@@ -38,6 +38,13 @@ assert.ok(why.includes('Территория меняется как едина�
 const discussion = pages['discussion.html'];
 assert.ok(discussion.includes('Дискуссия о Концепции'), 'Нет страницы «Дискуссия о Концепции»');
 assert.ok(discussion.includes('data-discussion-more'), 'На странице дискуссии нет кнопки раскрытия материалов');
+for (const [file, html] of Object.entries(pages)) {
+  for (const nav of html.matchAll(/<nav class="(?:desktop-nav|mobile-nav)"[^>]*>([\s\S]*?)<\/nav>/g)) {
+    const expectedDiscussion = file === 'index.html' ? '#discussion' : './index.html#discussion';
+    assert.ok(nav[1].includes(`href="${expectedDiscussion}"`), `${file}: меню должно вести к дискуссии на главной`);
+    assert.ok(nav[1].indexOf('Дискуссия о Концепции') < nav[1].indexOf('План реализации'), `${file}: дискуссия должна предшествовать плану`);
+  }
+}
 const cityPreview = pages['city-hero-preview.html'];
 assert.ok(cityPreview.includes('data-city-animation'), 'Нет анимированной городской сцены');
 assert.ok(cityPreview.includes('data-city-animation-toggle'), 'Нет управления анимацией городской сцены');

@@ -135,11 +135,11 @@ function renderSection(section, index) {
 
 function header(current = 'home') {
   const navLabel = label => e(label).replace(/\u00a0/g, '&nbsp;');
-  const navItems = [...content.nav.slice(0, 3), { href: 'discussion.html', label: 'Дискуссия о Концепции' }, ...content.nav.slice(3)];
+  const navItems = [...content.nav.slice(0, 2), { id: 'discussion', label: 'Дискуссия о Концепции' }, ...content.nav.slice(2)];
   const nav = navItems.map(item => {
     const target = item.href || `#${item.id}`;
     const href = current === 'home' || !target.startsWith('#') ? target : `./index.html${target}`;
-    const isCurrent = (current === 'why' && target === 'why.html') || (current === 'concept' && target === 'concept.html') || (current === 'discussion' && target === 'discussion.html');
+    const isCurrent = (current === 'why' && target === 'why.html') || (current === 'concept' && target === 'concept.html') || (current === 'discussion' && target === '#discussion');
     return `<a href="${e(safeHref(href))}"${isCurrent ? ' class="is-active" aria-current="page"' : ''}>${navLabel(item.label)}</a>`;
   }).join('');
   const supportHref = current === 'home' ? '#materials' : './index.html#materials';
