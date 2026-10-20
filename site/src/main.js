@@ -124,17 +124,18 @@ cityHotspots.forEach(hotspot => {
   });
 });
 
-const sectionNavLinks = [...document.querySelectorAll('.desktop-nav a[href^="#"], .mobile-nav a[href^="#"]')];
+const sectionNavLinks = [...document.querySelectorAll('.desktop-nav a[href^="#"], .mobile-nav a[href^="#"], .desktop-nav a[href="discussion.html"], .mobile-nav a[href="discussion.html"]')].filter(link => link.getAttribute('href') !== 'discussion.html' || document.getElementById('discussion'));
+const sectionHref = link => link.getAttribute('href') === 'discussion.html' && document.getElementById('discussion') ? '#discussion' : link.getAttribute('href');
 if (sectionNavLinks.length) {
   const header = document.querySelector('.site-header');
-  const sections = [...new Set(sectionNavLinks.map(link => link.getAttribute('href')))]
+  const sections = [...new Set(sectionNavLinks.map(sectionHref).filter(href => href.startsWith('#')))]
     .map(href => ({ href, element: document.getElementById(href.slice(1)) }))
     .filter(item => item.element);
   let scheduled = false;
 
   const setActiveSection = href => {
     sectionNavLinks.forEach(link => {
-      const active = link.getAttribute('href') === href;
+      const active = sectionHref(link) === href;
       link.classList.toggle('is-active', active);
       if (active) link.setAttribute('aria-current', 'location');
       else link.removeAttribute('aria-current');
@@ -158,7 +159,7 @@ if (sectionNavLinks.length) {
   };
 
   sectionNavLinks.forEach(link => link.addEventListener('click', () => {
-    setActiveSection(link.getAttribute('href'));
+    setActiveSection(sectionHref(link));
     window.setTimeout(scheduleActiveSectionUpdate, 80);
   }));
   window.addEventListener('scroll', scheduleActiveSectionUpdate, { passive: true });
