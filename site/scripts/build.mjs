@@ -13,6 +13,7 @@ const assetsDir = path.join(designDir, 'assets');
 
 const content = JSON.parse(await readFile(path.join(contentDir, 'landing.json'), 'utf8'));
 const whyChange = JSON.parse(await readFile(path.join(contentDir, 'why-change.json'), 'utf8'));
+const whyLanding = JSON.parse(await readFile(path.join(contentDir, 'why-landing.json'), 'utf8'));
 const tokens = JSON.parse(await readFile(path.join(designDir, 'tokens.json'), 'utf8'));
 const fullText = await readFile(path.join(contentDir, 'full-text.md'), 'utf8');
 const fullTextSource = JSON.parse(await readFile(path.join(contentDir, 'full-text-source.json'), 'utf8'));
@@ -38,6 +39,7 @@ const esc = (value = '') => String(value).replace(/&/g, '&amp;').replace(/</g, '
 const safeHref = (href = '') => /^(?:#|(?:\.\/)?(?:index|concept|why|discussion|privacy-policy|personal-data-consent|cookie-policy)\.html(?:#|$)|mailto:[^\s"<>]+$)/.test(href) ? href : '#';
 const safeContentHref = (href = '') => /^https:\/\//i.test(href) ? href : safeHref(href);
 const e = (value = '') => esc(value);
+const noDanglingPrepositions = value => e(value).replace(/(?<![А-Яа-яЁё])([А-Яа-яЁё]{1,2}|без|для|над|под|при|перед|через|из-за) +(?=[А-Яа-яЁё])/giu, '$1&nbsp;');
 const para = (items = []) => items.map(item => `<p>${e(item)}</p>`).join('\n');
 const list = (items = []) => `<ul>${items.map(item => `<li>${e(item)}</li>`).join('')}</ul>`;
 const versioned = (href) => `${href}?v=${resourceVersions.get(href) || releaseTag}`;
@@ -312,7 +314,7 @@ function landingPageS11() {
   const how = byId('how');
   const implementation = byId('implementation').frames[0];
   const materials = byId('materials').frames[0];
-  const whyCards = whyChange.stages.map(stage => `<article class="s11-why-card"><span class="s11-why-card__number">${e(stage.number)}</span><span class="s11-kicker">${e(stage.short)}</span><h3>${e(stage.title)}</h3><p>${e(stage.body)}</p></article>`).join('');
+  const whyCards = whyLanding.stages.map(stage => `<article class="s11-why-card"><span class="s11-why-card__number">${e(stage.number)}</span><span class="s11-kicker">${noDanglingPrepositions(stage.short)}</span><h3>${noDanglingPrepositions(stage.title)}</h3><p>${noDanglingPrepositions(stage.body)}</p></article>`).join('');
   const hoverImplementationPoints = (implementation.implementationPoints || []).map((point, index) => {
     const detailsId = `implementation-hover-detail-${index + 1}`;
     const details = (point.details || []).map(paragraph => `<p>${e(paragraph)}</p>`).join('');
@@ -331,7 +333,7 @@ function landingPageS11() {
   const heroTitle = (hero.titleLines || [hero.title]).map(line => `<span>${e(line)}</span>`).join('');
   const heroLead = (hero.leadLines || [hero.lead]).map(line => `<span>${e(line)}</span>`).join('');
   const body = `<section class="s11-hero" id="hero"><div class="container s11-hero__grid">${isometricHero}<div class="s11-hero__copy"><span class="s11-kicker">${e(hero.eyebrow)}</span><h1>${e(hero.title)}</h1><p>${heroLead}</p><div class="origin-hero-actions"><a class="s11-button s11-button--secondary" href="#why">Узнать больше <span aria-hidden="true">↓</span></a><a class="s11-button" href="./concept.html">Изучить Концепцию <span aria-hidden="true">↗</span></a></div></div></div></section>
-  <section class="s11-section s11-why" id="why"><div class="container">${sectionTitle('Зачем менять подход', whyChange.title, whyChange.lead)}<div class="s11-why-grid">${whyCards}</div></div></section>
+  <section class="s11-section s11-why" id="why"><div class="container"><div class="s11-heading s11-why-heading"><span class="s11-kicker">Зачем менять подход</span><h2>${noDanglingPrepositions(whyLanding.title)}</h2><div class="s11-why-lead">${whyLanding.lead.map(paragraph => `<p>${noDanglingPrepositions(paragraph)}</p>`).join('')}</div></div><div class="s11-why-grid">${whyCards}</div><div class="s11-why-conclusion"><h3>${noDanglingPrepositions(whyLanding.conclusion.title)}</h3><div><p>${noDanglingPrepositions(whyLanding.conclusion.body)}</p><p>${noDanglingPrepositions(whyLanding.conclusion.closing)}</p></div></div></div></section>
   <section class="s11-section s11-lifecycle-section" id="how"><div class="container">${sectionTitle('Что предлагает концепция', how.title, how.intro)}<div class="s11-lifecycle">${how.frames.map(lifecycleCard).join('')}</div><div class="s11-lifecycle-summary"><strong>${e(how.summary)}</strong></div></div></section>
   ${discussionBlock({ landing: true })}
   <section class="s11-section s11-transition-section s11-hover-plan" id="implementation"><div class="container">${sectionTitle(byId('implementation').navLabel, byId('implementation').title, byId('implementation').intro)}<div class="s11-phases">${implementation.diagram.stages.map((stage, i) => `<article class="s11-phase"><div class="s11-phase__head"><span class="s11-phase__num">0${i + 1}</span><span class="s11-phase__label">${i === 0 ? 'Старт' : 'Период'}</span></div><h3>${e(stage)}</h3><p>${e(implementation.diagram.stageDetails[i].body)}</p><div class="s11-phase__result"><span>Результат</span><strong>${e(implementation.diagram.stageDetails[i].result)}</strong></div></article>`).join('')}</div><div class="s11-implementation-directions"><span class="s11-kicker">Десять направлений реализации</span><h3>Что именно нужно изменить</h3><p>Это конкретные направления работы: от порядка утверждения цифровых решений и качества данных до услуг, совместимости систем, переноса истории и сопровождения перехода. Наведите на карточку, чтобы увидеть содержание каждого направления.</p></div><ol class="s11-hover-points" aria-label="Направления реализации с пояснениями">${hoverImplementationPoints}</ol><div class="s11-transition-path"><a class="s11-button s11-transition-path__button" href="./${e(safeHref(implementation.more?.href))}">${e(implementation.more?.label)} <span aria-hidden="true">↗</span></a></div></div></section>
