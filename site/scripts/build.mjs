@@ -23,6 +23,7 @@ const assetNames = new Set(await readdir(assetsDir));
 const releaseTag = 'origin-v2-concept-20261002';
 const resourceVersions = new Map(await Promise.all([
   ['./style.css', 'origin.css'],
+  ['./favicon.svg', 'favicon.svg'],
   ['./main.js', 'main.js'],
   ['./isometric-hero.css', 'isometric-hero.css'],
   ['./isometric-hero.js', 'isometric-hero.js']
